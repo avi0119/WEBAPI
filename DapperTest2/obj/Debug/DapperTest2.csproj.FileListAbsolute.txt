@@ -1,0 +1,8 @@
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest2\bin\Debug\DapperTest2.exe.config
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest2\bin\Debug\DapperTest2.exe
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest2\bin\Debug\DapperTest2.pdb
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest2\obj\Debug\DapperTest2.exe
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest2\obj\Debug\DapperTest2.pdb
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest2\bin\Debug\Dapper.dll
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest2\bin\Debug\Dapper.pdb
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest2\bin\Debug\Dapper.xml

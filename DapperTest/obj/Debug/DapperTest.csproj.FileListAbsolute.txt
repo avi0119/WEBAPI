@@ -1,0 +1,9 @@
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest\bin\Debug\DapperTest.exe.config
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest\obj\Debug\DapperTest.csprojResolveAssemblyReference.cache
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest\bin\Debug\DapperTest.exe
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest\bin\Debug\DapperTest.pdb
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest\bin\Debug\Dapper.dll
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest\bin\Debug\Dapper.pdb
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest\bin\Debug\Dapper.xml
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest\obj\Debug\DapperTest.exe
+E:\C#Projects\2014Projects\TestWebAPI\DapperTest\obj\Debug\DapperTest.pdb

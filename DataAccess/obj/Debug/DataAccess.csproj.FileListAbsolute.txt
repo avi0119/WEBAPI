@@ -1,0 +1,9 @@
+E:\C#Projects\2014Projects\TestWebAPI\DataAccess\bin\Debug\DataAccess.dll.config
+E:\C#Projects\2014Projects\TestWebAPI\DataAccess\bin\Debug\DataAccess.dll
+E:\C#Projects\2014Projects\TestWebAPI\DataAccess\bin\Debug\DataAccess.pdb
+E:\C#Projects\2014Projects\TestWebAPI\DataAccess\bin\Debug\Dapper.dll
+E:\C#Projects\2014Projects\TestWebAPI\DataAccess\bin\Debug\Dapper.pdb
+E:\C#Projects\2014Projects\TestWebAPI\DataAccess\bin\Debug\Dapper.xml
+E:\C#Projects\2014Projects\TestWebAPI\DataAccess\obj\Debug\DataAccess.dll
+E:\C#Projects\2014Projects\TestWebAPI\DataAccess\obj\Debug\DataAccess.pdb
+E:\C#Projects\2014Projects\TestWebAPI\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
