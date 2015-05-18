@@ -11,13 +11,13 @@ namespace TestWebAPI
     [UnitOfWorkActionFilter]
     public class ProductController : ApiController
     {
-        IProduct _IProduct;
+        //IProduct _IProduct;
         IProductCRUD _iaddprod;
         // GET api/<controller>
 
-        public ProductController(IProduct iproduct,IProductCRUD iaddprod)
+        public ProductController(IProductCRUD iaddprod)
         {
-            _IProduct=iproduct;
+            //_IProduct=iproduct;
             _iaddprod = iaddprod;
         }
         public IEnumerable<string> Get()
@@ -72,7 +72,7 @@ namespace TestWebAPI
         {
             //var value = 1;
              var id=_iaddprod.ProductAdd(value);
-            var p = _IProduct.GetProduct(id);
+             var p = _iaddprod.GetProduct(id);
             var b = value;
             return p;
         }
@@ -104,7 +104,7 @@ namespace TestWebAPI
         public Product Put([FromBody]Product value)
         {
             var id = _iaddprod.ProductUpdate(value);
-            var p = _IProduct.GetProduct(id);
+            var p = _iaddprod.GetProduct(id);
  
             return p;
         }

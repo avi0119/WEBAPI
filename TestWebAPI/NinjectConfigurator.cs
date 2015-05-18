@@ -24,8 +24,8 @@ namespace TestWebAPI
             //container.Bind<ITrans>().To<Transaction>().InTransientScope();
             //container.Bind<IActionTransactionHelper>().To<ActionTransactionHelper>().InRequestScope();
             container.Bind<IActionTransactionHelper>().To<ActionTransactionHelper>().InScope(c => System.Web.HttpContext.Current);
-            container.Bind<IProduct>().To<ProductGetter>().InTransientScope();
-            container.Bind<IProductCRUD>().To<ProductAdder>().InTransientScope();
+            //container.Bind<IProduct>().To<ProductGetter>().InTransientScope();
+            container.Bind<IProductCRUD>().To<ProductCRUD>().InTransientScope();
              
             
         }
