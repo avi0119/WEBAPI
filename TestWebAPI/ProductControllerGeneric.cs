@@ -20,16 +20,65 @@ namespace TestWebAPI
             //_IProduct=iproduct;
             _iaddprod = iaddprod;
         }
-        public IEnumerable<string> Get()
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
+        ////http://localhost:39402/api/product
+        [HttpGet]
+        [Route("api/Product")]
+        public IEnumerable<Product> Get()
         {
-            return new string[] { "value1", "value2" };
+
+            var z = ObtainProductByID();
+            //var z = ObtainProductByID(productID);
+            return z;
+            //return "value";
         }
+
+        private IEnumerable<Product> ObtainProductByID()
+        {
+            //id = -1;
+            string[] tableName = new string[] { "products", "categories", "suppliers" };
+            string[] idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
+            //object param = new { ProductID = id };
+            Func<Product, Category, Supplier, Product> dl = new Func<Product, Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
+
+            //T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T> dl2);
+            IEnumerable< Product> p = _iaddprod.Get( tableName, idFieldName,  dl);
+            return p;
+        }
+
+        private IEnumerable<Product> ObtainProductByID3()
+        {
+            //id = -1;
+            string[] tableName = new string[] { "products", "categories" };
+            string[] idFieldName = new string[] { "ProductID", "CategoryID"  };
+            //object param = new { ProductID = id };
+            Func<Product, Category, Product> dl = new Func<Product, Category,  Product>((prod, cat) => { prod.Category = cat;  return prod; });
+
+            //T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T> dl2);
+            IEnumerable<Product> p = _iaddprod.Get(tableName, idFieldName, dl);
+            return p;
+        }
+        private IEnumerable<Product> ObtainProductByID2()
+        {
+            string tableName = "products";
+            string idFieldName = "ProductID" ;
+
+            IEnumerable<Product> p = _iaddprod.Get(tableName, idFieldName);
+            return p;
+        }
+
         ////http://localhost:39402/api/product/77
         // GET api/<controller>/5
+        //[Route("api/product/productID:int")]
+        [HttpGet]
+        [Route("api/Product/{productID:int}")]
         public Product Get(int productID)
         {
  
-            var z = ObtainProductByID3(productID);
+            var z = ObtainProductByID(productID);
             //var z = ObtainProductByID(productID);
             return z;
             //return "value";
