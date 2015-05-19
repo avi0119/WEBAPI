@@ -29,11 +29,45 @@ namespace TestWebAPI
         public Product Get(int productID)
         {
  
-            var z = ObtainProductByID(productID);
+            var z = ObtainProductByID3(productID);
+            //var z = ObtainProductByID(productID);
             return z;
             //return "value";
         }
- 
+        private Product ObtainProductByID(int id)
+        {
+            //id = -1;
+            string[] tableName = new string[] { "products", "categories", "suppliers" };
+            string[] idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
+            object param = new { ProductID = id };
+            Func<Product, Category, Supplier, Product> dl = new Func<Product, Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
+
+            //T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T> dl2);
+            Product p = _iaddprod.Get(id, tableName, idFieldName, param, dl);
+            return p;
+        }
+        private Product ObtainProductByID3(int id)
+        {
+            //id = -1;
+            string[] tableName = new string[] { "products", "categories" };
+            string[] idFieldName = new string[] { "ProductID", "CategoryID" };
+            object param = new { ProductID = id };
+            Func<Product, Category,  Product> dl = new Func<Product, Category,  Product>((prod, cat) => { prod.Category = cat; return prod; });
+
+     
+            Product p = _iaddprod.Get(id, tableName, idFieldName, param, dl);
+            return p;
+        }
+
+        private Product ObtainProductByID2(int id)
+        {
+
+            string tableName = "products";
+            string idFieldName = "ProductID";
+            object param = new { ProductID = id };
+            Product p = _iaddprod.Get(id, tableName, idFieldName, param);
+            return p;
+        }
  
         ////http://localhost:39402/api/product/80
         // GET api/<controller>/5
@@ -96,18 +130,7 @@ namespace TestWebAPI
         
          */
  
-        private Product ObtainProductByID(int id)
-        {
-            //id = -1;
-            string[] tableName=new string[]{"products","categories","suppliers"};
-            string[] idFieldName=new string[]{"ProductID","CategoryID","SupplierID"};
-            object param = new  { ProductID = id };
-            Func<Product, Category, Supplier, Product> dl = new Func<Product, Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
- 
-            //T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T> dl2);
-            Product p = _iaddprod.Get( id,  tableName,  idFieldName,  param, dl);
-            return p;
-        }
+
  
         ////http://localhost:39402/api/product/77
         [HttpPut]

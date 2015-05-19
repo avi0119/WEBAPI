@@ -149,7 +149,32 @@ namespace DataAccess
 
         }
 
+        public T Get<T2>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T> dl2)
+        {
+            //param = new  { ProductID = prodid };
 
+            var filteredItems = idFieldName.Where((p, i) => i > 0);
+
+            var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
+
+
+
+            SqlConnection conn = _trans.Connection;
+
+            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
+
+            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{3}    where [{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1]);
+
+
+
+            //var res = conn.Query<Product, Category, Supplier, Product>(sql, (prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; }, new { ProductID = prodid }, _trans.Transx, splitOn: "CategoryID,supplierid");
+
+            //Func<Product, Category, Supplier, Product> dl2 = new Func<Product,Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
+
+            var res = conn.Query<T, T2,  T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
+
+            return res.SingleOrDefault();
+        }
 
         public T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T> dl2)
         {
@@ -183,7 +208,26 @@ namespace DataAccess
         }
 
 
+        public T Get(int prodid, string tableName, string idFieldName, object param)
+        {
+            //var filteredItems = idFieldName.Where((p, i) => i > 0);
 
+            //var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
+
+
+
+            SqlConnection conn = _trans.Connection;
+
+            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
+
+            string sql = string.Format("SELECT *  FROM [{0}] p      where [{1}]=@{1}", tableName, idFieldName);
+
+
+
+            var res = conn.Query<T>(sql,  param, _trans.Transx);
+
+            return res.SingleOrDefault();
+        }
         private static PropertyContainer ParseProperties(T obj)
         {
 
@@ -277,6 +321,12 @@ namespace DataAccess
             return string.Join(separator, pairs);
 
         }
+
+
+
+
+
+
 
     }
 
