@@ -98,7 +98,6 @@
     </Compile>
     <Compile Include="NinjectConfigurator.cs" />
     <Compile Include="NinjectWebCommon.cs" />
-    <Compile Include="OrderController.cs" />
     <Compile Include="ProductControllerGeneric.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
