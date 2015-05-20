@@ -39,12 +39,23 @@ namespace TestWebAPI
         public IEnumerable<Order> Get()
         {
 
-            var z = ObtainProductByID();
+            var z = ObtainProductByID4();
             //var z = ObtainProductByID(productID);
             return z;
             //return "value";
         }
+        private IEnumerable<Order> ObtainProductByID4()
+        {
+            //id = -1;
+            string[] tableName = new string[] { "orders", "customers", "employees","Order Details" };
+            string[] idFieldName = new string[] { "OrderID", "CustomerID", "EmployeeID","OrderID" };
+            //object param = new { ProductID = id };
+            Func<Order, Customer, Employee, IEnumerable<OrderDetail>, Order> dl = new Func<Order, Customer, Employee, IEnumerable<OrderDetail>, Order>((ord, cust, Emp, orddetail) => { ord.Customer = cust; ord.Employee = Emp; ord.Items = orddetail; return ord; });
 
+            //T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T> dl2);
+            IEnumerable<Order> p = _iaddprod.Get(tableName, idFieldName, dl);
+            return p;
+        }
         private IEnumerable<Order> ObtainProductByID()
         {
             //id = -1;
