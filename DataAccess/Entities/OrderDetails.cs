@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    class OrderDetail
+   public  class OrderDetail
     {
         public int OrderID { get; set; }
         public int ProductID { get; set; }

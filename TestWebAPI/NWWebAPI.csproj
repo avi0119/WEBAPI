@@ -98,7 +98,9 @@
     </Compile>
     <Compile Include="NinjectConfigurator.cs" />
     <Compile Include="NinjectWebCommon.cs" />
-    <Compile Include="OrderController.cs" />
+    <Compile Include="OrderController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ProductControllerGeneric.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

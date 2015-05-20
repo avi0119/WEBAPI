@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    class Territory
+    public class Territory
     {
 
         public int TerritoryID { get; set; }

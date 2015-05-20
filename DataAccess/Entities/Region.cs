@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    class Region
+   public  class Region
     {
         public int RegionID { get; set; }
         public string RegionDescription { get; set; }
