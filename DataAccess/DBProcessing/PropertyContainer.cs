@@ -47,7 +47,7 @@ namespace DataAccess
 
         #region Constructor
 
-        internal PropertyContainer()
+        public PropertyContainer()
         {
             _ids = new Dictionary<string, object>();
             _values = new Dictionary<string, object>();
@@ -57,16 +57,29 @@ namespace DataAccess
 
         #region Methods
 
-        internal void AddId(string name, object value)
+        public void AddId(string name, object value)
         {
             _ids.Add(name, value);
         }
 
-        internal void AddValue(string name, object value)
+        public void AddValue(string name, object value)
         {
             _values.Add(name, value);
         }
+        public string FindPropertyNameOFGivenType(Type requiredType)
+        {
+            string nametoreturn=null;
+            foreach (string a in _values.Keys)
+            {
+                if ((Type)_values[a] == requiredType)
+                {
+                    nametoreturn=a;
 
+                    break;
+                }
+            }
+            return nametoreturn;
+        }
         #endregion
     }
 
