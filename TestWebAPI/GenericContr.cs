@@ -9,12 +9,19 @@ using DataAccess;
 namespace TestWebAPI
 {
     [UnitOfWorkActionFilter]
-    public class GenericContr<T, T2, T3, T4> : ApiController
+    public class GenericContr<T, T2, T3, T4> : ApiController, IGenericController<T, T2, T3, T4>
     {
         //IProduct _IProduct;
         IGenericCRUD<T> _iaddprod;
         // GET api/<controller>
-
+        public GenericContr()
+        {
+            IGenericCRUD<T> iaddprod =( IGenericCRUD<T>) (GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IGenericCRUD<T>)));
+            ////this(iaddprod);
+            _iaddprod = iaddprod;
+            var z = 1;
+            var t = z;
+        }
          public GenericContr(IGenericCRUD<T> iaddprod)
         {
             //_IProduct=iproduct;
@@ -165,8 +172,8 @@ namespace TestWebAPI
 
                  return prod; 
              });
-             tableName = new string[] { "products", "categories" };
-             idFieldName = new string[] { "ProductID", "CategoryID" };
+             tableName = new string[] { "products", "categories","suppliers" };
+             idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
         }
         private void getDelegateTableNamesAndFieldNames2(out Func<T, T2,  T> dl, out string[] tableName, out string[] idFieldName)
         {
@@ -280,15 +287,15 @@ namespace TestWebAPI
             var typeName =obj.Name;
             var validKeyNames = new[] { "Id",
             string.Format("{0}Id", typeName), string.Format("{0}_Id", typeName) };
-            var properties = typeof(T).GetProperties();
+            var properties = obj.GetProperties();
             foreach (var property in properties)
             {
 
                 // Skip reference types (but still include string!)
 
-                if (property.PropertyType.IsClass && property.PropertyType != typeof(string))
+                //if (property.PropertyType.IsClass && property.PropertyType != typeof(string))
 
-                    continue;
+                //    continue;
 
 
 
@@ -310,7 +317,7 @@ namespace TestWebAPI
 
                 var name = property.Name;
 
-                var value = obj.GetProperty(property.Name).GetType();
+                var value = obj.GetProperty(property.Name).PropertyType;
 
 
 

@@ -29,6 +29,10 @@ namespace TestWebAPI
             container.Bind<IGenericCRUD<Product>>().To<GemericCRUD<Product>>().InTransientScope();
             container.Bind<IGenericCRUD<Order>>().To<GemericCRUD<Order>>().InTransientScope();
             container.Bind<IEnumerable<OrderDetail>>().To<IEnumerable<OrderDetail>>().InTransientScope();
+
+            container.Bind<IGenericController<Product, Category, Supplier, Customer>>().To<GenericContr<Product, Category, Supplier, Customer>>().InRequestScope();
+
+            //GenericContr<Product, Category, Supplier, Customer>
             
 
 
