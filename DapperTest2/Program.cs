@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Dapper;
 using System.Data;
+using System.Dynamic;
 
 
 namespace DapperTest2
@@ -56,13 +57,42 @@ namespace DapperTest2
         public string CustomerId { get; set; }
         public string City { get; set; }
     }
- 
+
+    
  
     class Program
     {
+        private static void testcreateNewDynamic()
+        {
+            List<PropertyNameAndType> dict = new List<PropertyNameAndType>();
+            dict.Add(new PropertyNameAndType() { Name="ProductID",Type_=typeof(int),value=1});
+            DynamicClass a = new DynamicClass(dict);
+            var f = 6;
+            var t = f;
+        }
+        private static void test()
+        {
+            dynamic sampleObject = new ExpandoObject();
+            sampleObject.test = "Dynamic Property";
+            Console.WriteLine(sampleObject.test);
+            Console.WriteLine(sampleObject.test.GetType());
+            // This code example produces the following output: 
+            // Dynamic Property 
+            // System.String
+        }
         static void Main(string[] args)
         {
-            Customer c = new Customer() {CustomerId="1", City="TA" };
+            testcreateNewDynamic();
+            //test();
+            //var yourListOfFields = new[] { new { FieldName = "prop1", FieldType = typeof(string) }, new { FieldName = "prop2", FieldType = typeof(string) } };
+            var yourListOfFields = new PropertyNameAndType[] { new PropertyNameAndType() { Name = "prop1", Type_ = typeof(string) }, new PropertyNameAndType() { Name = "prop2", Type_ = typeof(string) } };
+            var z = MyTypeBuilder.CompileResultType(yourListOfFields, "MyDynamicType");
+            var z2 = Activator.CreateInstance(z);
+            z2.GetType().GetProperty("prop1").SetValue(z2, "Bob", null);
+            var res = z2.GetType().GetProperty("prop1").GetValue(z2,null);
+ 
+            //(MyDynamicType)z2.prop1 = "hello";
+            Customer c = new Customer() { CustomerId = "1", City = "TA" };
             var d = ParseProperties(c);
             //using (var conn = new SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=SSPI;"))
                 using (var conn = new SqlConnection("server=OWNER\\SQLEXPRESS;Trusted_Connection=yes;Integrated Security=SSPI;database=Northwind;connection timeout=30"))

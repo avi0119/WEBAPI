@@ -13,15 +13,52 @@ namespace TestWebAPI
     {
         //IProduct _IProduct;
         IGenericCRUD<T> _iaddprod;
+        Dictionary<Type, ClassTypeMetaData> classMetaData=new Dictionary<Type, ClassTypeMetaData>();
         // GET api/<controller>
         public GenericContr()
         {
+            buildClassMetaDataDictionary();
             IGenericCRUD<T> iaddprod =( IGenericCRUD<T>) (GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IGenericCRUD<T>)));
             ////this(iaddprod);
             _iaddprod = iaddprod;
             var z = 1;
             var t = z;
         }
+        private void buildClassMetaDataDictionary()
+        {
+            classMetaData.Add(typeof(Product), new ClassTypeMetaData {tableName="products",primaryKey="ProductID" });
+            classMetaData.Add(typeof(Category), new ClassTypeMetaData { tableName = "categories", primaryKey = "CategoryID" });
+            classMetaData.Add(typeof(Supplier), new ClassTypeMetaData { tableName = "suppliers", primaryKey = "SupplierID" });
+            classMetaData.Add(typeof(Order), new ClassTypeMetaData { tableName = "orders", primaryKey = "OrderID" });
+
+        }
+        private void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, out string[] tableName, out string[] idFieldName)
+        {
+            List<string>  tableNameList = new List<string> ();// { "products", "categories" };
+            List<string> idFieldNameList = new List<string>();//{ "ProductID", "CategoryID" };
+
+            tableNameList.Add(classMetaData[typeof(T)].tableName);
+            idFieldNameList.Add(classMetaData[typeof(T)].primaryKey);
+            if (numberOfGenericTypesParticipating >1)
+            {
+                tableNameList.Add(classMetaData[typeof(T2)].tableName);
+                idFieldNameList.Add(classMetaData[typeof(T2)].primaryKey);
+            }
+            if (numberOfGenericTypesParticipating > 2)
+            {
+                tableNameList.Add(classMetaData[typeof(T3)].tableName);
+                idFieldNameList.Add(classMetaData[typeof(T3)].primaryKey);
+            }
+            if (numberOfGenericTypesParticipating > 3)
+            {
+                tableNameList.Add(classMetaData[typeof(T4)].tableName);
+                idFieldNameList.Add(classMetaData[typeof(T4)].primaryKey);
+            }
+            tableName = tableNameList.ToArray();
+            idFieldName = idFieldNameList.ToArray();
+         
+        }
+        
          public GenericContr(IGenericCRUD<T> iaddprod)
         {
             //_IProduct=iproduct;
@@ -62,25 +99,27 @@ namespace TestWebAPI
         private IEnumerable<T> ObtainProductByID3()
         {
 
-            string[] tableName = new string[] { "products", "categories" };
-            string[] idFieldName = new string[] { "ProductID", "CategoryID" };
- 
+            //string[] tableName = new string[] { "products", "categories" };
+            //string[] idFieldName = new string[] { "ProductID", "CategoryID" };
+            string[] tableName;
+            string[] idFieldName ;
             //Func<T, T2, T> dl = new Func<T, T2,  T>((prod, cat) => { prod.Category = cat; return prod; });
-
+             
             Func<T, T2,  T> dl;
-            string[] tableName2;
-            string[] idFieldName2;
-            getDelegateTableNamesAndFieldNames2(out dl, out tableName2, out idFieldName2);
+
+            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName);
 
             IEnumerable<T> p = _iaddprod.Get(tableName, idFieldName, dl);
             return p;
         }
         private IEnumerable<T> ObtainProductByID2()
         {
-            string tableName = "products";
-            string idFieldName = "ProductID";
+            Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
+            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
+            //string tableName = "products";
+            //string idFieldName = "ProductID";
 
-            IEnumerable<T> p = _iaddprod.Get(tableName, idFieldName);
+            IEnumerable<T> p = _iaddprod.Get(tableName[0], idFieldName[0]);
             return p;
         }
 
@@ -94,8 +133,12 @@ namespace TestWebAPI
             //Func<T, T2, T3, T> dl; 
             //string[] tableName; 
             //string[] idFieldName;
-            Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
+            Func<T, T2, T3, T> dl; 
+            //Func<T, T2,  T> dl; 
+            string[] tableName;
+            string[] idFieldName;
             getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
+
             T z = ObtainProductByID(productID, dl,  tableName,  idFieldName);
             //var z = ObtainProductByID(productID);
             return z;
@@ -106,7 +149,9 @@ namespace TestWebAPI
             //id = -1;
             //string[] tableName = new string[] { "products", "categories", "suppliers" };
             //string[] idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
-            object param = new { ProductID = id };
+            //object param = new { ProductID = id };
+            dynamic param = returnCriteriaParam(idFieldName[0], id);
+            //MyType param = new MyType { ProductID = id };
             //Func<T, T2, T3, T> dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => {
             //    prod.Category = cat; prod.Supplier = Supplier; return prod; 
             //});
@@ -115,7 +160,7 @@ namespace TestWebAPI
             T p = _iaddprod.Get(id, tableName, idFieldName, param, dl);
             return p;
         }
-        private T ObtainProductByID3(int id)
+        private T ObtainProductByID3(int id, Func<T, T2, T> dl, string[] tableName, string[] idFieldName)
         {
             //id = -1;
             //string[] tableName = new string[] { "products", "categories" };
@@ -123,20 +168,23 @@ namespace TestWebAPI
             
             //Func<T, T2, T> dl = new Func<T, T2,  T>((prod, cat) => { prod.Category = cat; return prod; });
 
-            Func<T, T2,  T> dl; string[] tableName; string[] idFieldName;
+            //Func<T, T2,  T> dl; string[] tableName; string[] idFieldName;
             getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName);
-            object param = new { ProductID = id };
+            //object param = new { ProductID = id };
+            dynamic param = returnCriteriaParam(idFieldName[0], id);
             T p = _iaddprod.Get(id, tableName, idFieldName, param, dl);
             return p;
         }
 
-        private T ObtainProductByID2(int id)
+        private T ObtainProductByID2(int id, Func<T, T2,  T> dl, string[] tableName, string[] idFieldName)
         {
-
-            string tableName = "products";
-            string idFieldName = "ProductID";
-            object param = new { ProductID = id };
-            T p = _iaddprod.Get(id, tableName, idFieldName, param);
+            //Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
+            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName);
+            //string tableName = "products";
+            //string idFieldName = "ProductID";
+            //object param = new { ProductID = id };
+            dynamic param = returnCriteriaParam(idFieldName[0], id);
+            T p = _iaddprod.Get(id, tableName[0], idFieldName[0], param);
             return p;
         }
 
@@ -153,7 +201,7 @@ namespace TestWebAPI
             getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
 
             T p = ObtainProductByID(productID,dl,tableName,idFieldName);
-            var res = _iaddprod.DeleteItem(p, "products");
+            var res = _iaddprod.DeleteItem(p, tableName[0]);
             return res;
             //return "value";
         }
@@ -172,8 +220,9 @@ namespace TestWebAPI
 
                  return prod; 
              });
-             tableName = new string[] { "products", "categories","suppliers" };
-             idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
+             //tableName = new string[] { "products", "categories","suppliers" };
+             //idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
+             returnTableNmaesAndIDsBasedOnGeneric(3,out   tableName, out  idFieldName);
         }
         private void getDelegateTableNamesAndFieldNames2(out Func<T, T2,  T> dl, out string[] tableName, out string[] idFieldName)
         {
@@ -187,8 +236,9 @@ namespace TestWebAPI
                 //prod.Category = cat; 
                 return prod; 
             });
-            tableName = new string[] { "products", "categories" };
-            idFieldName = new string[] { "ProductID", "CategoryID" };
+            //tableName = new string[] { "products", "categories" };
+            //idFieldName = new string[] { "ProductID", "CategoryID" };
+            returnTableNmaesAndIDsBasedOnGeneric(2, out   tableName, out  idFieldName);
         }
 
 
@@ -216,16 +266,19 @@ namespace TestWebAPI
         [Route("api/product")]
         public T Post([FromBody]T value)
         {
-            //var value = 1;
-            var id = _iaddprod.Add(value, "products");
+            string[] tableName;//= new string[] { "products", "categories" };
+            string[] idFieldName;// = new string[] { "ProductID", "CategoryID" };
+            Func<T, T2, T3, T> dl;
+            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
 
 
-            string[] tableName = new string[] { "products", "categories" };
-            string[] idFieldName = new string[] { "ProductID", "CategoryID" };
+            var id = _iaddprod.Add(value, tableName[0]);
 
 
-            Func<T, T2, T3, T> dl; string[] tableName2; string[] idFieldName2;
-            getDelegateTableNamesAndFieldNames(out dl, out tableName2, out idFieldName2);
+
+
+
+
 
             //Func<T, T2, T3, T> dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
 
@@ -249,6 +302,8 @@ namespace TestWebAPI
 "Discontinued":0
         
  }
+         * do not for get to put in the header the following:
+          Content-Type: application/json; charset=utf-8
         
          */
 
@@ -260,12 +315,13 @@ namespace TestWebAPI
         // PUT api/<controller>/5
         public T Put([FromBody]T value)
         {
-            var id = _iaddprod.UpdateItem(value, "products", "ProductId");
+            
 
 
             Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
             getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
 
+            var id = _iaddprod.UpdateItem(value, tableName[0], idFieldName[0]);
             T p = ObtainProductByID(id, dl, tableName, idFieldName);
 
             return p;
@@ -342,5 +398,21 @@ namespace TestWebAPI
             return propertyContainer;
 
         }
+        private  dynamic returnCriteriaParam(string propname,int id)
+        {
+            List<PropertyNameAndType> dict = new List<PropertyNameAndType>();
+            dict.Add(new PropertyNameAndType() { Name = propname, Type_ = typeof(int), value = id });
+            DynamicClass a = new DynamicClass(dict);
+            return a.resultObject;
+        }
+    }
+    public class MyType
+    {
+        public int ProductID { get; set; }
+    }
+    public class ClassTypeMetaData
+    {
+        public string tableName { get; set; }
+        public string primaryKey { get; set; }
     }
 }

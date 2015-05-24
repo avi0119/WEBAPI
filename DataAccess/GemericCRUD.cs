@@ -297,7 +297,7 @@ namespace DataAccess
             var propertyContainer = new PropertyContainer();
             var typeName = typeof(T).Name;
             var validKeyNames = new[] { "Id",
-            string.Format("{0}Id", typeName), string.Format("{0}_Id", typeName) };
+            string.Format("{0}Id", typeName), string.Format("{0}_Id", typeName) ,string.Format("{0}ID", typeName), string.Format("{0}_ID", typeName)};
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)
             {

@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="ActionTransactionHelper.cs" />
     <Compile Include="DateTimeAdapter.cs" />
+    <Compile Include="DynamicClass.cs" />
     <Compile Include="IActionTransactionHelper.cs" />
     <Compile Include="IDateTime.cs" />
     <Compile Include="NinjectDependencyResolver.cs" />
