@@ -24,6 +24,148 @@ namespace TestWebAPI
             var z = 1;
             var t = z;
         }
+         #region  Rest
+
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
+        ////http://localhost:39402/api/product
+        [HttpGet]
+        [Route("api/Product")]
+        virtual public IEnumerable<T> Get()
+        {
+
+            var z = ObtainProductByID();
+            //var z = ObtainProductByID(productID);
+            return z;
+            //return "value";
+        }
+
+        ////http://localhost:39402/api/product/77
+        // GET api/<controller>/5
+        //[Route("api/product/productID:int")]
+        [HttpGet]
+        [Route("api/Product/{productID:int}")]
+        virtual public T Get(int productID)
+        {
+            //Func<T, T2, T3, T> dl; 
+            //string[] tableName; 
+            //string[] idFieldName;
+            Func<T, T2, T3, T> dl;
+            //Func<T, T2,  T> dl; 
+            string[] tableName;
+            string[] idFieldName;
+            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
+
+            T z = ObtainProductByID(productID, dl, tableName, idFieldName);
+            //var z = ObtainProductByID(productID);
+            return z;
+            //return "value";
+        }
+        ////http://localhost:39402/api/product/80
+        // GET api/<controller>/5
+        [HttpDelete]
+        virtual public bool Delete(int productID)
+        {
+            //Func<T, T2, T3, T> dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
+            //string[] tableName = new string[] { "products", "categories" };
+            //string[] idFieldName = new string[] { "ProductID", "CategoryID" };
+
+            Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
+            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
+
+            T p = ObtainProductByID(productID, dl, tableName, idFieldName);
+            var res = _iaddprod.DeleteItem(p, tableName[0]);
+            return res;
+            //return "value";
+        }
+
+        /*
+{,
+   
+"ProductName":"my new product",  
+"SupplierID":5,     
+"CategoryID":1,     
+"QuantityPerUnit":"12 boxes",
+"UnitPrice":12,     
+"UnitsInStock":55,
+"UnitsOnOrde"r:3,
+"ReorderLevel":2,
+"Discontinued":0
+ 
+        
+ }
+        
+         */
+        ////http://localhost:39402/api/product/77
+        [HttpPost]
+        // POST api/<controller>
+
+        [Route("api/product")]
+        virtual public T Post([FromBody]T value)
+        {
+            string[] tableName;//= new string[] { "products", "categories" };
+            string[] idFieldName;// = new string[] { "ProductID", "CategoryID" };
+            Func<T, T2, T3, T> dl;
+            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
+
+
+            var id = _iaddprod.Add(value, tableName[0]);
+
+
+
+
+
+
+
+            //Func<T, T2, T3, T> dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
+
+            var p = ObtainProductByID(id, dl, tableName, idFieldName);
+            var b = value;
+            return p;
+        }
+
+
+        /*
+{
+"Productid":80,    
+"ProductName":"my updated prod", 
+"SupplierID":5,     
+"CategoryID":1,     
+"QuantityPerUnit":"12 boxes",
+"UnitPrice":12,     
+"UnitsInStock":55,
+"UnitsOnOrde":3,
+"ReorderLevel":2,
+"Discontinued":0
+        
+ }
+         * do not for get to put in the header the following:
+          Content-Type: application/json; charset=utf-8
+        
+         */
+
+
+
+        ////http://localhost:39402/api/product/77
+        [HttpPut]
+        [Route("api/product")]
+        // PUT api/<controller>/5
+        virtual public T Put([FromBody]T value)
+        {
+
+
+
+            Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
+            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
+
+            var id = _iaddprod.UpdateItem(value, tableName[0], idFieldName[0]);
+            T p = ObtainProductByID(id, dl, tableName, idFieldName);
+
+            return p;
+        }
+        #endregion //REST
         private void buildClassMetaDataDictionary()
         {
             classMetaData.Add(typeof(Product), new ClassTypeMetaData {tableName="products",primaryKey="ProductID" });
@@ -59,26 +201,12 @@ namespace TestWebAPI
          
         }
         
-         public GenericContr(IGenericCRUD<T> iaddprod)
+        public GenericContr(IGenericCRUD<T> iaddprod)
         {
             //_IProduct=iproduct;
             _iaddprod = iaddprod;
         }
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-        ////http://localhost:39402/api/product
-        [HttpGet]
-        [Route("api/Product")]
-        virtual public IEnumerable<T> Get()
-        {
 
-            var z = ObtainProductByID();
-            //var z = ObtainProductByID(productID);
-            return z;
-            //return "value";
-        }
 
         private IEnumerable<T> ObtainProductByID()
         {
@@ -95,7 +223,6 @@ namespace TestWebAPI
             IEnumerable<T> p = _iaddprod.Get<T2, T3>(tableName, idFieldName, dl);
             return p;
         }
-
         private IEnumerable<T> ObtainProductByID3()
         {
 
@@ -123,27 +250,7 @@ namespace TestWebAPI
             return p;
         }
 
-        ////http://localhost:39402/api/product/77
-        // GET api/<controller>/5
-        //[Route("api/product/productID:int")]
-        [HttpGet]
-        [Route("api/Product/{productID:int}")]
-        public T Get(int productID)
-        {
-            //Func<T, T2, T3, T> dl; 
-            //string[] tableName; 
-            //string[] idFieldName;
-            Func<T, T2, T3, T> dl; 
-            //Func<T, T2,  T> dl; 
-            string[] tableName;
-            string[] idFieldName;
-            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
 
-            T z = ObtainProductByID(productID, dl,  tableName,  idFieldName);
-            //var z = ObtainProductByID(productID);
-            return z;
-            //return "value";
-        }
         private T ObtainProductByID(int id, Func<T, T2, T3, T> dl, string[] tableName, string[] idFieldName)
         {
             //id = -1;
@@ -175,7 +282,6 @@ namespace TestWebAPI
             T p = _iaddprod.Get(id, tableName, idFieldName, param, dl);
             return p;
         }
-
         private T ObtainProductByID2(int id, Func<T, T2,  T> dl, string[] tableName, string[] idFieldName)
         {
             //Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
@@ -186,24 +292,6 @@ namespace TestWebAPI
             dynamic param = returnCriteriaParam(idFieldName[0], id);
             T p = _iaddprod.Get(id, tableName[0], idFieldName[0], param);
             return p;
-        }
-
-        ////http://localhost:39402/api/product/80
-        // GET api/<controller>/5
-        [HttpDelete]
-        public bool Delete(int productID)
-        {
-            //Func<T, T2, T3, T> dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
-            //string[] tableName = new string[] { "products", "categories" };
-            //string[] idFieldName = new string[] { "ProductID", "CategoryID" };
-
-            Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
-            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
-
-            T p = ObtainProductByID(productID,dl,tableName,idFieldName);
-            var res = _iaddprod.DeleteItem(p, tableName[0]);
-            return res;
-            //return "value";
         }
         private void getDelegateTableNamesAndFieldNames(out Func<T, T2, T3, T> dl, out string[] tableName, out string[] idFieldName)
         {
@@ -239,92 +327,6 @@ namespace TestWebAPI
             //tableName = new string[] { "products", "categories" };
             //idFieldName = new string[] { "ProductID", "CategoryID" };
             returnTableNmaesAndIDsBasedOnGeneric(2, out   tableName, out  idFieldName);
-        }
-
-
-        /*
-{,
-   
-"ProductName":"my new product",  
-"SupplierID":5,     
-"CategoryID":1,     
-"QuantityPerUnit":"12 boxes",
-"UnitPrice":12,     
-"UnitsInStock":55,
-"UnitsOnOrde"r:3,
-"ReorderLevel":2,
-"Discontinued":0
- 
-        
- }
-        
-         */
-        ////http://localhost:39402/api/product/77
-        [HttpPost]
-        // POST api/<controller>
-
-        [Route("api/product")]
-        public T Post([FromBody]T value)
-        {
-            string[] tableName;//= new string[] { "products", "categories" };
-            string[] idFieldName;// = new string[] { "ProductID", "CategoryID" };
-            Func<T, T2, T3, T> dl;
-            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
-
-
-            var id = _iaddprod.Add(value, tableName[0]);
-
-
-
-
-
-
-
-            //Func<T, T2, T3, T> dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
-
-            var p = ObtainProductByID(id, dl,tableName, idFieldName);
-            var b = value;
-            return p;
-        }
-
-
-        /*
-{
-"Productid":80,    
-"ProductName":"my updated prod", 
-"SupplierID":5,     
-"CategoryID":1,     
-"QuantityPerUnit":"12 boxes",
-"UnitPrice":12,     
-"UnitsInStock":55,
-"UnitsOnOrde":3,
-"ReorderLevel":2,
-"Discontinued":0
-        
- }
-         * do not for get to put in the header the following:
-          Content-Type: application/json; charset=utf-8
-        
-         */
-
-
-
-        ////http://localhost:39402/api/product/77
-        [HttpPut]
-        [Route("api/product")]
-        // PUT api/<controller>/5
-        public T Put([FromBody]T value)
-        {
-            
-
-
-            Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
-            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
-
-            var id = _iaddprod.UpdateItem(value, tableName[0], idFieldName[0]);
-            T p = ObtainProductByID(id, dl, tableName, idFieldName);
-
-            return p;
         }
         private static PropertyContainer[] ReturnallPropertyContainer(params Type[] types)
         {
