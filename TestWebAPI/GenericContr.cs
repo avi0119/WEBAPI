@@ -174,10 +174,11 @@ namespace TestWebAPI
         #endregion //REST
         private void buildClassMetaDataDictionary()
         {
-            classMetaData.Add(typeof(Product), new ClassTypeMetaData {tableName="products",primaryKey="ProductID" });
-            classMetaData.Add(typeof(Category), new ClassTypeMetaData { tableName = "categories", primaryKey = "CategoryID" });
-            classMetaData.Add(typeof(Supplier), new ClassTypeMetaData { tableName = "suppliers", primaryKey = "SupplierID" });
-            classMetaData.Add(typeof(Order), new ClassTypeMetaData { tableName = "orders", primaryKey = "OrderID" });
+            classMetaData.Add(typeof(Product), new ClassTypeMetaData { tableName = "products", primaryKey = "ProductID", primaryKeyAppearingInSelf = "ProductID" });
+            classMetaData.Add(typeof(Category), new ClassTypeMetaData { tableName = "categories", primaryKey = "CategoryID", primaryKeyAppearingInSelf = "CategoryID" });
+            classMetaData.Add(typeof(Supplier), new ClassTypeMetaData { tableName = "suppliers", primaryKey = "SupplierID", primaryKeyAppearingInSelf = "SupplierID" });
+            classMetaData.Add(typeof(Order), new ClassTypeMetaData { tableName = "orders", primaryKey = "OrderID", primaryKeyAppearingInSelf = "OrderID" });
+            classMetaData.Add(typeof(Employee), new ClassTypeMetaData { tableName = "employees", primaryKey = "EmployeeID", primaryKeyAppearingInSelf = "ReportsTo" });
 
         }
         private void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, out string[] tableName, out string[] idFieldName)
@@ -452,5 +453,6 @@ namespace TestWebAPI
     {
         public string tableName { get; set; }
         public string primaryKey { get; set; }
+        public string primaryKeyAppearingInSelf { get; set; }
     }
 }

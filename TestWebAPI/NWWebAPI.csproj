@@ -95,6 +95,7 @@
     <Compile Include="AnotherProductController.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="CategoryController.cs" />
+    <Compile Include="EmployeeController.cs" />
     <Compile Include="GenericContr.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -106,6 +107,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SupplierController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
