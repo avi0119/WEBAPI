@@ -9,12 +9,11 @@ using DataAccess;
 namespace TestWebAPI
 {
 
-    public class ProductController : GenericContr<Product, Category, Supplier, Customer>
+    public class CategoryController : GenericContr<Category, Category, Supplier, Category>
     {
-
-        public ProductController()
+        public CategoryController()
         {
-            numberOfGenerics = 3;
+            numberOfGenerics = 1;
         }
         #region  Rest
 
@@ -22,27 +21,29 @@ namespace TestWebAPI
         //{
         //    return new string[] { "value1", "value2" };
         //}
-        ////http://localhost:39402/api/product
+        ////http://localhost:39402/api/Category
         [HttpGet]
-        [Route("api/Product")]
-        override public IEnumerable<Product> Get()
+        [Route("api/Category")]
+        override public IEnumerable<Category> Get()
         {
             return base.Get();
         }
 
-        ////http://localhost:39402/api/product/77
+        ////http://localhost:39402/api/Category/1
         // GET api/<controller>/5
-        //[Route("api/product/productID:int")]
+        //[Route("api/Category/CategoryID:int")]
         [HttpGet]
-        [Route("api/Product/{productID:int}")]
-        override public Product Get(int productID)
+        [Route("api/Category/{productID:int}")]
+        override public Category Get(int productID)
         {
+
+
             return base.Get(productID);
         }
-        ////http://localhost:39402/api/product/80
+        ////http://localhost:39402/api/Category/80
         // GET api/<controller>/5
         [HttpDelete]
-        [Route("api/Product/{productID:int}")]
+        [Route("api/Category/{productID:int}")]
         override public bool Delete(int productID)
         {
 
@@ -66,12 +67,12 @@ namespace TestWebAPI
  }
         
          */
-        ////http://localhost:39402/api/product/77
+        ////http://localhost:39402/api/Category/1
         [HttpPost]
         // POST api/<controller>
 
-        [Route("api/product")]
-        override public Product Post([FromBody]Product value)
+        [Route("api/Category")]
+        override public Category Post([FromBody]Category value)
         {
             return base.Post(value);
         }
@@ -98,11 +99,11 @@ namespace TestWebAPI
 
 
 
-        ////http://localhost:39402/api/product/77
+        ////http://localhost:39402/api/Category/1
         [HttpPut]
-        [Route("api/product")]
+        [Route("api/Category")]
         // PUT api/<controller>/5
-        override public Product Put([FromBody]Product value)
+        override public Category Put([FromBody]Category value)
         {
             return base.Put(value);
 
