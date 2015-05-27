@@ -12,10 +12,10 @@ namespace TestWebAPI
     public class GenericContr<T, T2, T3, T4> : ApiController, IGenericController<T, T2, T3, T4>
     {
        
-        
+        public Action<string[] ,string[] ,string[]> adjuster;
         //IProduct _IProduct;
-        IGenericCRUD<T> _iaddprod;
-        Dictionary<Type, ClassTypeMetaData> classMetaData=new Dictionary<Type, ClassTypeMetaData>();
+        public IGenericCRUD<T> _iaddprod;
+        public Dictionary<Type, ClassTypeMetaData> classMetaData=new Dictionary<Type, ClassTypeMetaData>();
         // GET api/<controller>
         public GenericContr()
         {
@@ -66,9 +66,10 @@ namespace TestWebAPI
   
             string[] tableName;
             string[] idFieldName;
-            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, numberOfGenerics);
+            string[] idFieldName_right;
+            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, out idFieldName_right, numberOfGenerics);
 
-            T z = ObtainProductByID_FINAL(productID, dl, tableName, idFieldName, numberOfGenerics);
+            T z = ObtainProductByID_FINAL(productID, dl, tableName, idFieldName,idFieldName_right, numberOfGenerics);
             //var z = ObtainProductByID(productID);
             return z;
             //return "value";
@@ -87,10 +88,11 @@ namespace TestWebAPI
 
             string[] tableName;
             string[] idFieldName;
-            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, numberOfGenerics);
+            string[] idFieldName_right;
+            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, out idFieldName_right, numberOfGenerics);
             //getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
 
-            T p = ObtainProductByID_FINAL(productID, dl, tableName, idFieldName,numberOfGenerics);
+            T p = ObtainProductByID_FINAL(productID, dl, tableName, idFieldName, idFieldName_right,numberOfGenerics);
             var res = _iaddprod.DeleteItem(p, tableName[0]);
             return res;
             //return "value";
@@ -123,9 +125,10 @@ namespace TestWebAPI
             dynamic dl;
             string[] tableName;
             string[] idFieldName;
-            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, numberOfGenerics);
+            string[] idFieldName_right;
+            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, out idFieldName_right, numberOfGenerics);
             var id = _iaddprod.Add(value, tableName[0]);
-            var p = ObtainProductByID_FINAL(id, dl, tableName, idFieldName, numberOfGenerics);
+            var p = ObtainProductByID_FINAL(id, dl, tableName, idFieldName,idFieldName_right, numberOfGenerics);
             var b = value;
             return p;
         }
@@ -164,9 +167,10 @@ namespace TestWebAPI
             dynamic dl; 
             string[] tableName;
             string[] idFieldName;
-            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName,numberOfGenerics);
+            string[] idFieldName_right;
+            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, out idFieldName_right,numberOfGenerics);
             var id = _iaddprod.UpdateItem(value, tableName[0], idFieldName[0]);
-            T p = ObtainProductByID_FINAL(id, dl, tableName, idFieldName, numberOfGenerics);
+            T p = ObtainProductByID_FINAL(id, dl, tableName, idFieldName,idFieldName_right, numberOfGenerics);
             
 
             return p;
@@ -174,37 +178,54 @@ namespace TestWebAPI
         #endregion //REST
         private void buildClassMetaDataDictionary()
         {
-            classMetaData.Add(typeof(Product), new ClassTypeMetaData { tableName = "products", primaryKey = "ProductID", primaryKeyAppearingInSelf = "ProductID" });
-            classMetaData.Add(typeof(Category), new ClassTypeMetaData { tableName = "categories", primaryKey = "CategoryID", primaryKeyAppearingInSelf = "CategoryID" });
-            classMetaData.Add(typeof(Supplier), new ClassTypeMetaData { tableName = "suppliers", primaryKey = "SupplierID", primaryKeyAppearingInSelf = "SupplierID" });
-            classMetaData.Add(typeof(Order), new ClassTypeMetaData { tableName = "orders", primaryKey = "OrderID", primaryKeyAppearingInSelf = "OrderID" });
-            classMetaData.Add(typeof(Employee), new ClassTypeMetaData { tableName = "employees", primaryKey = "EmployeeID", primaryKeyAppearingInSelf = "ReportsTo" });
+            classMetaData.Add(typeof(Product), new ClassTypeMetaData { tableName = "products", primaryKeyLeft = "ProductID", primaryKeyRight = "ProductID" });
+            classMetaData.Add(typeof(Category), new ClassTypeMetaData { tableName = "categories", primaryKeyLeft = "CategoryID", primaryKeyRight = "CategoryID" });
+            classMetaData.Add(typeof(Supplier), new ClassTypeMetaData { tableName = "suppliers", primaryKeyLeft = "SupplierID", primaryKeyRight = "SupplierID" });
+            classMetaData.Add(typeof(Order), new ClassTypeMetaData { tableName = "orders", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID" });
+            classMetaData.Add(typeof(Employee), new ClassTypeMetaData { tableName = "employees", primaryKeyLeft = "EmployeeID", primaryKeyRight = "EmployeeID" });
+            classMetaData.Add(typeof(Customer), new ClassTypeMetaData { tableName = "customers", primaryKeyLeft = "CustomerID", primaryKeyRight = "CustomerID" });
+            classMetaData.Add(typeof(OrderDetail), new ClassTypeMetaData { tableName = "Order Details", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID" });
 
         }
-        private void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, out string[] tableName, out string[] idFieldName)
+        private void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, out string[] tableName, out string[] idFieldName, out string[] idFieldName_right)
         {
             List<string>  tableNameList = new List<string> ();// { "products", "categories" };
             List<string> idFieldNameList = new List<string>();//{ "ProductID", "CategoryID" };
+            List<string> idFieldNameList_right = new List<string>();//{ "ProductID", "CategoryID" };
 
             tableNameList.Add(classMetaData[typeof(T)].tableName);
-            idFieldNameList.Add(classMetaData[typeof(T)].primaryKey);
+            idFieldNameList.Add(classMetaData[typeof(T)].primaryKeyLeft);
+            idFieldNameList_right.Add(classMetaData[typeof(T)].primaryKeyRight);
             if (numberOfGenericTypesParticipating >1)
             {
                 tableNameList.Add(classMetaData[typeof(T2)].tableName);
-                idFieldNameList.Add(classMetaData[typeof(T2)].primaryKey);
+                idFieldNameList.Add(classMetaData[typeof(T2)].primaryKeyLeft);
+                idFieldNameList_right.Add(classMetaData[typeof(T2)].primaryKeyRight);
+                
             }
             if (numberOfGenericTypesParticipating > 2)
             {
                 tableNameList.Add(classMetaData[typeof(T3)].tableName);
-                idFieldNameList.Add(classMetaData[typeof(T3)].primaryKey);
+                idFieldNameList.Add(classMetaData[typeof(T3)].primaryKeyLeft);
+                idFieldNameList_right.Add(classMetaData[typeof(T3)].primaryKeyRight);
             }
             if (numberOfGenericTypesParticipating > 3)
             {
                 tableNameList.Add(classMetaData[typeof(T4)].tableName);
-                idFieldNameList.Add(classMetaData[typeof(T4)].primaryKey);
+                idFieldNameList.Add(classMetaData[typeof(T4)].primaryKeyLeft);
+                idFieldNameList_right.Add(classMetaData[typeof(T4)].primaryKeyRight);
             }
+
             tableName = tableNameList.ToArray();
             idFieldName = idFieldNameList.ToArray();
+            idFieldName_right = idFieldNameList_right.ToArray();
+            if (adjuster == null)
+            {
+            }
+            else
+            {
+                adjuster(tableName, idFieldName, idFieldName_right);
+            }
          
         }
         
@@ -233,8 +254,9 @@ namespace TestWebAPI
             Func<T, T2, T3, T> dl;
             string[] tableName; 
             string[] idFieldName;
-            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
-            IEnumerable<T> p = _iaddprod.Get<T2, T3>(tableName, idFieldName, dl);
+            string[] idFieldName_right;
+            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName,  out idFieldName_right);
+            IEnumerable<T> p = _iaddprod.Get<T2, T3>(tableName, idFieldName,idFieldName_right, dl);
             return p;
         }
         private IEnumerable<T> ObtainProductByID3()
@@ -242,11 +264,12 @@ namespace TestWebAPI
 
 
             string[] tableName;
-            string[] idFieldName ;          
+            string[] idFieldName ;
+            string[] idFieldName_right;
             Func<T, T2,  T> dl;
-            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName);
+            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName, out idFieldName_right);
 
-            IEnumerable<T> p = _iaddprod.Get(tableName, idFieldName, dl);
+            IEnumerable<T> p = _iaddprod.Get(tableName, idFieldName,idFieldName_right, dl);
             return p;
         }
         private IEnumerable<T> ObtainProductByID2()
@@ -254,28 +277,29 @@ namespace TestWebAPI
             Func<T, T2, T3, T> dl; 
             string[] tableName;
             string[] idFieldName;
-            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
+            string[] idFieldName_right;
+            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName, out idFieldName_right);
             IEnumerable<T> p = _iaddprod.Get(tableName[0], idFieldName[0]);
             return p;
         }
 
 
-        protected T ObtainProductByID_FINAL(int id, dynamic dl, string[] tableName, string[] idFieldName,int numberofGenerics)
+        protected T ObtainProductByID_FINAL(int id, dynamic dl, string[] tableName, string[] idFieldName,string[] idFieldName_right,int numberofGenerics)
         {
             if (numberofGenerics == 3)
             {
-                return ObtainProductByID( id,  dl,  tableName,  idFieldName);
+                return ObtainProductByID(id, dl, tableName, idFieldName, idFieldName_right);
             }
             if (numberofGenerics == 1)
             {
-                return ObtainProductByID2(id, dl, tableName, idFieldName);
+                return ObtainProductByID2(id, dl, tableName, idFieldName, idFieldName_right);
             }
             // it's 2 generics
-            return ObtainProductByID3(id, dl, tableName, idFieldName);
+            return ObtainProductByID3(id, dl, tableName, idFieldName, idFieldName_right);
 
         }
 
-        protected T ObtainProductByID(int id, Func<T, T2, T3, T> dl, string[] tableName, string[] idFieldName)
+        protected T ObtainProductByID(int id, Func<T, T2, T3, T> dl, string[] tableName, string[] idFieldName, string[] idFieldName_right)
         {
             //id = -1;
             //string[] tableName = new string[] { "products", "categories", "suppliers" };
@@ -288,10 +312,10 @@ namespace TestWebAPI
             //});
 
             //T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T> dl2);
-            T p = _iaddprod.Get(id, tableName, idFieldName, param, dl);
+            T p = _iaddprod.Get(id, tableName, idFieldName,  idFieldName_right, param, dl);
             return p;
         }
-        protected T ObtainProductByID3(int id, Func<T, T2, T> dl, string[] tableName, string[] idFieldName)
+        protected T ObtainProductByID3(int id, Func<T, T2, T> dl, string[] tableName, string[] idFieldName, string[] idFieldName_right)
         {
             //id = -1;
             //string[] tableName = new string[] { "products", "categories" };
@@ -300,16 +324,16 @@ namespace TestWebAPI
             //Func<T, T2, T> dl = new Func<T, T2,  T>((prod, cat) => { prod.Category = cat; return prod; });
 
             //Func<T, T2,  T> dl; string[] tableName; string[] idFieldName;
-            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName);
+            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName, out idFieldName_right);
             //object param = new { ProductID = id };
             dynamic param = returnCriteriaParam(idFieldName[0], id);
-            T p = _iaddprod.Get(id, tableName, idFieldName, param, dl);
+            T p = _iaddprod.Get(id, tableName, idFieldName,idFieldName_right, param, dl);
             return p;
         }
-        protected T ObtainProductByID2(int id, Func<T, T2, T> dl, string[] tableName, string[] idFieldName)
+        protected T ObtainProductByID2(int id, Func<T, T2, T> dl, string[] tableName, string[] idFieldName, string[] idFieldName_right)
         {
             //Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
-            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName);
+            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName, out idFieldName_right);
             //string tableName = "products";
             //string idFieldName = "ProductID";
             //object param = new { ProductID = id };
@@ -317,29 +341,29 @@ namespace TestWebAPI
             T p = _iaddprod.Get(id, tableName[0], idFieldName[0], param);
             return p;
         }
-        protected void getDelegateTableNamesAndFieldNames_final(out dynamic dl, out string[] tableName, out string[] idFieldName, int numberofGenerics)
+        protected void getDelegateTableNamesAndFieldNames_final(out dynamic dl, out string[] tableName, out string[] idFieldName, out string[] idFieldName_right, int numberofGenerics)
         {
             if (numberofGenerics == 3)
             {
                 Func<T, T2, T3, T> dl_ ;
-                getDelegateTableNamesAndFieldNames(out dl_, out tableName, out  idFieldName);
+                getDelegateTableNamesAndFieldNames(out dl_, out tableName, out  idFieldName, out idFieldName_right);
                 dl = dl_;
                 return;
             }
             //if (numberofGenerics == 3)
             //{
                 Func<T, T2,  T> dl__ ;
-                getDelegateTableNamesAndFieldNames2(out dl__, out tableName, out  idFieldName);
+                getDelegateTableNamesAndFieldNames2(out dl__, out tableName, out  idFieldName, out idFieldName_right);
                 dl = dl__;
             //}
  
         }
-        protected void getDelegateTableNamesAndFieldNames(out Func<T, T2, T3, T> dl, out string[] tableName, out string[] idFieldName)
+        protected void getDelegateTableNamesAndFieldNames(out Func<T, T2, T3, T> dl, out string[] tableName, out string[] idFieldName, out string[] idFieldName_right)
         {
-
+            returnTableNmaesAndIDsBasedOnGeneric(3, out   tableName, out  idFieldName, out  idFieldName_right);
              PropertyContainer[] arr = ReturnallPropertyContainer(typeof(T), typeof(T2), typeof(T3));
-             string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2));
-             string prop3 = (arr[0]).FindPropertyNameOFGivenType(typeof(T3));
+             string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2), idFieldName[0]);
+             string prop3 = (arr[0]).FindPropertyNameOFGivenType(typeof(T3), idFieldName[0]);
 
              dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => {
                  //prod.Category = cat;
@@ -351,13 +375,13 @@ namespace TestWebAPI
              });
              //tableName = new string[] { "products", "categories","suppliers" };
              //idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
-             returnTableNmaesAndIDsBasedOnGeneric(3,out   tableName, out  idFieldName);
+            
         }
-        protected void getDelegateTableNamesAndFieldNames2(out Func<T, T2, T> dl, out string[] tableName, out string[] idFieldName)
+        protected void getDelegateTableNamesAndFieldNames2(out Func<T, T2, T> dl, out string[] tableName, out string[] idFieldName, out string[] idFieldName_right)
         {
-
+            returnTableNmaesAndIDsBasedOnGeneric(2, out   tableName, out  idFieldName, out  idFieldName_right);
             PropertyContainer[] arr = ReturnallPropertyContainer(typeof(T), typeof(T2));
-            string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2));
+            string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2), idFieldName[0]);
 
             dl = new Func<T, T2,  T>((prod, cat) => 
             {
@@ -367,7 +391,7 @@ namespace TestWebAPI
             });
             //tableName = new string[] { "products", "categories" };
             //idFieldName = new string[] { "ProductID", "CategoryID" };
-            returnTableNmaesAndIDsBasedOnGeneric(2, out   tableName, out  idFieldName);
+            
         }
         private static PropertyContainer[] ReturnallPropertyContainer(params Type[] types)
         {
@@ -379,7 +403,7 @@ namespace TestWebAPI
             }
             return list.ToArray();
         }
-        private static PropertyContainer ParseProperties(Type obj)
+        public static PropertyContainer ParseProperties(Type obj)
         {
 
             var propertyContainer = new PropertyContainer();
@@ -441,7 +465,7 @@ namespace TestWebAPI
             return propertyContainer;
 
         }
-        private  dynamic returnCriteriaParam(string propname,int id)
+        public  dynamic returnCriteriaParam(string propname,int id)
         {
             List<PropertyNameAndType> dict = new List<PropertyNameAndType>();
             dict.Add(new PropertyNameAndType() { Name = propname, Type_ = typeof(int), value = id });
@@ -452,7 +476,8 @@ namespace TestWebAPI
     public class ClassTypeMetaData
     {
         public string tableName { get; set; }
-        public string primaryKey { get; set; }
-        public string primaryKeyAppearingInSelf { get; set; }
+        public string primaryKeyLeft { get; set; }// this is the key on the dispayed object which is the left side of an inner join so to speak
+        public string primaryKeyRight { get; set; }// this is the key on the right side of an inner join so to speak
+        public string WhatISMyObjectPropertyWithinResults { get; set; }
     }
 }

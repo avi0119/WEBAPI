@@ -96,53 +96,24 @@ namespace DataAccess
             var sql = string.Format("DELETE FROM [{0}] WHERE {1}", tableNAme, sqlIdPairs);
             Execute(CommandType.Text, sql, propertyContainer.IdPairs);
         }
-        public IEnumerable<T> Get<T2, T3, T4>(string[] tableName, string[] idFieldName, Func<T, T2, T3, T4, T> dl2)
+        public IEnumerable<T> Get<T2, T3, T4>(string[] tableName, string[] idFieldName,  string[] idFieldName_right, Func<T, T2, T3, T4, T> dl2)
         {
-            //param = new  { ProductID = prodid };
-
             var filteredItems = idFieldName.Where((p, i) => i > 0);
-
-            var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
-
-
+            var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
+            var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
 
             SqlConnection conn = _trans.Connection;
-
-            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
-
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{3} inner join [{4}] s on p.{5}=s.{5}     inner join [{6}] v on p.{7}=v.{7}    ", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3]);
-
-
-
-            //var res = conn.Query<Product, Category, Supplier, Product>(sql, (prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; }, new { ProductID = prodid }, _trans.Transx, splitOn: "CategoryID,supplierid");
-
-            //Func<Product, Category, Supplier, Product> dl2 = new Func<Product,Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
-
+            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{1}] c on p.{2}=c.{7} inner join [{3}] s on p.{4}=s.{8}    inner join [{5}] v on p.{6}=v.{9}  ", tableName[0],  tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3], idFieldName_right[1], idFieldName_right[2], idFieldName_right[3]);
             var res = conn.Query<T, T2, T3,T4, T>(sql, dl2, transaction: _trans.Transx, splitOn: splitOn);
             return res;
         }
-        public T Get<T2, T3, T4>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T4, T> dl2)
+        public T Get<T2, T3, T4>(int prodid, string[] tableName, string[] idFieldName,  string[] idFieldName_right, object param, Func<T, T2, T3, T4, T> dl2)
         {
-            //param = new  { ProductID = prodid };
-
             var filteredItems = idFieldName.Where((p, i) => i > 0);
-
-            var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
-
-
-
+            var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
+            var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
             SqlConnection conn = _trans.Connection;
-
-            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
-
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{3} inner join [{4}] s on p.{5}=s.{5}    inner join [{6}] v on p.{7}=v.{7}  where [{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3]);
-
-
-
-            //var res = conn.Query<Product, Category, Supplier, Product>(sql, (prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; }, new { ProductID = prodid }, _trans.Transx, splitOn: "CategoryID,supplierid");
-
-            //Func<Product, Category, Supplier, Product> dl2 = new Func<Product,Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
-
+            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{8} inner join [{4}] s on p.{5}=s.{9}    inner join [{6}] v on p.{7}=v.{10}  where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3], idFieldName_right[1],idFieldName_right[2],idFieldName_right[3]);
             var res = conn.Query<T, T2, T3, T4, T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
 
             return res.SingleOrDefault();
@@ -150,58 +121,42 @@ namespace DataAccess
         }
 
 
-        public T Get<T2>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T> dl2)
+        public T Get<T2>(int prodid, string[] tableName, string[] idFieldName,  string[] idFieldName_right, object param, Func<T, T2, T> dl2)
         {
-            //param = new  { ProductID = prodid };
-
             var filteredItems = idFieldName.Where((p, i) => i > 0);
+            var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
 
-            var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
-
-
+            var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
 
             SqlConnection conn = _trans.Connection;
-
-            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
-
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{3}    where [{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1]);
-
-
-
-            //var res = conn.Query<Product, Category, Supplier, Product>(sql, (prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; }, new { ProductID = prodid }, _trans.Transx, splitOn: "CategoryID,supplierid");
-
-            //Func<Product, Category, Supplier, Product> dl2 = new Func<Product,Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
-
+            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{4}    where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], idFieldName_right[1]);
             var res = conn.Query<T, T2,  T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
 
             return res.SingleOrDefault();
         }
-
-        public T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T> dl2)
+        public IEnumerable<T> Get<T2>(string[] tableName, string[] idFieldName, string[] idFieldName_right, Func<T, T2, T> dl2)
         {
-
-
-
-            //param = new  { ProductID = prodid };
-
             var filteredItems = idFieldName.Where((p, i) => i > 0);
-
-            var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
-
-
+            var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
+            var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
 
             SqlConnection conn = _trans.Connection;
-
-            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
-
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{3} inner join [{4}] s on p.{5}=s.{5}  where [{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2]);
-
+            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{4}     ", tableName[0], idFieldName[0], tableName[1], idFieldName[1], idFieldName_right[1]);
+            var res = conn.Query<T, T2, T>(sql, dl2, transaction: _trans.Transx, splitOn: splitOn);
+            return res;
 
 
-            //var res = conn.Query<Product, Category, Supplier, Product>(sql, (prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; }, new { ProductID = prodid }, _trans.Transx, splitOn: "CategoryID,supplierid");
+        }
 
-            //Func<Product, Category, Supplier, Product> dl2 = new Func<Product,Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
+        public T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName,  string[] idFieldName_right, object param, Func<T, T2, T3, T> dl2)
+        {
 
+            var filteredItems = idFieldName.Where((p, i) => i > 0);
+            var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
+            var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
+
+            SqlConnection conn = _trans.Connection;
+            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{6} inner join [{4}] s on p.{5}=s.{7}  where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2],  idFieldName_right[1], idFieldName_right[2]);
             var res = conn.Query<T, T2, T3, T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
 
             return res.SingleOrDefault();
@@ -209,69 +164,17 @@ namespace DataAccess
         }
 
 
-        public T Get(int prodid, string tableName, string idFieldName, object param)
+        public IEnumerable<T> Get<T2, T3>( string[] tableName, string[] idFieldName,  string[] idFieldName_right, Func<T, T2, T3, T> dl2)
         {
-            SqlConnection conn = _trans.Connection;
-            string sql = string.Format("SELECT *  FROM [{0}] p      where [{1}]=@{1}", tableName, idFieldName);
-            var res = conn.Query<T>(sql,  param, _trans.Transx);
-            return res.SingleOrDefault();
-        }
 
-
-
-
-        public IEnumerable<T> Get<T2>(string[] tableName, string[] idFieldName, Func<T, T2, T> dl2)
-        {
-            //param = new  { ProductID = prodid };
 
             var filteredItems = idFieldName.Where((p, i) => i > 0);
-
-            var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
-
-
-
-            SqlConnection conn = _trans.Connection;
-
-            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
-
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{3}     ", tableName[0], idFieldName[0], tableName[1], idFieldName[1]);
-
-
-
-            //var res = conn.Query<Product, Category, Supplier, Product>(sql, (prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; }, new { ProductID = prodid }, _trans.Transx, splitOn: "CategoryID,supplierid");
-
-            //Func<Product, Category, Supplier, Product> dl2 = new Func<Product,Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
-
-            var res = conn.Query<T, T2, T>(sql, dl2, transaction: _trans.Transx, splitOn: splitOn);
-            return res;
-
-  
-        }
-
-        public IEnumerable<T> Get<T2, T3>( string[] tableName, string[] idFieldName, Func<T, T2, T3, T> dl2)
-        {
-
-
-
-            //param = new  { ProductID = prodid };
-
-            var filteredItems = idFieldName.Where((p, i) => i > 0);
-
-            var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
-
+            var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
+            var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
 
 
             SqlConnection conn = _trans.Connection;
-
-            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
-
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{3} inner join [{4}] s on p.{5}=s.{5}   ", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2]);
-
-
-
-            //var res = conn.Query<Product, Category, Supplier, Product>(sql, (prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; }, new { ProductID = prodid }, _trans.Transx, splitOn: "CategoryID,supplierid");
-
-            //Func<Product, Category, Supplier, Product> dl2 = new Func<Product,Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
+            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{1}] c on p.{2}=c.{5} inner join [{3}] s on p.{4}=s.{6}  ", tableName[0],  tableName[1], idFieldName[1], tableName[2], idFieldName[2], idFieldName_right[1], idFieldName_right[2]);
 
             var res = conn.Query<T, T2, T3, T>(sql, dl2,  transaction:_trans.Transx, splitOn: splitOn);
             return res;
@@ -279,7 +182,13 @@ namespace DataAccess
 
         }
 
-
+        public T Get(int prodid, string tableName, string idFieldName, object param)
+        {
+            SqlConnection conn = _trans.Connection;
+            string sql = string.Format("SELECT *  FROM [{0}] p      where p.[{1}]=@{1}", tableName, idFieldName);
+            var res = conn.Query<T>(sql, param, _trans.Transx);
+            return res.SingleOrDefault();
+        }
         public IEnumerable<T> Get(string tableName, string idFieldName)
         {
             SqlConnection conn = _trans.Connection;
@@ -377,6 +286,47 @@ namespace DataAccess
         }
 
 
+        public T ReturnAllOrders<T2>(int prodid, string[] tableName, string[] idFieldName,  string[] idFieldName_right, object param)
+        {
+            //param = new  { ProductID = prodid };
+
+            var filteredItems = idFieldName.Where((p, i) => i > 0);
+
+            var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
+
+
+
+            SqlConnection conn = _trans.Connection;
+
+            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
+
+            string sql = string.Format("SELECT p.*,c.*  FROM [{0}] p inner join [Order Details] c on p.{3}=c.{3}   where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[0]);
+
+
+
+            //var res = conn.Query<Product, Category, Supplier, Product>(sql, (prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; }, new { ProductID = prodid }, _trans.Transx, splitOn: "CategoryID,supplierid");
+
+            //Func<Product, Category, Supplier, Product> dl2 = new Func<Product,Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
+
+            //var res = conn.Query<T, T2, T3, T4, T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
+            string PrimaryKey = idFieldName[0];
+            string propertyname2=typeof(T2).Name+ "s";
+            Func<T, int> parentKeySelector = new Func<T, int>(a => { return (int)typeof(T).GetProperty(PrimaryKey).GetValue(a,null); });
+            Func<T, IList<T2>> childSelector = new Func<T, IList<T2>>(a => { 
+                                                                                IList<T2> il= (IList<T2>)typeof(T).GetProperty(propertyname2).GetValue(a,null);
+                                                                                if (il == null)
+                                                                                {
+                                                                                    il = new List<T2>();
+                                                                                    typeof(T).GetProperty(propertyname2).SetValue(a, il);
+                                                                                }
+                                                                                return il; 
+                                                                            }); 
+
+            var res2 = conn.QueryParentChild<T,T2,int>(sql,  parentKeySelector, childSelector, param, _trans.Transx, splitOn: splitOn );   
+         
+            return res2.SingleOrDefault();
+
+        }
 
 
 
@@ -386,6 +336,37 @@ namespace DataAccess
 
 
     }
+
+    public static class DapperExtensions
+    {
+        public static IEnumerable<TParent> QueryParentChild<TParent, TChild, TParentKey>(
+            this IDbConnection connection,
+            string sql,
+            Func<TParent, TParentKey> parentKeySelector,
+            Func<TParent, IList<TChild>> childSelector,
+            dynamic param = null, IDbTransaction transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
+        {
+            Dictionary<TParentKey, TParent> cache = new Dictionary<TParentKey, TParent>();
+
+            connection.Query<TParent, TChild, TParent>(
+                sql,
+                (parent, child) =>
+                {
+                    if (!cache.ContainsKey(parentKeySelector(parent)))
+                    {
+                        cache.Add(parentKeySelector(parent), parent);
+                    }
+
+                    TParent cachedParent = cache[parentKeySelector(parent)];
+                    IList<TChild> children = childSelector(cachedParent);
+                    children.Add(child);
+                    return cachedParent;
+                },
+                param as object, transaction, buffered, splitOn, commandTimeout, commandType);
+
+            return cache.Values;
+        }
+    } 
 
 }
 

@@ -34,6 +34,6 @@ namespace DataAccess
         public Customer Customer { get; set; }
         public Shipper Shipper { get; set; }
         public Employee Employee { get; set; }
-        public IEnumerable<OrderDetail> Items { get; set; }
+        public IEnumerable<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -66,12 +66,12 @@ namespace DataAccess
         {
             _values.Add(name, value);
         }
-        public string FindPropertyNameOFGivenType(Type requiredType)
+        public string FindPropertyNameOFGivenType(Type requiredType,string fiedlnameToIgnore)
         {
             string nametoreturn=null;
             foreach (string a in _values.Keys)
             {
-                if ((Type)_values[a] == requiredType)
+                if ((Type)_values[a] == requiredType && !(fiedlnameToIgnore==a))
                 {
                     nametoreturn=a;
 

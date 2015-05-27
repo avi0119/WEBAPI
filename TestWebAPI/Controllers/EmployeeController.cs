@@ -14,7 +14,7 @@ namespace TestWebAPI
 
         public EmployeeController()
         {
-            numberOfGenerics = 1;
+            numberOfGenerics = 2;
         }
         #region  Rest
 
@@ -37,6 +37,8 @@ namespace TestWebAPI
         [Route("api/Employee/{productID:int}")]
         override public Employee Get(int productID)
         {
+            //classMetaData[typeof(Employee)].primaryKeyLeft = "ReportsTo";
+            this.adjuster = new Action<string[], string[], string[]>((tables, left, right) => { left[1] = "ReportsTo"; });
             return base.Get(productID);
         }
         ////http://localhost:39402/api/Employee/1

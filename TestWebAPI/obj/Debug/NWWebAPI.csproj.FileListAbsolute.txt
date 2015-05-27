@@ -1,3 +1,4 @@
+E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\NWWebAPI.csprojResolveAssemblyReference.cache
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\TestWebAPI.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\TestWebAPI.pdb
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Common.dll
@@ -21,6 +22,5 @@ E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\System.Web.Http.xml
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\System.Web.Http.WebHost.xml
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Dapper.pdb
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Dapper.xml
-E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\NWWebAPI.csprojResolveAssemblyReference.cache
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\TestWebAPI.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\TestWebAPI.pdb
