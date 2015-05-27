@@ -70,13 +70,11 @@ namespace TestWebAPI
         {
             dynamic dl;
 
-            string[] tableName;
-            string[] idFieldName;
-            string[] idFieldName_right;
-            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, out idFieldName_right, numberOfGenerics);
-            dynamic param = returnCriteriaParam(idFieldName[0], productID);
 
-            Order O=_iaddprod.ReturnAllOrders<OrderDetail>(productID, tableName, idFieldName,idFieldName_right, param);
+            getDelegateTableNamesAndFieldNames_final(out dl,QueryRelatedArgs, numberOfGenerics);
+            dynamic param = returnCriteriaParam(((string[])QueryRelatedArgs["idFieldName"])[0], productID);
+             
+            Order O = _iaddprod.ReturnAllOrders<OrderDetail>(productID, QueryRelatedArgs, param);
             return O;
         }
         ////http://localhost:39402/api/Order/80

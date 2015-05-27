@@ -15,6 +15,7 @@ namespace TestWebAPI
         public EmployeeController()
         {
             numberOfGenerics = 2;
+            this.adjuster = new Action<string[], string[], string[], string[]>((tables, left, right, jointype) => { left[1] = "ReportsTo"; jointype[1] = "left outer join"; });
         }
         #region  Rest
 
@@ -38,7 +39,7 @@ namespace TestWebAPI
         override public Employee Get(int productID)
         {
             //classMetaData[typeof(Employee)].primaryKeyLeft = "ReportsTo";
-            this.adjuster = new Action<string[], string[], string[]>((tables, left, right) => { left[1] = "ReportsTo"; });
+            
             return base.Get(productID);
         }
         ////http://localhost:39402/api/Employee/1

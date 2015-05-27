@@ -96,8 +96,14 @@ namespace DataAccess
             var sql = string.Format("DELETE FROM [{0}] WHERE {1}", tableNAme, sqlIdPairs);
             Execute(CommandType.Text, sql, propertyContainer.IdPairs);
         }
-        public IEnumerable<T> Get<T2, T3, T4>(string[] tableName, string[] idFieldName,  string[] idFieldName_right, Func<T, T2, T3, T4, T> dl2)
+        public IEnumerable<T> Get<T2, T3, T4>(Dictionary<string, object> dictArgs, Func<T, T2, T3, T4, T> dl2)
         {
+            string[] tableName = (string[])dictArgs["tableName"];
+            string[] idFieldName = (string[])dictArgs["idFieldName"];
+            string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
+            string[] joinType = (string[])dictArgs["joinType"];
+
+
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
@@ -107,8 +113,11 @@ namespace DataAccess
             var res = conn.Query<T, T2, T3,T4, T>(sql, dl2, transaction: _trans.Transx, splitOn: splitOn);
             return res;
         }
-        public T Get<T2, T3, T4>(int prodid, string[] tableName, string[] idFieldName,  string[] idFieldName_right, object param, Func<T, T2, T3, T4, T> dl2)
+        public T Get<T2, T3, T4>(int prodid, Dictionary<string, object> dictArgs, object param, Func<T, T2, T3, T4, T> dl2)
         {
+            string[] tableName = (string[])dictArgs["tableName"];
+            string[] idFieldName = (string[])dictArgs["idFieldName"];
+            string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
@@ -121,8 +130,11 @@ namespace DataAccess
         }
 
 
-        public T Get<T2>(int prodid, string[] tableName, string[] idFieldName,  string[] idFieldName_right, object param, Func<T, T2, T> dl2)
+        public T Get<T2>(int prodid, Dictionary<string, object> dictArgs, object param, Func<T, T2, T> dl2)
         {
+            string[] tableName = (string[])dictArgs["tableName"];
+            string[] idFieldName = (string[])dictArgs["idFieldName"];
+            string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
 
@@ -134,8 +146,11 @@ namespace DataAccess
 
             return res.SingleOrDefault();
         }
-        public IEnumerable<T> Get<T2>(string[] tableName, string[] idFieldName, string[] idFieldName_right, Func<T, T2, T> dl2)
+        public IEnumerable<T> Get<T2>(Dictionary<string, object> dictArgs, Func<T, T2, T> dl2)
         {
+            string[] tableName = (string[])dictArgs["tableName"];
+            string[] idFieldName = (string[])dictArgs["idFieldName"];
+            string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
@@ -148,8 +163,11 @@ namespace DataAccess
 
         }
 
-        public T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName,  string[] idFieldName_right, object param, Func<T, T2, T3, T> dl2)
+        public T Get<T2, T3>(int prodid, Dictionary<string, object> dictArgs, object param, Func<T, T2, T3, T> dl2)
         {
+            string[] tableName = (string[])dictArgs["tableName"];
+            string[] idFieldName = (string[])dictArgs["idFieldName"];
+            string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
 
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
@@ -164,8 +182,11 @@ namespace DataAccess
         }
 
 
-        public IEnumerable<T> Get<T2, T3>( string[] tableName, string[] idFieldName,  string[] idFieldName_right, Func<T, T2, T3, T> dl2)
+        public IEnumerable<T> Get<T2, T3>(Dictionary<string, object> dictArgs, Func<T, T2, T3, T> dl2)
         {
+            string[] tableName = (string[])dictArgs["tableName"];
+            string[] idFieldName = (string[])dictArgs["idFieldName"];
+            string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
 
 
             var filteredItems = idFieldName.Where((p, i) => i > 0);
@@ -286,8 +307,12 @@ namespace DataAccess
         }
 
 
-        public T ReturnAllOrders<T2>(int prodid, string[] tableName, string[] idFieldName,  string[] idFieldName_right, object param)
+        public T ReturnAllOrders<T2>(int prodid, Dictionary<string,object> dictArgs, object param)
         {
+            string[] tableName = (string[])dictArgs["tableName"];
+            string[] idFieldName=(string[])dictArgs["idFieldName"];
+            string[] idFieldName_right=(string[])dictArgs["idFieldName_right"];
+
             //param = new  { ProductID = prodid };
 
             var filteredItems = idFieldName.Where((p, i) => i > 0);

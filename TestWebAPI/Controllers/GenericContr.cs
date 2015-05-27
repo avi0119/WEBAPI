@@ -11,9 +11,9 @@ namespace TestWebAPI
     [UnitOfWorkActionFilter]
     public class GenericContr<T, T2, T3, T4> : ApiController, IGenericController<T, T2, T3, T4>
     {
-       
-        public Action<string[] ,string[] ,string[]> adjuster;
-        //IProduct _IProduct;
+
+        public Action<string[], string[], string[], string[]> adjuster;
+        public Dictionary<string, object> QueryRelatedArgs = new Dictionary<string, object>();
         public IGenericCRUD<T> _iaddprod;
         public Dictionary<Type, ClassTypeMetaData> classMetaData=new Dictionary<Type, ClassTypeMetaData>();
         // GET api/<controller>
@@ -67,9 +67,9 @@ namespace TestWebAPI
             string[] tableName;
             string[] idFieldName;
             string[] idFieldName_right;
-            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, out idFieldName_right, numberOfGenerics);
+            getDelegateTableNamesAndFieldNames_final(out dl, QueryRelatedArgs, numberOfGenerics);
 
-            T z = ObtainProductByID_FINAL(productID, dl, tableName, idFieldName,idFieldName_right, numberOfGenerics);
+            T z = ObtainProductByID_FINAL(productID, dl, QueryRelatedArgs, numberOfGenerics);
             //var z = ObtainProductByID(productID);
             return z;
             //return "value";
@@ -89,11 +89,11 @@ namespace TestWebAPI
             string[] tableName;
             string[] idFieldName;
             string[] idFieldName_right;
-            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, out idFieldName_right, numberOfGenerics);
+            getDelegateTableNamesAndFieldNames_final(out dl, QueryRelatedArgs, numberOfGenerics);
             //getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName);
 
-            T p = ObtainProductByID_FINAL(productID, dl, tableName, idFieldName, idFieldName_right,numberOfGenerics);
-            var res = _iaddprod.DeleteItem(p, tableName[0]);
+            T p = ObtainProductByID_FINAL(productID, dl, QueryRelatedArgs, numberOfGenerics);
+            var res = _iaddprod.DeleteItem(p, ((string[])QueryRelatedArgs["tableName"])[0]);
             return res;
             //return "value";
         }
@@ -126,9 +126,9 @@ namespace TestWebAPI
             string[] tableName;
             string[] idFieldName;
             string[] idFieldName_right;
-            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, out idFieldName_right, numberOfGenerics);
-            var id = _iaddprod.Add(value, tableName[0]);
-            var p = ObtainProductByID_FINAL(id, dl, tableName, idFieldName,idFieldName_right, numberOfGenerics);
+            getDelegateTableNamesAndFieldNames_final(out dl, QueryRelatedArgs, numberOfGenerics);
+            var id = _iaddprod.Add(value, ((string[])QueryRelatedArgs["tableName"])[0]);
+            var p = ObtainProductByID_FINAL(id, dl, QueryRelatedArgs, numberOfGenerics);
             var b = value;
             return p;
         }
@@ -168,9 +168,9 @@ namespace TestWebAPI
             string[] tableName;
             string[] idFieldName;
             string[] idFieldName_right;
-            getDelegateTableNamesAndFieldNames_final(out dl, out tableName, out idFieldName, out idFieldName_right,numberOfGenerics);
-            var id = _iaddprod.UpdateItem(value, tableName[0], idFieldName[0]);
-            T p = ObtainProductByID_FINAL(id, dl, tableName, idFieldName,idFieldName_right, numberOfGenerics);
+            getDelegateTableNamesAndFieldNames_final(out dl, QueryRelatedArgs,numberOfGenerics);
+            var id = _iaddprod.UpdateItem(value, ((string[])QueryRelatedArgs["tableName"])[0], ((string[])QueryRelatedArgs["idFieldName"])[0]);
+            T p = ObtainProductByID_FINAL(id, dl, QueryRelatedArgs, numberOfGenerics);
             
 
             return p;
@@ -178,29 +178,33 @@ namespace TestWebAPI
         #endregion //REST
         private void buildClassMetaDataDictionary()
         {
-            classMetaData.Add(typeof(Product), new ClassTypeMetaData { tableName = "products", primaryKeyLeft = "ProductID", primaryKeyRight = "ProductID" });
-            classMetaData.Add(typeof(Category), new ClassTypeMetaData { tableName = "categories", primaryKeyLeft = "CategoryID", primaryKeyRight = "CategoryID" });
-            classMetaData.Add(typeof(Supplier), new ClassTypeMetaData { tableName = "suppliers", primaryKeyLeft = "SupplierID", primaryKeyRight = "SupplierID" });
-            classMetaData.Add(typeof(Order), new ClassTypeMetaData { tableName = "orders", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID" });
-            classMetaData.Add(typeof(Employee), new ClassTypeMetaData { tableName = "employees", primaryKeyLeft = "EmployeeID", primaryKeyRight = "EmployeeID" });
-            classMetaData.Add(typeof(Customer), new ClassTypeMetaData { tableName = "customers", primaryKeyLeft = "CustomerID", primaryKeyRight = "CustomerID" });
-            classMetaData.Add(typeof(OrderDetail), new ClassTypeMetaData { tableName = "Order Details", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID" });
+            classMetaData.Add(typeof(Product), new ClassTypeMetaData { tableName = "products", primaryKeyLeft = "ProductID", primaryKeyRight = "ProductID", joinType="left outer join" });
+            classMetaData.Add(typeof(Category), new ClassTypeMetaData { tableName = "categories", primaryKeyLeft = "CategoryID", primaryKeyRight = "CategoryID", joinType = "Left Outer Join" });
+            classMetaData.Add(typeof(Supplier), new ClassTypeMetaData { tableName = "suppliers", primaryKeyLeft = "SupplierID", primaryKeyRight = "SupplierID", joinType = "Left Outer Join" });
+            classMetaData.Add(typeof(Order), new ClassTypeMetaData { tableName = "orders", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID", joinType = "left outer join" });
+            classMetaData.Add(typeof(Employee), new ClassTypeMetaData { tableName = "employees", primaryKeyLeft = "EmployeeID", primaryKeyRight = "EmployeeID", joinType = "left outer join" });
+            classMetaData.Add(typeof(Customer), new ClassTypeMetaData { tableName = "customers", primaryKeyLeft = "CustomerID", primaryKeyRight = "CustomerID", joinType = "left outer join" });
+            classMetaData.Add(typeof(OrderDetail), new ClassTypeMetaData { tableName = "Order Details", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID", joinType = "left outer join" });
 
         }
-        private void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, out string[] tableName, out string[] idFieldName, out string[] idFieldName_right)
+        private void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, Dictionary<string,object> QueryRelatedArgs)
         {
+            string[] tableName; string[] idFieldName; string[] idFieldName_right; string[] joinType;
             List<string>  tableNameList = new List<string> ();// { "products", "categories" };
             List<string> idFieldNameList = new List<string>();//{ "ProductID", "CategoryID" };
             List<string> idFieldNameList_right = new List<string>();//{ "ProductID", "CategoryID" };
+            List<string> joinTypeList = new List<string>();//{ "ProductID", "CategoryID" };
 
             tableNameList.Add(classMetaData[typeof(T)].tableName);
             idFieldNameList.Add(classMetaData[typeof(T)].primaryKeyLeft);
             idFieldNameList_right.Add(classMetaData[typeof(T)].primaryKeyRight);
+            joinTypeList.Add(classMetaData[typeof(T)].joinType);
             if (numberOfGenericTypesParticipating >1)
             {
                 tableNameList.Add(classMetaData[typeof(T2)].tableName);
                 idFieldNameList.Add(classMetaData[typeof(T2)].primaryKeyLeft);
                 idFieldNameList_right.Add(classMetaData[typeof(T2)].primaryKeyRight);
+                joinTypeList.Add(classMetaData[typeof(T2)].joinType);
                 
             }
             if (numberOfGenericTypesParticipating > 2)
@@ -208,24 +212,41 @@ namespace TestWebAPI
                 tableNameList.Add(classMetaData[typeof(T3)].tableName);
                 idFieldNameList.Add(classMetaData[typeof(T3)].primaryKeyLeft);
                 idFieldNameList_right.Add(classMetaData[typeof(T3)].primaryKeyRight);
+                joinTypeList.Add(classMetaData[typeof(T3)].joinType);
             }
             if (numberOfGenericTypesParticipating > 3)
             {
                 tableNameList.Add(classMetaData[typeof(T4)].tableName);
                 idFieldNameList.Add(classMetaData[typeof(T4)].primaryKeyLeft);
                 idFieldNameList_right.Add(classMetaData[typeof(T4)].primaryKeyRight);
+                joinTypeList.Add(classMetaData[typeof(T4)].joinType);
             }
 
             tableName = tableNameList.ToArray();
             idFieldName = idFieldNameList.ToArray();
             idFieldName_right = idFieldNameList_right.ToArray();
+            joinType = joinTypeList.ToArray();
             if (adjuster == null)
             {
             }
             else
             {
-                adjuster(tableName, idFieldName, idFieldName_right);
+                adjuster(tableName, idFieldName, idFieldName_right, joinType);
             }
+            object test;
+            if (QueryRelatedArgs.TryGetValue("tableName", out test) == false) 
+            
+            
+            {
+                QueryRelatedArgs.Add("tableName", tableName); 
+            
+            }
+            if (QueryRelatedArgs.TryGetValue("idFieldName", out test) == false)
+            {
+                QueryRelatedArgs.Add("idFieldName", idFieldName);
+            }
+            if (QueryRelatedArgs.TryGetValue("idFieldName_right", out test) == false) QueryRelatedArgs.Add("idFieldName_right", idFieldName_right);
+            if (QueryRelatedArgs.TryGetValue("joinType", out test) == false) QueryRelatedArgs.Add("joinType", joinType);
          
         }
         
@@ -255,8 +276,8 @@ namespace TestWebAPI
             string[] tableName; 
             string[] idFieldName;
             string[] idFieldName_right;
-            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName,  out idFieldName_right);
-            IEnumerable<T> p = _iaddprod.Get<T2, T3>(tableName, idFieldName,idFieldName_right, dl);
+            getDelegateTableNamesAndFieldNames(out dl,QueryRelatedArgs);
+            IEnumerable<T> p = _iaddprod.Get<T2, T3>(QueryRelatedArgs, dl);
             return p;
         }
         private IEnumerable<T> ObtainProductByID3()
@@ -267,9 +288,9 @@ namespace TestWebAPI
             string[] idFieldName ;
             string[] idFieldName_right;
             Func<T, T2,  T> dl;
-            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName, out idFieldName_right);
+            getDelegateTableNamesAndFieldNames2(out dl, QueryRelatedArgs);
 
-            IEnumerable<T> p = _iaddprod.Get(tableName, idFieldName,idFieldName_right, dl);
+            IEnumerable<T> p = _iaddprod.Get(QueryRelatedArgs, dl);
             return p;
         }
         private IEnumerable<T> ObtainProductByID2()
@@ -278,44 +299,44 @@ namespace TestWebAPI
             string[] tableName;
             string[] idFieldName;
             string[] idFieldName_right;
-            getDelegateTableNamesAndFieldNames(out dl, out tableName, out idFieldName, out idFieldName_right);
-            IEnumerable<T> p = _iaddprod.Get(tableName[0], idFieldName[0]);
-            return p;
+            getDelegateTableNamesAndFieldNames(out dl, QueryRelatedArgs);
+            IEnumerable<T> p = _iaddprod.Get(((string[])QueryRelatedArgs["tableName"])[0], ((string[])QueryRelatedArgs["idFieldName"])[0]);
+            return p; 
         }
 
 
-        protected T ObtainProductByID_FINAL(int id, dynamic dl, string[] tableName, string[] idFieldName,string[] idFieldName_right,int numberofGenerics)
+        protected T ObtainProductByID_FINAL(int id, dynamic dl, Dictionary<string, object> QueryRelatedArgs, int numberofGenerics)
         {
             if (numberofGenerics == 3)
             {
-                return ObtainProductByID(id, dl, tableName, idFieldName, idFieldName_right);
+                return ObtainProductByID(id, dl, QueryRelatedArgs);
             }
             if (numberofGenerics == 1)
             {
-                return ObtainProductByID2(id, dl, tableName, idFieldName, idFieldName_right);
+                return ObtainProductByID2(id, dl, QueryRelatedArgs);
             }
             // it's 2 generics
-            return ObtainProductByID3(id, dl, tableName, idFieldName, idFieldName_right);
+            return ObtainProductByID3(id, dl, QueryRelatedArgs);
 
         }
 
-        protected T ObtainProductByID(int id, Func<T, T2, T3, T> dl, string[] tableName, string[] idFieldName, string[] idFieldName_right)
+        protected T ObtainProductByID(int id, Func<T, T2, T3, T> dl, Dictionary<string, object> QueryRelatedArgs)
         {
             //id = -1;
             //string[] tableName = new string[] { "products", "categories", "suppliers" };
             //string[] idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
             //object param = new { ProductID = id };
-            dynamic param = returnCriteriaParam(idFieldName[0], id);
+            dynamic param = returnCriteriaParam(((string[])QueryRelatedArgs["idFieldName"])[0], id);
             //MyType param = new MyType { ProductID = id };
             //Func<T, T2, T3, T> dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => {
             //    prod.Category = cat; prod.Supplier = Supplier; return prod; 
             //});
 
             //T Get<T2, T3>(int prodid, string[] tableName, string[] idFieldName, object param, Func<T, T2, T3, T> dl2);
-            T p = _iaddprod.Get(id, tableName, idFieldName,  idFieldName_right, param, dl);
+            T p = _iaddprod.Get(id, QueryRelatedArgs, param, dl);
             return p;
         }
-        protected T ObtainProductByID3(int id, Func<T, T2, T> dl, string[] tableName, string[] idFieldName, string[] idFieldName_right)
+        protected T ObtainProductByID3(int id, Func<T, T2, T> dl, Dictionary<string, object> QueryRelatedArgs)
         {
             //id = -1;
             //string[] tableName = new string[] { "products", "categories" };
@@ -324,46 +345,46 @@ namespace TestWebAPI
             //Func<T, T2, T> dl = new Func<T, T2,  T>((prod, cat) => { prod.Category = cat; return prod; });
 
             //Func<T, T2,  T> dl; string[] tableName; string[] idFieldName;
-            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName, out idFieldName_right);
+            getDelegateTableNamesAndFieldNames2(out dl, QueryRelatedArgs);
             //object param = new { ProductID = id };
-            dynamic param = returnCriteriaParam(idFieldName[0], id);
-            T p = _iaddprod.Get(id, tableName, idFieldName,idFieldName_right, param, dl);
+            dynamic param = returnCriteriaParam(((string[])QueryRelatedArgs["idFieldName"])[0], id);
+            T p = _iaddprod.Get(id, QueryRelatedArgs, param, dl);
             return p;
         }
-        protected T ObtainProductByID2(int id, Func<T, T2, T> dl, string[] tableName, string[] idFieldName, string[] idFieldName_right)
+        protected T ObtainProductByID2(int id, Func<T, T2, T> dl,Dictionary<string,object>  QueryRelatedArgs)
         {
             //Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
-            getDelegateTableNamesAndFieldNames2(out dl, out tableName, out idFieldName, out idFieldName_right);
+            getDelegateTableNamesAndFieldNames2(out dl, QueryRelatedArgs);
             //string tableName = "products";
             //string idFieldName = "ProductID";
             //object param = new { ProductID = id };
-            dynamic param = returnCriteriaParam(idFieldName[0], id);
-            T p = _iaddprod.Get(id, tableName[0], idFieldName[0], param);
+            dynamic param = returnCriteriaParam(((string[])QueryRelatedArgs["idFieldName"])[0], id); 
+            T p = _iaddprod.Get(id, ((string[])QueryRelatedArgs["tableName"])[0], ((string[])QueryRelatedArgs["idFieldName"])[0], param);
             return p;
         }
-        protected void getDelegateTableNamesAndFieldNames_final(out dynamic dl, out string[] tableName, out string[] idFieldName, out string[] idFieldName_right, int numberofGenerics)
+        protected void getDelegateTableNamesAndFieldNames_final(out dynamic dl, Dictionary<string, object> QueryRelatedArg, int numberofGenerics)
         {
             if (numberofGenerics == 3)
             {
                 Func<T, T2, T3, T> dl_ ;
-                getDelegateTableNamesAndFieldNames(out dl_, out tableName, out  idFieldName, out idFieldName_right);
+                getDelegateTableNamesAndFieldNames(out dl_, QueryRelatedArg);
                 dl = dl_;
                 return;
             }
             //if (numberofGenerics == 3)
             //{
                 Func<T, T2,  T> dl__ ;
-                getDelegateTableNamesAndFieldNames2(out dl__, out tableName, out  idFieldName, out idFieldName_right);
+                getDelegateTableNamesAndFieldNames2(out dl__, QueryRelatedArg);
                 dl = dl__;
             //}
  
         }
-        protected void getDelegateTableNamesAndFieldNames(out Func<T, T2, T3, T> dl, out string[] tableName, out string[] idFieldName, out string[] idFieldName_right)
+        protected void getDelegateTableNamesAndFieldNames(out Func<T, T2, T3, T> dl, Dictionary<string, object> QueryRelatedArgs)
         {
-            returnTableNmaesAndIDsBasedOnGeneric(3, out   tableName, out  idFieldName, out  idFieldName_right);
+            returnTableNmaesAndIDsBasedOnGeneric(3, QueryRelatedArgs);
              PropertyContainer[] arr = ReturnallPropertyContainer(typeof(T), typeof(T2), typeof(T3));
-             string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2), idFieldName[0]);
-             string prop3 = (arr[0]).FindPropertyNameOFGivenType(typeof(T3), idFieldName[0]);
+             string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2), ((string[])QueryRelatedArgs["idFieldName"])[0]);
+             string prop3 = (arr[0]).FindPropertyNameOFGivenType(typeof(T3), ((string[])QueryRelatedArgs["idFieldName"])[0]);
 
              dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => {
                  //prod.Category = cat;
@@ -377,11 +398,11 @@ namespace TestWebAPI
              //idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
             
         }
-        protected void getDelegateTableNamesAndFieldNames2(out Func<T, T2, T> dl, out string[] tableName, out string[] idFieldName, out string[] idFieldName_right)
+        protected void getDelegateTableNamesAndFieldNames2(out Func<T, T2, T> dl, Dictionary<string,object> QueryRelatedArgs)
         {
-            returnTableNmaesAndIDsBasedOnGeneric(2, out   tableName, out  idFieldName, out  idFieldName_right);
+            returnTableNmaesAndIDsBasedOnGeneric(2, QueryRelatedArgs);
             PropertyContainer[] arr = ReturnallPropertyContainer(typeof(T), typeof(T2));
-            string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2), idFieldName[0]);
+            string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2), ((string[])QueryRelatedArgs["idFieldName"])[0]);
 
             dl = new Func<T, T2,  T>((prod, cat) => 
             {
@@ -479,5 +500,7 @@ namespace TestWebAPI
         public string primaryKeyLeft { get; set; }// this is the key on the dispayed object which is the left side of an inner join so to speak
         public string primaryKeyRight { get; set; }// this is the key on the right side of an inner join so to speak
         public string WhatISMyObjectPropertyWithinResults { get; set; }
+        public string joinType { get; set; }
+
     }
 }
