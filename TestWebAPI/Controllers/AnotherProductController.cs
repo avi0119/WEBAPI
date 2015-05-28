@@ -66,12 +66,12 @@ namespace TestWebAPI
         
  }
         
-         */
+         
+                  */
         ////http://localhost:39402/api/product
         [HttpPost]
-        // POST api/<controller>
-
-        [Route("api/product")]
+        [Route("api/product/")]
+        //[Route("api/product/{value:Product}")]
         override public Product Post([FromBody]Product value)
         {
             return base.Post(value);
@@ -108,6 +108,14 @@ namespace TestWebAPI
             return base.Put(value);
 
         }
+
+        //[HttpPost]
+        //[Route("api/product/}")]
+        //override public void Get([FromBody]IEnumerable<Product> productID)
+        //{
+        //    var g = 6;
+        //    var t = g;
+        //}
         #endregion //REST
     }
 }

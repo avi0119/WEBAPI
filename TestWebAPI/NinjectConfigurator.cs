@@ -33,6 +33,8 @@ namespace TestWebAPI
             container.Bind<IGenericCRUD<Order>>().To<GemericCRUD<Order>>().InTransientScope();
             container.Bind<IEnumerable<OrderDetail>>().To<IEnumerable<OrderDetail>>().InTransientScope();
             container.Bind<IEnumerable<OrderDetail>>().To<IEnumerable<OrderDetail>>().InTransientScope();
+            container.Bind<IGenericCRUD<Shipper>>().To<GemericCRUD<Shipper>>().InTransientScope();
+            
 
 
             //IGenericCRUD<T> iaddprod = (IGenericCRUD<T>)(GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IGenericCRUD<T>)));

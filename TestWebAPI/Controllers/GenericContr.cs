@@ -19,6 +19,8 @@ namespace TestWebAPI
         // GET api/<controller>
         public GenericContr()
         {
+            var z = 5;
+            var hj = z;
         }
         public GenericContr(IGenericCRUD<T> iaddprod)
         {
@@ -56,7 +58,16 @@ namespace TestWebAPI
             var z = ObtainProductByID_final(numberOfGenerics);
             return z;
         }
-
+        ////http://localhost:39402/api/product/77
+        // GET api/<controller>/5
+        //[Route("api/product/productID:int")]
+        [HttpPost]
+        [Route("api/Product/")]
+        virtual public void Get([FromBody]IEnumerable<Product> productID)
+        {
+            var g = 6;
+            var t = g;
+        }
         ////http://localhost:39402/api/product/77
         // GET api/<controller>/5
         //[Route("api/product/productID:int")]
@@ -188,6 +199,7 @@ namespace TestWebAPI
             classMetaData.Add(typeof(Employee), new ClassTypeMetaData { tableName = "employees", primaryKeyLeft = "EmployeeID", primaryKeyRight = "EmployeeID", joinType = "left outer join" });
             classMetaData.Add(typeof(Customer), new ClassTypeMetaData { tableName = "customers", primaryKeyLeft = "CustomerID", primaryKeyRight = "CustomerID", joinType = "left outer join" });
             classMetaData.Add(typeof(OrderDetail), new ClassTypeMetaData { tableName = "Order Details", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID", joinType = "left outer join" });
+            classMetaData.Add(typeof(Shipper), new ClassTypeMetaData { tableName = "shippers", primaryKeyLeft = "ShipperID", primaryKeyRight = "ShipperID", joinType = "left outer join" });
 
         }
         private void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, Dictionary<string,object> QueryRelatedArgs)
@@ -389,19 +401,128 @@ namespace TestWebAPI
              string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2), ((string[])QueryRelatedArgs["idFieldName"])[0]);
              string prop3 = (arr[0]).FindPropertyNameOFGivenType(typeof(T3), ((string[])QueryRelatedArgs["idFieldName"])[0]);
 
-             dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => {
-                 //prod.Category = cat;
-                 //prod.Supplier = Supplier;
-                 prod.GetType().GetProperty(prop2).SetValue(prod,cat);
-                 prod.GetType().GetProperty(prop3).SetValue(prod, Supplier);
+             string prop2_enum = (arr[0]).FindIEnumerabkePropertyNameOFGivenType<T2>( ((string[])QueryRelatedArgs["idFieldName"])[0]);
+             string prop3_enum = (arr[0]).FindIEnumerabkePropertyNameOFGivenType<T3>(((string[])QueryRelatedArgs["idFieldName"])[0]);
 
-                 return prod; 
+             Func<T, IList<T2>> childSelector2 = new Func<T, IList<T2>>(a =>
+             {
+                 IList<T2> il = (IList<T2>)typeof(T).GetProperty(prop2_enum).GetValue(a, null);
+                 if (il == null)
+                 {
+                     il = new List<T2>();
+                     typeof(T).GetProperty(prop2_enum).SetValue(a, il);
+                 }
+                 return il;
              });
+             Func<T, IList<T3>> childSelector3 = new Func<T, IList<T3>>(a =>
+             {
+                 IList<T3> il = (IList<T3>)typeof(T).GetProperty(prop3_enum).GetValue(a, null);
+                 if (il == null)
+                 {
+                     il = new List<T3>();
+                     typeof(T).GetProperty(prop3_enum).SetValue(a, il);
+                 }
+                 return il;
+             });
+
+             Dictionary<int, T> cache = new Dictionary<int, T>();
+
+             string PrimaryKey = (string)((string[])QueryRelatedArgs["idFieldName"])[0];
+             Type t = typeof(T).GetProperty(PrimaryKey).GetType();
+             //Dictionary<t, T> test = new Dictionary<t, T>();
+
+             Func<T, int> parentKeySelector = new Func<T, int>(a => { return (int)typeof(T).GetProperty(PrimaryKey).GetValue(a, null); });
+             dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => {
+
+                 if (!cache.ContainsKey(parentKeySelector(prod)))
+                 {
+                     cache.Add(parentKeySelector(prod), prod);
+                 }
+                 T cachedParent = cache[parentKeySelector(prod)];
+
+                 if (!(prop2 == null))
+                 {
+                     cachedParent.GetType().GetProperty(prop2).SetValue(cachedParent, cat);
+                 }
+                 else
+                 {
+
+                     IList<T2> children = childSelector2(cachedParent);
+                     children.Add(cat);
+
+                 }
+                 if (!(prop3 == null))
+                 {
+                     cachedParent.GetType().GetProperty(prop3).SetValue(cachedParent, Supplier);
+                 }
+                 else
+                 {
+                     IList<T3> children = childSelector3(cachedParent);
+                     children.Add(Supplier);
+                 }
+
+                 return cachedParent;
+             });
+             QueryRelatedArgs.Add("DictionaryOfKesAndResults",cache);
              //tableName = new string[] { "products", "categories","suppliers" };
              //idFieldName = new string[] { "ProductID", "CategoryID", "SupplierID" };
             
         }
-        protected void getDelegateTableNamesAndFieldNames2(out Func<T, T2, T> dl, Dictionary<string,object> QueryRelatedArgs)
+        protected void getDelegateTableNamesAndFieldNames2(out Func<T, T2, T> dl, Dictionary<string, object> QueryRelatedArgs)
+        {
+            returnTableNmaesAndIDsBasedOnGeneric(2, QueryRelatedArgs);
+            PropertyContainer[] arr = ReturnallPropertyContainer(typeof(T), typeof(T2), typeof(T3));
+            string prop2 = (arr[0]).FindPropertyNameOFGivenType(typeof(T2), ((string[])QueryRelatedArgs["idFieldName"])[0]);
+
+
+            string prop2_enum = (arr[0]).FindIEnumerabkePropertyNameOFGivenType<T2>(((string[])QueryRelatedArgs["idFieldName"])[0]);
+
+
+            Func<T, IList<T2>> childSelector2 = new Func<T, IList<T2>>(a =>
+            {
+                IList<T2> il = (IList<T2>)typeof(T).GetProperty(prop2_enum).GetValue(a, null);
+                if (il == null)
+                {
+                    il = new List<T2>();
+                    typeof(T).GetProperty(prop2_enum).SetValue(a, il);
+                }
+                return il;
+            });
+
+
+
+            Dictionary<int, T> cache = new Dictionary<int, T>();
+
+            string PrimaryKey = (string)((string[])QueryRelatedArgs["idFieldName"])[0];
+
+            Func<T, int> parentKeySelector = new Func<T, int>(a => { return (int)typeof(T).GetProperty(PrimaryKey).GetValue(a, null); });
+            dl = new Func<T, T2,  T>((prod, cat) =>
+            {
+
+                if (!cache.ContainsKey(parentKeySelector(prod)))
+                {
+                    cache.Add(parentKeySelector(prod), prod);
+                }
+                T cachedParent = cache[parentKeySelector(prod)];
+
+                if (!(prop2 == null))
+                {
+                    cachedParent.GetType().GetProperty(prop2).SetValue(cachedParent, cat);
+                }
+                else
+                {
+
+                    IList<T2> children = childSelector2(cachedParent);
+                    children.Add(cat);
+
+                }
+
+                return cachedParent;
+            });
+            QueryRelatedArgs.Add("DictionaryOfKesAndResults", cache);
+
+        }
+        protected void getDelegateTableNamesAndFieldNames2_old(out Func<T, T2, T> dl, Dictionary<string,object> QueryRelatedArgs)
         {
             returnTableNmaesAndIDsBasedOnGeneric(2, QueryRelatedArgs);
             PropertyContainer[] arr = ReturnallPropertyContainer(typeof(T), typeof(T2));

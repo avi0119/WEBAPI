@@ -102,6 +102,7 @@ namespace DataAccess
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
             string[] joinType = (string[])dictArgs["joinType"];
+            Dictionary<int, T> dict = (Dictionary<int, T>)dictArgs["DictionaryOfKesAndResults"];
 
 
             var filteredItems = idFieldName.Where((p, i) => i > 0);
@@ -111,7 +112,7 @@ namespace DataAccess
             SqlConnection conn = _trans.Connection;
             string sql = string.Format("SELECT *  FROM [{0}] p inner join [{1}] c on p.{2}=c.{7} {10} [{3}] s on p.{4}=s.{8}    {11} [{5}] v on p.{6}=v.{9}  ", tableName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3], idFieldName_right[1], idFieldName_right[2], idFieldName_right[3], joinType[1], joinType[2]);
             var res = conn.Query<T, T2, T3,T4, T>(sql, dl2, transaction: _trans.Transx, splitOn: splitOn);
-            return res;
+            return dict.Values;
         }
         public T Get<T2, T3, T4>(int prodid, Dictionary<string, object> dictArgs, object param, Func<T, T2, T3, T4, T> dl2)
         {
@@ -119,6 +120,8 @@ namespace DataAccess
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
             string[] joinType = (string[])dictArgs["joinType"];
+            Dictionary<int, T> dict = (Dictionary<int, T>)dictArgs["DictionaryOfKesAndResults"];
+
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
@@ -126,7 +129,7 @@ namespace DataAccess
             string sql = string.Format("SELECT *  FROM [{0}] p {11} [{2}] c on p.{3}=c.{8} {12} [{4}] s on p.{5}=s.{9}    {13} [{6}] v on p.{7}=v.{10}  where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3], idFieldName_right[1], idFieldName_right[2], idFieldName_right[3], joinType[1], joinType[2], joinType[3]);
             var res = conn.Query<T, T2, T3, T4, T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
 
-            return res.SingleOrDefault();
+            return dict.Values.SingleOrDefault();
 
         }
 
@@ -137,6 +140,8 @@ namespace DataAccess
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
             string[] joinType = (string[])dictArgs["joinType"];
+            Dictionary<int, T> dict = (Dictionary<int, T>)dictArgs["DictionaryOfKesAndResults"];
+
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
 
@@ -146,7 +151,7 @@ namespace DataAccess
             string sql = string.Format("SELECT *  FROM [{0}] p {5} [{2}] c on p.{3}=c.{4}    where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], idFieldName_right[1], joinType[1]);
             var res = conn.Query<T, T2,  T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
 
-            return res.SingleOrDefault();
+            return dict.Values.SingleOrDefault();
         }
         public IEnumerable<T> Get<T2>(Dictionary<string, object> dictArgs, Func<T, T2, T> dl2)
         {
@@ -154,6 +159,8 @@ namespace DataAccess
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
             string[] joinType = (string[])dictArgs["joinType"];
+            Dictionary<int, T> dict = (Dictionary<int, T>)dictArgs["DictionaryOfKesAndResults"];
+
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
@@ -161,7 +168,7 @@ namespace DataAccess
             SqlConnection conn = _trans.Connection;
             string sql = string.Format("SELECT *  FROM [{0}] p {5} [{2}] c on p.{3}=c.{4}     ", tableName[0], idFieldName[0], tableName[1], idFieldName[1], idFieldName_right[1], joinType[1]);
             var res = conn.Query<T, T2, T>(sql, dl2, transaction: _trans.Transx, splitOn: splitOn);
-            return res;
+            return dict.Values;
 
 
         }
@@ -172,6 +179,7 @@ namespace DataAccess
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
             string[] joinType = (string[])dictArgs["joinType"];
+            Dictionary<int, T> dict = (Dictionary<int, T>)dictArgs["DictionaryOfKesAndResults"];
 
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
@@ -181,7 +189,7 @@ namespace DataAccess
             string sql = string.Format("SELECT *  FROM [{0}] p {8} [{2}] c on p.{3}=c.{6} {9} [{4}] s on p.{5}=s.{7}  where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], idFieldName_right[1], idFieldName_right[2], joinType[1], joinType[2]);
             var res = conn.Query<T, T2, T3, T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
 
-            return res.SingleOrDefault();
+            return dict.Values.SingleOrDefault();
 
         }
 
@@ -192,6 +200,7 @@ namespace DataAccess
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
             string[] joinType = (string[])dictArgs["joinType"];
+            Dictionary<int, T> dict = (Dictionary<int, T>)dictArgs["DictionaryOfKesAndResults"];
 
 
             var filteredItems = idFieldName.Where((p, i) => i > 0);
@@ -203,7 +212,7 @@ namespace DataAccess
             string sql = string.Format("SELECT *  FROM [{0}] p {7} [{1}] c on p.{2}=c.{5} {8} [{3}] s on p.{4}=s.{6}  ", tableName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], idFieldName_right[1], idFieldName_right[2], joinType[1], joinType[2]);
 
             var res = conn.Query<T, T2, T3, T>(sql, dl2,  transaction:_trans.Transx, splitOn: splitOn);
-            return res;
+            return dict.Values;
 
 
         }
@@ -317,29 +326,12 @@ namespace DataAccess
             string[] tableName = (string[])dictArgs["tableName"];
             string[] idFieldName=(string[])dictArgs["idFieldName"];
             string[] idFieldName_right=(string[])dictArgs["idFieldName_right"];
-
-            //param = new  { ProductID = prodid };
-
+            Dictionary<int, T> dict = (Dictionary<int, T>)dictArgs["DictionaryOfKesAndResults"];
             var filteredItems = idFieldName.Where((p, i) => i > 0);
-
             var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
-
-
-
             SqlConnection conn = _trans.Connection;
-
-            //var res = conn.Query<Product>("SELECT *  FROM [Northwind].[dbo].[Products] where [ProductID]=@ProductID", new { ProductID = prodid }, _trans.Transx);
-
-            string sql = string.Format("SELECT p.*,c.*  FROM [{0}] p inner join [Order Details] c on p.{3}=c.{3}   where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[0]);
-
-
-
-            //var res = conn.Query<Product, Category, Supplier, Product>(sql, (prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; }, new { ProductID = prodid }, _trans.Transx, splitOn: "CategoryID,supplierid");
-
-            //Func<Product, Category, Supplier, Product> dl2 = new Func<Product,Category, Supplier, Product>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
-
-            //var res = conn.Query<T, T2, T3, T4, T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
-            string PrimaryKey = idFieldName[0];
+           string sql = string.Format("SELECT p.*,c.*  FROM [{0}] p inner join [Order Details] c on p.{3}=c.{3}   where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[0]);
+           string PrimaryKey = idFieldName[0];
             string propertyname2=typeof(T2).Name+ "s";
             Func<T, int> parentKeySelector = new Func<T, int>(a => { return (int)typeof(T).GetProperty(PrimaryKey).GetValue(a,null); });
             Func<T, IList<T2>> childSelector = new Func<T, IList<T2>>(a => { 

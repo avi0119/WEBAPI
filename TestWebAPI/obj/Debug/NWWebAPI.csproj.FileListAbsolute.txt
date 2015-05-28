@@ -24,3 +24,4 @@ E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Dapper.xml
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\NWWebAPI.csprojResolveAssemblyReference.cache
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\TestWebAPI.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\TestWebAPI.pdb
+E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\TestWebAPI.dll.config

@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NWWebAPI", "TestWebAPI\NWWebAPI.csproj", "{036B70A5-DBB8-47A7-9E83-73A61F62A2B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{4D66CDC0-B2B8-452B-95BE-BA13EB32C230}"
@@ -12,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{5EC9F4AA-E4C8-4C9F-86C9-990C8C6DCD5D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTeststingTrial", "UnitTeststingTrial\UnitTeststingTrial.csproj", "{2C29D5D6-4DE7-4665-9E0F-4B3AD4FF018C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GateToApplication", "GateToApplication\GateToApplication.csproj", "{8B5353E9-48B8-4E31-A746-BB9C55A7D2D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +39,10 @@ Global
 		{2C29D5D6-4DE7-4665-9E0F-4B3AD4FF018C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C29D5D6-4DE7-4665-9E0F-4B3AD4FF018C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C29D5D6-4DE7-4665-9E0F-4B3AD4FF018C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B5353E9-48B8-4E31-A746-BB9C55A7D2D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B5353E9-48B8-4E31-A746-BB9C55A7D2D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B5353E9-48B8-4E31-A746-BB9C55A7D2D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B5353E9-48B8-4E31-A746-BB9C55A7D2D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

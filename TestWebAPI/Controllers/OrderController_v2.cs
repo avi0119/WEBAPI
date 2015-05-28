@@ -9,12 +9,14 @@ using DataAccess;
 namespace TestWebAPI
 {
 
-    public class OrderController : GenericContr<Order, Customer, Employee, Order>
+    public class OrderController : GenericContr<Order, Customer, OrderDetail, Order>
     {
 
-        public OrderController()
+        public OrderController(IGenericCRUD<Order> iaddprod)
+            : base(iaddprod)
         {
             numberOfGenerics = 3;
+            //this.adjuster = new Action<string[], string[], string[], string[]>((tables, left, right, jointype) => { left[2] = "OrderID"; jointype[1] = "left outer join"; });
         }
         #region  Rest
 
@@ -37,8 +39,8 @@ namespace TestWebAPI
         [Route("api/Order/{productID:int}")]
         override public Order Get(int productID)
         {
-            return AltGet(productID);
-            //return base.Get(productID);
+            //return AltGet(productID);
+            return base.Get(productID);
         }
         //private void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, out string[] tableName, out string[] idFieldName)
         //{

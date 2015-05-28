@@ -80,6 +80,22 @@ namespace DataAccess
             }
             return nametoreturn;
         }
+
+        public string FindIEnumerabkePropertyNameOFGivenType<T>( string fiedlnameToIgnore)
+        {
+            string nametoreturn = null;
+            foreach (string a in _values.Keys)
+            {
+                Type requiredtype=typeof(IEnumerable<T>);
+                if ((Type)_values[a] == requiredtype && !(fiedlnameToIgnore == a))
+                {
+                    nametoreturn = a;
+
+                    break;
+                }
+            }
+            return nametoreturn;
+        }
         #endregion
     }
 
