@@ -12,8 +12,9 @@ namespace TestWebAPI
     public class ProductController : GenericContr<Product, Category, Supplier, Customer>
     {
 
-        public ProductController()
+        public ProductController(IGenericCRUD<Product> iaddprod):base(iaddprod)
         {
+            
             numberOfGenerics = 3;
         }
         #region  Rest
@@ -66,7 +67,7 @@ namespace TestWebAPI
  }
         
          */
-        ////http://localhost:39402/api/product/77
+        ////http://localhost:39402/api/product
         [HttpPost]
         // POST api/<controller>
 

@@ -11,8 +11,10 @@ namespace TestWebAPI
 
     public class CategoryController : GenericContr<Category, Category, Supplier, Category>
     {
-        public CategoryController()
+        public CategoryController(IGenericCRUD<Category> iaddprod)
+            : base(iaddprod)
         {
+
             numberOfGenerics = 1;
         }
         #region  Rest

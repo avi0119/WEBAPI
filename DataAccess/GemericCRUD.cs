@@ -109,7 +109,7 @@ namespace DataAccess
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
 
             SqlConnection conn = _trans.Connection;
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{1}] c on p.{2}=c.{7} inner join [{3}] s on p.{4}=s.{8}    inner join [{5}] v on p.{6}=v.{9}  ", tableName[0],  tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3], idFieldName_right[1], idFieldName_right[2], idFieldName_right[3]);
+            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{1}] c on p.{2}=c.{7} {10} [{3}] s on p.{4}=s.{8}    {11} [{5}] v on p.{6}=v.{9}  ", tableName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3], idFieldName_right[1], idFieldName_right[2], idFieldName_right[3], joinType[1], joinType[2]);
             var res = conn.Query<T, T2, T3,T4, T>(sql, dl2, transaction: _trans.Transx, splitOn: splitOn);
             return res;
         }
@@ -118,11 +118,12 @@ namespace DataAccess
             string[] tableName = (string[])dictArgs["tableName"];
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
+            string[] joinType = (string[])dictArgs["joinType"];
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
             SqlConnection conn = _trans.Connection;
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{8} inner join [{4}] s on p.{5}=s.{9}    inner join [{6}] v on p.{7}=v.{10}  where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3], idFieldName_right[1],idFieldName_right[2],idFieldName_right[3]);
+            string sql = string.Format("SELECT *  FROM [{0}] p {11} [{2}] c on p.{3}=c.{8} {12} [{4}] s on p.{5}=s.{9}    {13} [{6}] v on p.{7}=v.{10}  where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], tableName[3], idFieldName[3], idFieldName_right[1], idFieldName_right[2], idFieldName_right[3], joinType[1], joinType[2], joinType[3]);
             var res = conn.Query<T, T2, T3, T4, T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
 
             return res.SingleOrDefault();
@@ -135,13 +136,14 @@ namespace DataAccess
             string[] tableName = (string[])dictArgs["tableName"];
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
+            string[] joinType = (string[])dictArgs["joinType"];
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
 
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
 
             SqlConnection conn = _trans.Connection;
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{4}    where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], idFieldName_right[1]);
+            string sql = string.Format("SELECT *  FROM [{0}] p {5} [{2}] c on p.{3}=c.{4}    where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], idFieldName_right[1], joinType[1]);
             var res = conn.Query<T, T2,  T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
 
             return res.SingleOrDefault();
@@ -151,12 +153,13 @@ namespace DataAccess
             string[] tableName = (string[])dictArgs["tableName"];
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
+            string[] joinType = (string[])dictArgs["joinType"];
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
 
             SqlConnection conn = _trans.Connection;
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{4}     ", tableName[0], idFieldName[0], tableName[1], idFieldName[1], idFieldName_right[1]);
+            string sql = string.Format("SELECT *  FROM [{0}] p {5} [{2}] c on p.{3}=c.{4}     ", tableName[0], idFieldName[0], tableName[1], idFieldName[1], idFieldName_right[1], joinType[1]);
             var res = conn.Query<T, T2, T>(sql, dl2, transaction: _trans.Transx, splitOn: splitOn);
             return res;
 
@@ -168,13 +171,14 @@ namespace DataAccess
             string[] tableName = (string[])dictArgs["tableName"];
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
+            string[] joinType = (string[])dictArgs["joinType"];
 
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var filteredItems_right = idFieldName_right.Where((p, i) => i > 0).ToArray();
             var splitOn = String.Join(",", (filteredItems_right.ToArray<string>()));
 
             SqlConnection conn = _trans.Connection;
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{2}] c on p.{3}=c.{6} inner join [{4}] s on p.{5}=s.{7}  where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2],  idFieldName_right[1], idFieldName_right[2]);
+            string sql = string.Format("SELECT *  FROM [{0}] p {8} [{2}] c on p.{3}=c.{6} {9} [{4}] s on p.{5}=s.{7}  where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], idFieldName_right[1], idFieldName_right[2], joinType[1], joinType[2]);
             var res = conn.Query<T, T2, T3, T>(sql, dl2, param, _trans.Transx, splitOn: splitOn);
 
             return res.SingleOrDefault();
@@ -187,6 +191,7 @@ namespace DataAccess
             string[] tableName = (string[])dictArgs["tableName"];
             string[] idFieldName = (string[])dictArgs["idFieldName"];
             string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
+            string[] joinType = (string[])dictArgs["joinType"];
 
 
             var filteredItems = idFieldName.Where((p, i) => i > 0);
@@ -195,7 +200,7 @@ namespace DataAccess
 
 
             SqlConnection conn = _trans.Connection;
-            string sql = string.Format("SELECT *  FROM [{0}] p inner join [{1}] c on p.{2}=c.{5} inner join [{3}] s on p.{4}=s.{6}  ", tableName[0],  tableName[1], idFieldName[1], tableName[2], idFieldName[2], idFieldName_right[1], idFieldName_right[2]);
+            string sql = string.Format("SELECT *  FROM [{0}] p {7} [{1}] c on p.{2}=c.{5} {8} [{3}] s on p.{4}=s.{6}  ", tableName[0], tableName[1], idFieldName[1], tableName[2], idFieldName[2], idFieldName_right[1], idFieldName_right[2], joinType[1], joinType[2]);
 
             var res = conn.Query<T, T2, T3, T>(sql, dl2,  transaction:_trans.Transx, splitOn: splitOn);
             return res;

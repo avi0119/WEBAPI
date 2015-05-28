@@ -12,8 +12,9 @@ namespace TestWebAPI
     public class EmployeeController : GenericContr<Employee, Employee, Supplier, Employee>
     {
 
-        public EmployeeController()
+        public EmployeeController(IGenericCRUD<Employee> iaddprod):base(iaddprod)
         {
+            
             numberOfGenerics = 2;
             this.adjuster = new Action<string[], string[], string[], string[]>((tables, left, right, jointype) => { left[1] = "ReportsTo"; jointype[1] = "left outer join"; });
         }

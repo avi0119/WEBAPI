@@ -19,9 +19,12 @@ namespace TestWebAPI
         // GET api/<controller>
         public GenericContr()
         {
+        }
+        public GenericContr(IGenericCRUD<T> iaddprod)
+        {
             numberOfGenerics = 1;
             buildClassMetaDataDictionary();
-            IGenericCRUD<T> iaddprod =( IGenericCRUD<T>) (GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IGenericCRUD<T>)));
+            //IGenericCRUD<T> iaddprod =( IGenericCRUD<T>) (GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IGenericCRUD<T>)));
             ////this(iaddprod);
             _iaddprod = iaddprod;
             var z = 1;
@@ -250,11 +253,11 @@ namespace TestWebAPI
          
         }
         
-        public GenericContr(IGenericCRUD<T> iaddprod)
-        {
-            //_IProduct=iproduct;
-            _iaddprod = iaddprod;
-        }
+        //public GenericContr(IGenericCRUD<T> iaddprod)
+        //{
+        //    //_IProduct=iproduct;
+        //    _iaddprod = iaddprod;
+        //}
 
         private IEnumerable<T> ObtainProductByID_final(int numberofgenerics)
         {

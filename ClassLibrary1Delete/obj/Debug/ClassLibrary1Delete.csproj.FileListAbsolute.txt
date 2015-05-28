@@ -1,0 +1,1 @@
+E:\C#Projects\2014Projects\TestWebAPI\ClassLibrary1Delete\obj\Debug\ClassLibrary1Delete.csprojResolveAssemblyReference.cache

@@ -1,0 +1,46 @@
+﻿
+PRODUCTController
+
+http://localhost:39402/api/product  -- GET
+http://localhost:39402/api/product/77 --GET
+
+http://localhost:39402/api/product/80  -- POST
+Content-Type: application/json; charset=utf-8
+
+{
+  
+"ProductName":"my updated prod", 
+"SupplierID":5,     
+"CategoryID":1,     
+"QuantityPerUnit":"12 boxes",
+"UnitPrice":12,     
+"UnitsInStock":55,
+"UnitsOnOrde":3,
+"ReorderLevel":2,
+"Discontinued":0
+}
+
+http://localhost:39402/api/product/80  -- PUT
+
+Content-Type: application/json; charset=utf-8
+
+{
+"Productid":80,    
+"ProductName":"my updated prod", 
+"SupplierID":5,     
+"CategoryID":1,     
+"QuantityPerUnit":"12 boxes",
+"UnitPrice":12,     
+"UnitsInStock":55,
+"UnitsOnOrde":3,
+"ReorderLevel":2,
+"Discontinued":0
+}
+
+
+
+http://localhost:39402/api/product/80 --DELETE
+
+
+
+
