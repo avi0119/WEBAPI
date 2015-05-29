@@ -88,9 +88,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AngularJS\components\cart\cart.js" />
+    <Content Include="AngularJS\components\cart\cartSummary.html" />
     <Content Include="AngularJS\controllers\northwind.js" />
     <Content Include="AngularJS\controllers\productListControllers.js" />
     <Content Include="AngularJS\filters\customFilters.js" />
+    <Content Include="AngularJS\ngmodules\angular-resource.js" />
+    <Content Include="AngularJS\ngmodules\angular-route.js" />
+    <Content Include="AngularJS\ngmodules\angular.js" />
+    <Content Include="AngularJS\ngmodules\bootstrap-theme.css" />
+    <Content Include="AngularJS\ngmodules\bootstrap.css" />
+    <Content Include="AngularJS\views\checkoutSummary.html" />
+    <Content Include="AngularJS\views\ProductList.html" />
     <Content Include="index.html" />
     <Content Include="Controllers\ImportantRESTLInks.txt" />
     <Content Include="Global.asax" />
@@ -134,11 +143,7 @@
       <Name>DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AngularJS\components\" />
-    <Folder Include="AngularJS\ngmodules\" />
-    <Folder Include="AngularJS\views\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

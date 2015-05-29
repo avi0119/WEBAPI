@@ -1,10 +1,12 @@
-﻿angular.module("northWind").controller('northwindCtrl',
-function ($scope, $http) {
+﻿angular.module("northWind")
+.constant("dataUrl", "http://localhost:39402/api/product")
+.controller('northwindCtrl',
+function ($scope, $http, dataUrl) {
     $scope.data = {};
 
     $http({
         method: 'GET',
-        url: "http://localhost:39402/api/product?" + 'callback=JSON_CALLBACK'
+        url:dataUrl// "http://localhost:39402/api/product?" + 'callback=JSON_CALLBACK'
     }).success(function (data, status) {
         $scope.data.products = data;
         var i;
@@ -12,7 +14,7 @@ function ($scope, $http) {
             console.log(data[i]);                    // Do something with `substr[i]`
         }
 
-    }).error(function (data, status) {
-        // Some error occurred
+    }).error(function (error) {
+        $scope.data.error = error;
     });
 });

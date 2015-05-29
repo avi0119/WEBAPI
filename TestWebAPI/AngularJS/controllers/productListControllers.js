@@ -1,7 +1,7 @@
 ﻿angular.module("northWind")
 .constant("productListActiveClass", "btn-primary")
 .constant("productListPageCount", 6)
-.controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount)
+.controller("productListCtrl", function ($scope, $filter, productListActiveClass, productListPageCount,cart)
 {
     $scope.selectedPage = 1;
     $scope.pageSize = productListPageCount;
@@ -22,5 +22,8 @@
     }
     $scope.getPageClass = function (page) {
         return $scope.selectedPage == page ? productListActiveClass : "";
+    }
+    $scope.addProductToCart = function (product) {
+        cart.addProduct(product.ProductID, product.ProductName, product.UnitPrice);
     }
 });
