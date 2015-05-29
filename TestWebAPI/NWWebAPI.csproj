@@ -88,9 +88,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AngularJS\controllers\northwind.js" />
+    <Content Include="AngularJS\controllers\productListControllers.js" />
+    <Content Include="AngularJS\filters\customFilters.js" />
+    <Content Include="index.html" />
     <Content Include="Controllers\ImportantRESTLInks.txt" />
     <Content Include="Global.asax" />
-    <Content Include="index.html" />
+    <Content Include="index_old.html" />
     <Content Include="test.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -129,6 +133,11 @@
       <Project>{5ec9f4aa-e4c8-4c9f-86c9-990c8c6dcd5d}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AngularJS\components\" />
+    <Folder Include="AngularJS\ngmodules\" />
+    <Folder Include="AngularJS\views\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
