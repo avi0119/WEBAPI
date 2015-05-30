@@ -90,6 +90,7 @@
   <ItemGroup>
     <Content Include="AngularJS\components\cart\cart.js" />
     <Content Include="AngularJS\components\cart\cartSummary.html" />
+    <Content Include="AngularJS\controllers\checkoutControllers.js" />
     <Content Include="AngularJS\controllers\northwind.js" />
     <Content Include="AngularJS\controllers\productListControllers.js" />
     <Content Include="AngularJS\filters\customFilters.js" />
@@ -99,7 +100,9 @@
     <Content Include="AngularJS\ngmodules\bootstrap-theme.css" />
     <Content Include="AngularJS\ngmodules\bootstrap.css" />
     <Content Include="AngularJS\views\checkoutSummary.html" />
+    <Content Include="AngularJS\views\placeOrder.html" />
     <Content Include="AngularJS\views\ProductList.html" />
+    <Content Include="AngularJS\views\thankYou.html" />
     <Content Include="index.html" />
     <Content Include="Controllers\ImportantRESTLInks.txt" />
     <Content Include="Global.asax" />
@@ -141,6 +144,10 @@
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
       <Project>{5ec9f4aa-e4c8-4c9f-86c9-990c8c6dcd5d}</Project>
       <Name>DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModelObjects\ModelObjects.csproj">
+      <Project>{6d8d592a-fdaa-4604-a7c0-1a62a6fd75e6}</Project>
+      <Name>ModelObjects</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

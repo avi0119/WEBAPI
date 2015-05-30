@@ -1,7 +1,8 @@
 ﻿angular.module("northWind")
 .constant("dataUrl", "http://localhost:39402/api/product")
+.constant("orderUrl", "http://localhost:39402/api/order")
 .controller('northwindCtrl',
-function ($scope, $http, dataUrl) {
+function ($scope, $http, $location, dataUrl, orderUrl, cart) {
     $scope.data = {};
 
     $http({
@@ -17,4 +18,18 @@ function ($scope, $http, dataUrl) {
     }).error(function (error) {
         $scope.data.error = error;
     });
+    $scope.sendOrder = function (shippingDetails) {
+        var order = angular.copy(shippingDetails);
+        order.products = cart.getProducts();
+        $http.post(orderUrl +'/x', order)
+        .success(function (data) {
+            $scope.data.orderId = data;
+            cart.getProducts().length = 0;
+        })
+        .error(function (error) {
+            $scope.data.orderError = error;
+        }).finally(function () {
+            $location.path("/complete");
+        });
+    }
 });

@@ -137,16 +137,14 @@ namespace TestWebAPI
         virtual public T Post([FromBody]T value)
         {
             dynamic dl;
-            string[] tableName;
-            string[] idFieldName;
-            string[] idFieldName_right;
+
             getDelegateTableNamesAndFieldNames_final(out dl, QueryRelatedArgs, numberOfGenerics);
             var id = _iaddprod.Add(value, ((string[])QueryRelatedArgs["tableName"])[0]);
             var p = ObtainProductByID_FINAL(id, dl, QueryRelatedArgs, numberOfGenerics);
             var b = value;
             return p;
         }
-
+        
 
         /*
 {
@@ -202,7 +200,7 @@ namespace TestWebAPI
             classMetaData.Add(typeof(Shipper), new ClassTypeMetaData { tableName = "shippers", primaryKeyLeft = "ShipperID", primaryKeyRight = "ShipperID", joinType = "left outer join" });
 
         }
-        private void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, Dictionary<string,object> QueryRelatedArgs)
+        public void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, Dictionary<string,object> aQueryRelatedArgs)
         {
             string[] tableName; string[] idFieldName; string[] idFieldName_right; string[] joinType;
             List<string>  tableNameList = new List<string> ();// { "products", "categories" };
@@ -249,19 +247,19 @@ namespace TestWebAPI
                 adjuster(tableName, idFieldName, idFieldName_right, joinType);
             }
             object test;
-            if (QueryRelatedArgs.TryGetValue("tableName", out test) == false) 
+            if (aQueryRelatedArgs.TryGetValue("tableName", out test) == false) 
             
             
             {
-                QueryRelatedArgs.Add("tableName", tableName); 
+                aQueryRelatedArgs.Add("tableName", tableName); 
             
             }
-            if (QueryRelatedArgs.TryGetValue("idFieldName", out test) == false)
+            if (aQueryRelatedArgs.TryGetValue("idFieldName", out test) == false)
             {
-                QueryRelatedArgs.Add("idFieldName", idFieldName);
+                aQueryRelatedArgs.Add("idFieldName", idFieldName);
             }
-            if (QueryRelatedArgs.TryGetValue("idFieldName_right", out test) == false) QueryRelatedArgs.Add("idFieldName_right", idFieldName_right);
-            if (QueryRelatedArgs.TryGetValue("joinType", out test) == false) QueryRelatedArgs.Add("joinType", joinType);
+            if (aQueryRelatedArgs.TryGetValue("idFieldName_right", out test) == false) aQueryRelatedArgs.Add("idFieldName_right", idFieldName_right);
+            if (aQueryRelatedArgs.TryGetValue("joinType", out test) == false) aQueryRelatedArgs.Add("joinType", joinType);
          
         }
         

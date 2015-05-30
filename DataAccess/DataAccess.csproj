@@ -52,7 +52,6 @@
     <Compile Include="Entities\IenumerableOrderDetail.cs" />
     <Compile Include="GemericCRUD.cs" />
     <Compile Include="IGeericCRUD.cs" />
-    <Compile Include="ITrans.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderDetails.cs" />
     <Compile Include="Entities\Product.cs" />
@@ -62,11 +61,16 @@
     <Compile Include="Entities\Supplier.cs" />
     <Compile Include="Entities\Territory.cs" />
     <Compile Include="DBProcessing\PropertyContainer.cs" />
-    <Compile Include="Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{4d66cdc0-b2b8-452b-95be-ba13eb32c230}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

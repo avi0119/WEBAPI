@@ -98,9 +98,10 @@ namespace DapperTest2
                 using (var conn = new SqlConnection("server=OWNER\\SQLEXPRESS;Trusted_Connection=yes;Integrated Security=SSPI;database=Northwind;connection timeout=30"))
             {
                 conn.Open();
+                InsertAndGetID(conn);
                 //MultipleObjectsExamp(conn);
-                ParameterizedQuery2(conn);
-                var products = conn.Query<Product>("SELECT * FROM Products");
+                //ParameterizedQuery2(conn);
+                //var products = conn.Query<Product>("SELECT * FROM Products");
             }
         }
 
@@ -183,6 +184,21 @@ namespace DapperTest2
             Console.WriteLine("Customer city: {0}", firstOrder.Customer.City);
         }
         static void InsertAndGetID(SqlConnection conn)
+        {
+
+            string sqlQuery = "INSERT INTO [dbo].[Customer]([FirstName],[LastName],[Address],[City]) VALUES (@FirstName,@LastName,@Address,@City)";
+            conn.Execute(sqlQuery,
+                new
+                {
+                    //FirstName=10248,
+                    
+                    //customerEntity.Address,
+                    //customerEntity.City
+                });
+
+
+        }
+        static void InsertAndGetID2(SqlConnection conn)
         {
 
             string sqlQuery = "INSERT INTO [dbo].[Customer]([FirstName],[LastName],[Address],[City]) VALUES (@FirstName,@LastName,@Address,@City)";

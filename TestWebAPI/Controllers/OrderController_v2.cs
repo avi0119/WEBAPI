@@ -6,15 +6,21 @@ using System.Net.Http;
 using System.Web.Http;
 using Common;
 using DataAccess;
+using ModelObjects;
+
+
 namespace TestWebAPI
+
 {
 
     public class OrderController : GenericContr<Order, Customer, OrderDetail, Order>
     {
+        public IGenericCRUD<OrderDetail> _iaddprodOrderDetail;
 
-        public OrderController(IGenericCRUD<Order> iaddprod)
+        public OrderController(IGenericCRUD<Order> iaddprod, IGenericCRUD<OrderDetail> iaddprodOrderDetail)
             : base(iaddprod)
         {
+            _iaddprodOrderDetail = iaddprodOrderDetail;
             numberOfGenerics = 3;
             //this.adjuster = new Action<string[], string[], string[], string[]>((tables, left, right, jointype) => { left[2] = "OrderID"; jointype[1] = "left outer join"; });
         }
@@ -144,8 +150,26 @@ namespace TestWebAPI
         // PUT api/<controller>/5
         override public Order Put([FromBody]Order value)
         {
+            
             return base.Put(value);
 
+        }
+
+        [HttpPost]
+        [Route("api/order/x")]
+         public int Get([FromBody] CartObject cartobject)
+        {
+            DateTime now = DateTime.Now;
+            Order ord = cartobject.EntityOrder(now);
+            Order retord=base.Post(ord);
+            List<OrderDetail> listoford = cartobject.EntityOrederDetails(retord.OrderID);
+            string tableName = classMetaData[typeof(OrderDetail)].tableName;
+            string idFieldName = classMetaData[typeof(OrderDetail)].primaryKeyLeft;
+
+
+            _iaddprodOrderDetail.Add(listoford,tableName, idFieldName);
+
+            return retord.OrderID;
         }
         #endregion //REST
     }

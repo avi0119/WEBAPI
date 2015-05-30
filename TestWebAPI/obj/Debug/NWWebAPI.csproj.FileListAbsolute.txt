@@ -1,8 +1,10 @@
+E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\TestWebAPI.dll.config
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\TestWebAPI.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\TestWebAPI.pdb
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Common.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\DataAccess.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Microsoft.Web.Infrastructure.dll
+E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\ModelObjects.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Newtonsoft.Json.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Ninject.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Ninject.Web.Common.dll
@@ -13,6 +15,7 @@ E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\WebActivatorEx.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Dapper.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Common.pdb
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\DataAccess.pdb
+E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\ModelObjects.pdb
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Newtonsoft.Json.xml
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Ninject.xml
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Ninject.Web.Common.xml
@@ -24,4 +27,3 @@ E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\Dapper.xml
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\NWWebAPI.csprojResolveAssemblyReference.cache
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\TestWebAPI.dll
 E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\obj\Debug\TestWebAPI.pdb
-E:\C#Projects\2014Projects\TestWebAPI\TestWebAPI\bin\TestWebAPI.dll.config

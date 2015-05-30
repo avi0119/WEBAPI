@@ -8,6 +8,8 @@ using Dapper;
 
 using System.Data;
 using System.Reflection;
+using Common;
+
 
 namespace DataAccess
 {
@@ -28,10 +30,10 @@ namespace DataAccess
 
 
 
-        public int Add(T p, string tableName)
+        public int Add(T p, string tableName, bool returnint = true)
         {
 
-            var id = Insert(p, tableName);
+            var id = Insert(p, tableName, returnint);
 
 
 
@@ -40,14 +42,23 @@ namespace DataAccess
         }
 
 
-        protected int Insert(T obj, string tableNAme)
+        protected int Insert(T obj, string tableNAme,bool returnint = true)
         {
-
+            //bool returnint = false;
             var propertyContainer = ParseProperties(obj);
-
-            var sql = string.Format("INSERT INTO [{0}] ({1})   VALUES (@{2}) SELECT CAST(scope_identity() AS int)", tableNAme, string.Join(", ", propertyContainer.ValueNames), string.Join(", @", propertyContainer.ValueNames));
-
-            var id = _trans.Connection.Query<int>(sql, propertyContainer.ValuePairs, _trans.Transx, commandType: CommandType.Text).First();
+            string stringtoadd = returnint ? " SELECT CAST(scope_identity() AS int)" : "";
+            var sql = string.Format("INSERT INTO [{0}] ({1})   VALUES (@{2})" + stringtoadd, tableNAme, string.Join(", ", propertyContainer.ValueNames), string.Join(", @", propertyContainer.ValueNames));
+            int id;
+            if (returnint == true) 
+            { 
+                 id = _trans.Connection.Query<int>(sql, propertyContainer.ValuePairs, _trans.Transx, commandType: CommandType.Text).First();
+            }
+            else
+            {
+                _trans.Connection.Execute(sql, propertyContainer.ValuePairs, _trans.Transx, commandType: CommandType.Text);
+                 id = -1;
+            }
+            
 
             return id;
 
@@ -245,7 +256,7 @@ namespace DataAccess
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)
             {
-
+                Type propType = property.PropertyType;
                 // Skip reference types (but still include string!)
 
                 if (property.PropertyType.IsClass && property.PropertyType != typeof(string))
@@ -274,8 +285,11 @@ namespace DataAccess
 
                 var value = typeof(T).GetProperty(property.Name).GetValue(obj, null);
 
-
-
+                //var enumerable = value as IEnumerable<object>;
+                //if (!(enumerable == null))
+                //    continue;
+                if (typeof(IEnumerable<object>).IsAssignableFrom(propType))
+                    continue;
                 if (property.IsDefined(typeof(DapperKey), false) || validKeyNames.Contains(name))
                 {
 
@@ -357,6 +371,26 @@ namespace DataAccess
 
 
 
+
+        private dynamic returnCriteriaParam(string propname, int id)
+        {
+            List<PropertyNameAndType> dict = new List<PropertyNameAndType>();
+            dict.Add(new PropertyNameAndType() { Name = propname, Type_ = typeof(int), value = id });
+            DynamicClass a = new DynamicClass(dict);
+            return a.resultObject;
+        }
+        virtual public List<T> Add(List<T> list, string tableName,string idFieldName)
+        {
+            List<T> ret=new List<T>();
+            foreach (T obj in list)
+            {
+                int res=this.Add(obj,tableName,false);
+                dynamic param = returnCriteriaParam(idFieldName,res);
+                T indivobjret = this.Get(res, tableName, idFieldName, param);
+                ret.Add(indivobjret);
+            }
+            return ret;
+        }
     }
 
     public static class DapperExtensions

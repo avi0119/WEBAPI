@@ -3,8 +3,8 @@
 
 <head>
     <title>northWind</title>
-    <script src="AngularJS/angular.js"></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
+    <!--<script src="AngularJS/angular.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <!--<link href="AngularJS/bootstrap.css" rel="stylesheet" />
     <link href="AngularJS/bootstrap-theme.css" rel="stylesheet" />-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -15,6 +15,12 @@
 
         var app = angular.module("northWind", ["customFilters", "cart", "ngRoute"])
         .config(function ($routeProvider) {
+            $routeProvider.when("/complete", {
+                templateUrl: "/AngularJS/views/thankYou.html"
+            });
+            $routeProvider.when("/placeorder", {
+                templateUrl: "/AngularJS/views/placeOrder.html"
+            });
             $routeProvider.when("/checkout", {
                 templateUrl: "/AngularJS/views/checkoutSummary.html"
             });
@@ -32,6 +38,7 @@
     <script src="AngularJS/controllers/productListControllers.js"></script>
     <script src="AngularJS/components/cart/cart.js"></script>
     <script src="AngularJS/ngmodules/angular-route.js"></script>
+    <script src="AngularJS/controllers/checkoutControllers.js"></script>
 </head>
 <body ng-controller="northwindCtrl">
     <div class="navbar navbar-inverse">

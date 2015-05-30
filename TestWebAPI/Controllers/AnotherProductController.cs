@@ -51,7 +51,7 @@ namespace TestWebAPI
         }
 
         /*
-{,
+{
    
 "ProductName":"my new product",  
 "SupplierID":5,     
@@ -110,7 +110,7 @@ namespace TestWebAPI
         }
 
         //[HttpPost]
-        //[Route("api/product/}")]
+        //[Route("api/product/x")]
         //override public void Get([FromBody]IEnumerable<Product> productID)
         //{
         //    var g = 6;

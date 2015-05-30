@@ -9,7 +9,8 @@ namespace DataAccess
     public interface IGenericCRUD<T>
     {
 
-        int Add(T p, string tableName);
+        int Add(T p, string tableName, bool returnint=true);
+        List<T> Add(List<T> list, string tableName,string idFieldName);
         int UpdateItem(T p, string tableName, string idFieldName);
         bool DeleteItem(T p, string tableName);
         T Get<T2, T3,T4>(int prodid, Dictionary<string, object> QueryRelatedArgs, dynamic param, Func<T, T2, T3,T4, T> dl2);

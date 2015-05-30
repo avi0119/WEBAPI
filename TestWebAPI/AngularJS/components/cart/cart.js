@@ -5,7 +5,7 @@
         addProduct: function (id, name, price) {
             var addedToExistingItem = false;
             for (var i = 0; i < cartData.length; i++) {
-                if (cartData[i].id == id) {
+                if (cartData[i].ProductID == id) {
                     cartData[i].count++;
                     addedToExistingItem = true;
                     break;
@@ -14,13 +14,13 @@
             if (!addedToExistingItem) {
 
                 cartData.push({
-                    count: 1, id: id, price: price, name: name
+                    count: 1, ProductID: id, UnitPrice: price, ProductName: name
                 });
             }
         },
         removeProduct: function (id) {
             for (var i = 0; i < cartData.length; i++) {
-                if (cartData[i].id == id) {
+                if (cartData[i].ProductID == id) {
                     cartData.splice(i, 1);
                     break;
                 }
@@ -39,7 +39,7 @@
             $scope.total = function () {
                 var total = 0;
                 for (var i = 0; i < cartData.length; i++) {
-                    total += (cartData[i].price * cartData[i].count);
+                    total += (cartData[i].UnitPrice * cartData[i].count);
                 }
                 return total;
             }

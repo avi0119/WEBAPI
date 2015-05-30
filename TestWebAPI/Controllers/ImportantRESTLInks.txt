@@ -4,7 +4,7 @@ PRODUCTController
 http://localhost:39402/api/product  -- GET
 http://localhost:39402/api/product/77 --GET
 
-http://localhost:39402/api/product/80  -- POST
+http://localhost:39402/api/product/  -- POST
 Content-Type: application/json; charset=utf-8
 
 {
@@ -19,6 +19,46 @@ Content-Type: application/json; charset=utf-8
 "ReorderLevel":2,
 "Discontinued":0
 }
+
+
+
+
+
+http://localhost:39402/api/product/x  -- POST
+Content-Type: application/json; charset=utf-8
+
+[
+
+{
+   
+"ProductName":"my new product1",  
+"SupplierID":5,     
+"CategoryID":1,     
+"QuantityPerUnit":"12 boxes",
+"UnitPrice":12,     
+"UnitsInStock":55,
+"UnitsOnOrde"r:3,
+"ReorderLevel":2,
+"Discontinued":0
+ 
+        
+ },
+
+{
+   
+"ProductName":"my new product2",  
+"SupplierID":5,     
+"CategoryID":1,     
+"QuantityPerUnit":"12 boxes",
+"UnitPrice":12,     
+"UnitsInStock":55,
+"UnitsOnOrde"r:3,
+"ReorderLevel":2,
+"Discontinued":0
+ 
+        
+ }
+]
 
 http://localhost:39402/api/product/80  -- PUT
 
