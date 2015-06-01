@@ -9,10 +9,11 @@ using DataAccess;
 namespace TestWebAPI
 {
 
-    public class EmployeeController : GenericContr<Employee, Employee, Supplier, Employee>
+    public class EmployeeController : GenericContr<int,Employee, Employee, Supplier, Employee>
     {
 
-        public EmployeeController(IGenericCRUD<Employee> iaddprod):base(iaddprod)
+        public EmployeeController(IGenericCRUD<Employee, int> iaddprod)
+            : base(iaddprod)
         {
             
             numberOfGenerics = 2;

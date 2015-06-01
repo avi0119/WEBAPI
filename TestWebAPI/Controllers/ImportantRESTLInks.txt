@@ -82,5 +82,17 @@ Content-Type: application/json; charset=utf-8
 http://localhost:39402/api/product/80 --DELETE
 
 
+http://localhost:39402/api/user -- POST
+Content-Type: application/json; charset=utf-8
+
+{
+
+"username":"my updated prod", 
+"password":"my updated prod",
+
+        
+ }
+
+
 
 

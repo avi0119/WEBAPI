@@ -50,6 +50,7 @@
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\EmployeeTerritory.cs" />
     <Compile Include="Entities\IenumerableOrderDetail.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="GemericCRUD.cs" />
     <Compile Include="IGeericCRUD.cs" />
     <Compile Include="Entities\Order.cs" />

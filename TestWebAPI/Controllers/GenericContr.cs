@@ -7,14 +7,15 @@ using System.Web.Http;
 using Common;
 using DataAccess;
 namespace TestWebAPI
+
 {
     [UnitOfWorkActionFilter]
-    public class GenericContr<T, T2, T3, T4> : ApiController, IGenericController<T, T2, T3, T4>
+    public class GenericContr<T0,T, T2, T3, T4> : ApiController, IGenericController<T0,T, T2, T3, T4>
     {
 
         public Action<string[], string[], string[], string[]> adjuster;
         public Dictionary<string, object> QueryRelatedArgs = new Dictionary<string, object>();
-        public IGenericCRUD<T> _iaddprod;
+        public IGenericCRUD<T,int> _iaddprod;
         public Dictionary<Type, ClassTypeMetaData> classMetaData=new Dictionary<Type, ClassTypeMetaData>();
         // GET api/<controller>
         public GenericContr()
@@ -22,7 +23,7 @@ namespace TestWebAPI
             var z = 5;
             var hj = z;
         }
-        public GenericContr(IGenericCRUD<T> iaddprod)
+        public GenericContr(IGenericCRUD<T,int> iaddprod)
         {
             numberOfGenerics = 1;
             buildClassMetaDataDictionary();
@@ -91,7 +92,7 @@ namespace TestWebAPI
         ////http://localhost:39402/api/product/80
         // GET api/<controller>/5
         [HttpDelete]
-        [Route("api/Product/{productID:int}")]
+        [Route("api/Product/{productID}")]
         virtual public bool Delete(int productID)
         {
             //Func<T, T2, T3, T> dl = new Func<T, T2, T3, T>((prod, cat, Supplier) => { prod.Category = cat; prod.Supplier = Supplier; return prod; });
@@ -195,9 +196,10 @@ namespace TestWebAPI
             classMetaData.Add(typeof(Supplier), new ClassTypeMetaData { tableName = "suppliers", primaryKeyLeft = "SupplierID", primaryKeyRight = "SupplierID", joinType = "Left Outer Join" });
             classMetaData.Add(typeof(Order), new ClassTypeMetaData { tableName = "orders", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID", joinType = "left outer join" });
             classMetaData.Add(typeof(Employee), new ClassTypeMetaData { tableName = "employees", primaryKeyLeft = "EmployeeID", primaryKeyRight = "EmployeeID", joinType = "left outer join" });
-            classMetaData.Add(typeof(Customer), new ClassTypeMetaData { tableName = "customers", primaryKeyLeft = "CustomerID", primaryKeyRight = "CustomerID", joinType = "left outer join" });
+            classMetaData.Add(typeof(Customer), new ClassTypeMetaData { tableName = "customers", primaryKeyLeft = "CustomerID_", primaryKeyRight = "CustomerID", joinType = "left outer join" });
             classMetaData.Add(typeof(OrderDetail), new ClassTypeMetaData { tableName = "Order Details", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID", joinType = "left outer join" });
             classMetaData.Add(typeof(Shipper), new ClassTypeMetaData { tableName = "shippers", primaryKeyLeft = "ShipperID", primaryKeyRight = "ShipperID", joinType = "left outer join" });
+            classMetaData.Add(typeof(User), new ClassTypeMetaData { tableName = "users", primaryKeyLeft = "UserID", primaryKeyRight = "UserID", joinType = "left outer join" });
 
         }
         public void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, Dictionary<string,object> aQueryRelatedArgs)
@@ -364,7 +366,7 @@ namespace TestWebAPI
             T p = _iaddprod.Get(id, QueryRelatedArgs, param, dl);
             return p;
         }
-        protected T ObtainProductByID2(int id, Func<T, T2, T> dl,Dictionary<string,object>  QueryRelatedArgs)
+        protected T ObtainProductByID2(int id, Func<T, T2, T> dl, Dictionary<string, object> QueryRelatedArgs)
         {
             //Func<T, T2, T3, T> dl; string[] tableName; string[] idFieldName;
             getDelegateTableNamesAndFieldNames2(out dl, QueryRelatedArgs);
@@ -517,7 +519,11 @@ namespace TestWebAPI
 
                 return cachedParent;
             });
+            object test;
+            if (QueryRelatedArgs.TryGetValue("DictionaryOfKesAndResults", out test) == false) 
+            { 
             QueryRelatedArgs.Add("DictionaryOfKesAndResults", cache);
+        }
 
         }
         protected void getDelegateTableNamesAndFieldNames2_old(out Func<T, T2, T> dl, Dictionary<string,object> QueryRelatedArgs)
@@ -614,6 +620,17 @@ namespace TestWebAPI
             dict.Add(new PropertyNameAndType() { Name = propname, Type_ = typeof(int), value = id });
             DynamicClass a = new DynamicClass(dict);
             return a.resultObject;
+        }
+
+
+        virtual public T Post(int productID, T value)
+        {
+            return Post(value);
+        }
+
+        virtual public T Put(int productID, T value)
+        {
+            return Put(value);
         }
     }
     public class ClassTypeMetaData

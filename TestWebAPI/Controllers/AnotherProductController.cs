@@ -9,10 +9,11 @@ using DataAccess;
 namespace TestWebAPI
 {
 
-    public class ProductController : GenericContr<Product, Category, Supplier, Customer>
+    public class ProductController : GenericContr<int,Product, Category, Supplier, Customer>
     {
 
-        public ProductController(IGenericCRUD<Product> iaddprod):base(iaddprod)
+        public ProductController(IGenericCRUD<Product, int> iaddprod)
+            : base(iaddprod)
         {
             
             numberOfGenerics = 3;
@@ -66,8 +67,38 @@ namespace TestWebAPI
         
  }
         
-         
-                  */
+    
+                 */
+        ////http://localhost:39402/api/product/77
+        [HttpPost]
+        [Route("api/product/{ProductID:int}")]
+        //[Route("api/product/{value:Product}")]
+        override public Product Post(int ProductID, [FromBody]Product value)
+        {
+            value.ProductID = ProductID;
+            return base.Put(value);
+        }
+
+
+        /*
+{
+"Productid":80,    
+"ProductName":"my updated prod", 
+"SupplierID":5,     
+"CategoryID":1,     
+"QuantityPerUnit":"12 boxes",
+"UnitPrice":12,     
+"UnitsInStock":55,
+"UnitsOnOrde":3,
+"ReorderLevel":2,
+"Discontinued":0
+        
+ }
+         * do not for get to put in the header the following:
+          Content-Type: application/json; charset=utf-8
+        
+         */
+                  
         ////http://localhost:39402/api/product
         [HttpPost]
         [Route("api/product/")]
@@ -97,6 +128,15 @@ namespace TestWebAPI
         
          */
 
+                 
+        ////http://localhost:39402/api/product/77
+        [HttpPut]
+        [Route("api/product/{ProductID:int}")]
+        //[Route("api/product/{value:Product}")]
+        override public Product Put(int ProductID, [FromBody]Product value)
+        {
+            return base.Put(value);
+        }
 
 
         ////http://localhost:39402/api/product/77

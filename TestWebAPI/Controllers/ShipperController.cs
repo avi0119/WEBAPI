@@ -9,9 +9,9 @@ using DataAccess;
 namespace TestWebAPI
 {
 
-    public class ShipperController : GenericContr<Shipper, Shipper, Supplier, Shipper>
+    public class ShipperController : GenericContr<int,Shipper, Shipper, Supplier, Shipper>
     {
-        public ShipperController(IGenericCRUD<Shipper> iaddprod)
+        public ShipperController(IGenericCRUD<Shipper, int> iaddprod)
             : base(iaddprod)
         {
 

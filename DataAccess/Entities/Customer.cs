@@ -9,7 +9,7 @@ namespace DataAccess
     public class Customer
     {
 
-        public string CustomerID { get; set; }
+        public int CustomerID_ { get; set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }
         public string ContactTitle { get; set; }

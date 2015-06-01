@@ -14,7 +14,7 @@ using Common;
 namespace DataAccess
 {
 
-    public class GemericCRUD<T> : IGenericCRUD<T>
+    public class GemericCRUD<T, T0> : IGenericCRUD<T, T0>
     {
 
 
@@ -335,7 +335,7 @@ namespace DataAccess
         }
 
 
-        public T ReturnAllOrders<T2>(int prodid, Dictionary<string,object> dictArgs, object param)
+        public T ReturnAllOrders<T2>(int prodid, Dictionary<string, object> dictArgs, object param)
         {
             string[] tableName = (string[])dictArgs["tableName"];
             string[] idFieldName=(string[])dictArgs["idFieldName"];
@@ -384,7 +384,7 @@ namespace DataAccess
             List<T> ret=new List<T>();
             foreach (T obj in list)
             {
-                int res=this.Add(obj,tableName,false);
+                int res = this.Add(obj, tableName, false);
                 dynamic param = returnCriteriaParam(idFieldName,res);
                 T indivobjret = this.Get(res, tableName, idFieldName, param);
                 ret.Add(indivobjret);

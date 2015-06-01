@@ -13,16 +13,23 @@ namespace TestWebAPI
 
 {
 
-    public class OrderController : GenericContr<Order, Customer, OrderDetail, Order>
+    public class OrderController : GenericContr<int,Order, Customer, OrderDetail, Order>
     {
-        public IGenericCRUD<OrderDetail> _iaddprodOrderDetail;
+        public IGenericCRUD<OrderDetail, int> _iaddprodOrderDetail;
+        //public OrderController()
+        //{
+        //    var t = 6;
+        //    IGenericCRUD<Order> a = (IGenericCRUD<Order>)(GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IGenericCRUD<Order>)));
+        //    var b = 5;
+        //    var k = b;
+        //}
 
-        public OrderController(IGenericCRUD<Order> iaddprod, IGenericCRUD<OrderDetail> iaddprodOrderDetail)
+        public OrderController(IGenericCRUD<Order, int> iaddprod, IGenericCRUD<OrderDetail, int> iaddprodOrderDetail)
             : base(iaddprod)
         {
             _iaddprodOrderDetail = iaddprodOrderDetail;
             numberOfGenerics = 3;
-            //this.adjuster = new Action<string[], string[], string[], string[]>((tables, left, right, jointype) => { left[2] = "OrderID"; jointype[1] = "left outer join"; });
+            this.adjuster = new Action<string[], string[], string[], string[]>((tables, left, right, jointype) => { left[1] = "CustomerID2"; right[1] = "CustomerID_"; jointype[1] = "left outer join"; });
         }
         #region  Rest
 

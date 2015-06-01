@@ -1,6 +1,6 @@
 E:\C#Projects\2014Projects\TestWebAPI\GateToApplication\bin\GateToApplication.dll.config
 E:\C#Projects\2014Projects\TestWebAPI\GateToApplication\bin\GateToApplication.dll
 E:\C#Projects\2014Projects\TestWebAPI\GateToApplication\bin\GateToApplication.pdb
-E:\C#Projects\2014Projects\TestWebAPI\GateToApplication\obj\Debug\GateToApplication.csprojResolveAssemblyReference.cache
 E:\C#Projects\2014Projects\TestWebAPI\GateToApplication\obj\Debug\GateToApplication.dll
 E:\C#Projects\2014Projects\TestWebAPI\GateToApplication\obj\Debug\GateToApplication.pdb
+E:\C#Projects\2014Projects\TestWebAPI\GateToApplication\obj\Debug\GateToApplication.csprojResolveAssemblyReference.cache

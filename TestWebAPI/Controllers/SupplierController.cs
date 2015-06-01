@@ -9,7 +9,7 @@ using DataAccess;
 namespace TestWebAPI
 {
 
-    public class SupplierController : GenericContr<Supplier, Employee, Supplier, Supplier>
+    public class SupplierController : GenericContr<int,Supplier, Employee, Supplier, Supplier>
     {
 
         public SupplierController()

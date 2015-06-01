@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestWebAPI
 {
-    public interface IGenericController<T, T2, T3, T4>
+    public interface IGenericController<T0,T, T2, T3, T4>
  {
 
 
@@ -32,6 +32,7 @@ namespace TestWebAPI
 
 
          T Post(T value);
+         T Post(int productID, T value);
 
 
 
@@ -39,6 +40,9 @@ namespace TestWebAPI
 
 
          T Put(T value);
+
+         T Put(int productID, T value);
+         
          
 
 

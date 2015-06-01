@@ -9,9 +9,9 @@ using DataAccess;
 namespace TestWebAPI
 {
 
-    public class CategoryController : GenericContr<Category, Category, Supplier, Category>
+    public class CategoryController : GenericContr<int,Category, Category, Supplier, Category>
     {
-        public CategoryController(IGenericCRUD<Category> iaddprod)
+        public CategoryController(IGenericCRUD<Category, int> iaddprod)
             : base(iaddprod)
         {
 

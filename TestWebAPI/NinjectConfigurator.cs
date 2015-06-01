@@ -26,21 +26,24 @@ namespace TestWebAPI
             container.Bind<IActionTransactionHelper>().To<ActionTransactionHelper>().InScope(c => System.Web.HttpContext.Current);
             //container.Bind<IProduct>().To<ProductGetter>().InTransientScope();
             //container.Bind<IProductCRUD>().To<ProductCRUD>().InTransientScope();
-            container.Bind<IGenericCRUD<Product>>().To<GemericCRUD<Product>>().InTransientScope();
-            container.Bind<IGenericCRUD<Category>>().To<GemericCRUD<Category>>().InTransientScope();
-            container.Bind<IGenericCRUD<Employee>>().To<GemericCRUD<Employee>>().InTransientScope();
-            container.Bind<IGenericCRUD<Supplier>>().To<GemericCRUD<Supplier>>().InTransientScope();
-            container.Bind<IGenericCRUD<Order>>().To<GemericCRUD<Order>>().InTransientScope();
-            container.Bind<IEnumerable<OrderDetail>>().To<IEnumerable<OrderDetail>>().InTransientScope();
+            container.Bind<IGenericCRUD<Product, int>>().To<GemericCRUD<Product, int>>().InTransientScope();
+            container.Bind<IGenericCRUD<Category, int>>().To<GemericCRUD<Category, int>>().InTransientScope();
+            container.Bind<IGenericCRUD<Employee, int>>().To<GemericCRUD<Employee, int>>().InTransientScope();
+            container.Bind<IGenericCRUD<Supplier, int>>().To<GemericCRUD<Supplier, int>>().InTransientScope();
+            container.Bind<IGenericCRUD<User, int>>().To<GemericCRUD<User, int>>().InTransientScope();
 
-            container.Bind<IGenericCRUD<Shipper>>().To<GemericCRUD<Shipper>>().InTransientScope();
+           
+            container.Bind<IEnumerable<Customer>>().To<IEnumerable<Customer>>().InTransientScope();
 
+            container.Bind<IGenericCRUD<Shipper, int>>().To<GemericCRUD<Shipper, int>>().InTransientScope();
 
-            container.Bind<IGenericCRUD<OrderDetail>>().To<GemericCRUD<OrderDetail>>().InTransientScope();
+            container.Bind<IGenericCRUD<Customer, int>>().To<GemericCRUD<Customer, int>>().InTransientScope();
+            container.Bind<IGenericCRUD<OrderDetail, int>>().To<GemericCRUD<OrderDetail, int>>().InTransientScope();
+            container.Bind<IGenericCRUD<Order, int>>().To<GemericCRUD<Order, int>>().InTransientScope();
 
             //IGenericCRUD<T> iaddprod = (IGenericCRUD<T>)(GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IGenericCRUD<T>)));
 
-            container.Bind<IGenericController<Product, Category, Supplier, Customer>>().To<GenericContr<Product, Category, Supplier, Customer>>().InRequestScope();
+            container.Bind<IGenericController<int,Product, Category, Supplier, Customer>>().To<GenericContr<int,Product, Category, Supplier, Customer>>().InRequestScope();
 
             //GenericContr<Product, Category, Supplier, Customer>
             

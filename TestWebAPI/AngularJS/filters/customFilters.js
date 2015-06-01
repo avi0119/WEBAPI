@@ -6,22 +6,43 @@
             var keys = {};
             for (var i = 0; i < data.length; i++) {
                 var val;
-                val = data[i][propertyName];
-                if (angular.isUndefined(finalPropertyToTakeValueFrom))
-                {
-                    
-                } else
-                {
-                    angular.isString(finalPropertyToTakeValueFrom)
-                    {
-                        val = val[finalPropertyToTakeValueFrom];
-                    }
-                }
                 
+                if (angular.isUndefined(data[i][propertyName]))
+                {
+                    continue;
+                } else
+
+                {
+                    val = data[i][propertyName];
+                    
+                    if (angular.isUndefined(finalPropertyToTakeValueFrom) || val==null )
+                    {
+                        continue;;
+                    } else
+                    {
+                        console.log("item " + i + " is " + val.CategoryName);
+                        angular.isString(finalPropertyToTakeValueFrom)
+                        {
+                            if (angular.isUndefined(val[finalPropertyToTakeValueFrom])) 
+                            {
+                                continue;
+                            } 
+                            else
+                            {
+                                val = val[finalPropertyToTakeValueFrom];
+                            }
+                    
+                        }
+                    }
+                    if (val =='' || angular.isUndefined(val))
+                    {
+                        continue;
+                    }
                 if (angular.isUndefined(keys[val])) {
                     keys[val] = true;
                     results.push(val);
                 }
+            }
             }
             return results;
         } else {
