@@ -39,17 +39,17 @@
         </tr>
         <tr ng-class="{danger: editedProduct}">
             <td><input ng-model="editedProduct.ProductName" required /></td>
-            <td><input ng-model="editedProduct.Category.Description" required /></td>
+            <td><input ng-model="selectedcat.Description" required /></td>
+            
             <td>
                 
                 
                 <!--<input ng-model="editedProduct.Category.CategoryName" required />-->
-                <select ng-model="editedProduct.Category.CategoryName">
-                    <option ng-repeat="item in categories" value="{{item}}">{{item}}</option>
-                </select>
-
-            
-            </td>
+                <!--<select ng-model="editedProduct.Category.CategoryID">
+                    <option ng-repeat="item in categories" value="{{item.CategoryID}}">{{item.CategoryName}}</option>
+                </select>-->
+                <select  ng-model="selectedcat" ng-options="item as item.CategoryName for item in categories"></select>
+</td>
             <td><input ng-model="editedProduct.UnitPrice" required /></td>
             <td>
                 <button ng-hide="editedProduct.ProductID"
@@ -73,4 +73,7 @@
         <option ng-repeat="item in categories" value="{{item}}" ng-selected="{{item == selectedcategory}}">{{item + "__avi"}}</option>
     </select>
     <div>{{categories[0]}}</div>-->
+    <!--<div ng-bind="findcategorydescription(editedProduct.Category.CategoryID)" > </div>-->
+
+    <div>
 </div>

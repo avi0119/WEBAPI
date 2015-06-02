@@ -3,7 +3,7 @@
 .config(function ($httpProvider) {
     $httpProvider.defaults.withCredentials = true;
 })
-.controller("productCtrl", function ($scope, $resource, productUrl, uniqueFilter) {
+.controller("productCtrl", function ($scope, $resource, productUrl, uniqueFilter, uniqueAllChildrenFilter) {
     //var df = $resource;
     //$scope.screens = ["Products", "Orders"];
    
@@ -17,7 +17,7 @@
 
            function(data) {
                $scope.products = data;
-               $scope.categories = uniqueFilter($scope.products, 'Category', 'CategoryName');
+               $scope.categories = uniqueAllChildrenFilter($scope.products, 'Category', 'CategoryName');
                $scope.selectedcategory = "Produce";
                var k = 6;
     }
@@ -56,10 +56,45 @@
     $scope.startEdit = function (product) {
         $scope.editedProduct = product;
         //$scope.editedProduct.Category.CategoryName = product.Category.CategoryName;
-        var r = $scope.editedProduct.Category.CategoryName;
+        //$scope.selectedcat = $scope.editedProduct.Category;
+        var INDEX = $scope.findcategorydescriptionindex(product.Category.CategoryID);
+        $scope.selectedcat = $scope.categories[INDEX];
     }
     $scope.cancelEdit = function () {
         $scope.editedProduct = null;
+        $scope.selectedcat = null;
+    }
+    $scope.findcategorydescription = function (categoryid) {
+        var result="";
+        var categories_ = $scope.categories;
+        for (var i = 0; i < categories_.length; i++) {
+            var cat = categories_[i];
+            if (cat.CategoryID = categoryid) {
+                result= cat.Description;
+                break;
+            }
+        }
+        return result;
+
+    }
+    $scope.findcategorydescriptionindex = function (categoryid) {
+        var result = -1;
+        var categories_ = $scope.categories;
+        for (var i = 0; i < categories_.length; i++) {
+            var cat = categories_[i];
+            if (cat.CategoryID == categoryid) {
+                result = i;
+                break;
+            }
+        }
+        return result;
+
+    }
+
+    $scope.findcategorydescription2 = function (prod) {
+
+        return prod.Category.Description;;
+
     }
     $scope.listProducts();
 });

@@ -75,4 +75,49 @@
             return data;
         }
     }
-});
+})
+.filter("uniqueAllChildren", function () {
+    return function (data, propertyName, finalPropertyToTakeValueFrom) {
+        if (angular.isArray(data) && angular.isString(propertyName)) {
+            var results = [];
+            var keys = {};
+            var currObject;
+            for (var i = 0; i < data.length; i++) {
+                var val;
+
+                if (angular.isUndefined(data[i][propertyName])) {
+                    continue;
+                } else {
+                    val = data[i][propertyName];
+                    currObject = val;
+                    if (angular.isUndefined(finalPropertyToTakeValueFrom) || val == null) {
+                        continue;;
+                    } else {
+                        console.log("item " + i + " is " + val.CategoryName);
+                        angular.isString(finalPropertyToTakeValueFrom)
+                        {
+                            if (angular.isUndefined(val[finalPropertyToTakeValueFrom])) {
+                                continue;
+                            }
+                            else {
+                                val = val[finalPropertyToTakeValueFrom];
+                            }
+
+                        }
+                    }
+                    if (val == '' || angular.isUndefined(val)) {
+                        continue;
+                    }
+                    if (angular.isUndefined(keys[val])) {
+                        keys[val] = true;
+                        results.push(currObject);
+                    }
+                }
+            }
+            return results;
+        } else {
+            return data;
+        }
+    }
+})
+;
