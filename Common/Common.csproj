@@ -61,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionTransactionHelper.cs" />
+    <Compile Include="BasicAuthenticationMessageHandler.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DateTimeAdapter.cs" />
     <Compile Include="DynamicClass.cs" />
     <Compile Include="IActionTransactionHelper.cs" />

@@ -20,11 +20,17 @@ namespace DataAccess
 
 
         ITrans _trans;
+        private bool Transxneedstobedetroyedhere = false;
 
         public GemericCRUD(ITrans Trans)
         {
 
             _trans = Trans;
+            if (_trans.Transx == null)
+            {
+                _trans.BeginTransaction();
+                Transxneedstobedetroyedhere = true;
+            }
 
         }
 
@@ -230,6 +236,16 @@ namespace DataAccess
 
         public T Get(int prodid, string tableName, string idFieldName, object param)
         {
+            //SqlConnection conn = _trans.Connection;
+            //string sql = string.Format("SELECT *  FROM [{0}] p      where p.[{1}]=@{1}", tableName, idFieldName);
+            //var res = conn.Query<T>(sql, param, _trans.Transx);
+            //return res.SingleOrDefault();
+            return Get<int>(prodid, tableName, idFieldName, param);
+        }
+        
+
+        private T Get<T00>(T00 prodid, string tableName, string idFieldName, object param)
+        {
             SqlConnection conn = _trans.Connection;
             string sql = string.Format("SELECT *  FROM [{0}] p      where p.[{1}]=@{1}", tableName, idFieldName);
             var res = conn.Query<T>(sql, param, _trans.Transx);
@@ -390,6 +406,15 @@ namespace DataAccess
                 ret.Add(indivobjret);
             }
             return ret;
+        }
+
+        public void Dispose()
+        {
+            if (Transxneedstobedetroyedhere == true)
+            {
+                _trans.EndTransaction();
+                _trans.CloseConnection();
+            }
         }
     }
 

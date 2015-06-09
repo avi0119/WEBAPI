@@ -8,6 +8,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using System.Web.Http;
+using DataAccess;
+
+using Common;
 namespace TestWebAPI
 {
     public class Global : System.Web.HttpApplication
@@ -18,8 +21,13 @@ namespace TestWebAPI
             GlobalConfiguration.Configure(WebApiConfig.Register);
             // new AutoMapperConfigurator().Configure(
             //    WebContainerManager.GetAll<IAutoMapperTypeConfigurator>());
+            RegisterHandlers();
         }
-
+        private void RegisterHandlers()
+        {
+            GlobalConfiguration.Configuration.MessageHandlers.Add(
+            new BasicAuthenticationMessageHandler(WebContainerManager.Get<IBasicSecurityService>()));
+        }
         protected void Session_Start(object sender, EventArgs e)
         {
             

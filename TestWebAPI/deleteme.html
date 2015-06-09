@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <title>Directive Controllers</title>
+    <!--<script src="angular.js"></script>
+    <link href="bootstrap.css" rel="stylesheet" />
+    <link href="bootstrap-theme.css" rel="stylesheet" />-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <!--<link href="AngularJS/bootstrap.css" rel="stylesheet" />
+    <link href="AngularJS/bootstrap-theme.css" rel="stylesheet" />-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+    <script src="AngularJS/ngmodules/angular-route.js"></script>
+    <script src="AngularJS/ngmodules/angular-resource.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>-->
+    <script type="text/ng-template" id="productTemplate">
+        <td>{{item.name}}</td>
+        <td><input ng-model='item.quantity' /></td>
+    </script>
+    <script>
+angular.module("exampleApp", [])
+.controller("defaultCtrl", function ($scope) {
+    $scope.somefunc = function () {
+        var z = 5;
+        var t = z;
+        $scope.aa = 1;
+    }
+$scope.products = [{ name: "Apples", price: 1.20, quantity: 2 },
+{ name: "Bananas", price: 2.42, quantity: 3 },
+{ name: "Pears", price: 2.02, quantity: 1 }];
+})
+
+    .directive("productItem", function () {
+        return {
+            template: document.querySelector("#productTemplate").outerText,
+            require: "^productTable",
+            link: function (scope, element, attrs, ctrl) {
+                scope.$watch("item.quantity", function () {
+                    ctrl.updateTotal();
+                });
+            }
+        }
+    })
+.directive("productTable", function () {
+    return {
+        transclude: true,
+        scope: { value: "=productTable", data: "=productData" },
+        controller: function ($scope, $element, $attrs) {
+            this.updateTotal = function() {
+                var total = 0;
+                for (var i = 0; i < $scope.data.length; i++) {
+                    total += Number($scope.data[i].quantity);
+                }
+                $scope.value = total;
+            }
+        }
+    }
+});
+</script>
+</head>
+<body ng-controller="defaultCtrl">
+<div class="panel panel-default">
+<div class="panel-body">
+<table class="table table-striped" product-table="totalValue"
+product-data="products" ng-transclude>
+<tr><th>Name</th><th>Quantity</th></tr>
+<tr ng-repeat="item in products" product-item></tr>
+<tr><th>Total:</th><td>{{totalValue}}</td></tr>
+</table>
+    <button ng-click="somefunc()"> my botton </button>
+</div>
+</div>
+</body>
+</html>

@@ -27,6 +27,7 @@ namespace TestWebAPI
         ////http://localhost:39402/api/product
         [HttpGet]
         [Route("api/Product")]
+        [Authorize(Roles = Constants.RoleNames.Manager)]
         override public IEnumerable<Product> Get()
         {
             return base.Get();

@@ -89,6 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin.html" />
+    <Content Include="AngularJS\components\EncodingDecoding.js" />
+    <Content Include="AngularJS\components\EncodingService.js" />
     <Content Include="AngularJS\controllers\adminProductControllers.js" />
     <Content Include="AngularJS\views\adminLogin.html" />
     <Content Include="AngularJS\views\adminMain.html" />
@@ -110,6 +112,8 @@
     <Content Include="AngularJS\views\placeOrder.html" />
     <Content Include="AngularJS\views\ProductList.html" />
     <Content Include="AngularJS\views\thankYou.html" />
+    <Content Include="deleteme.html" />
+    <Content Include="deleteme2.html" />
     <Content Include="index.html" />
     <Content Include="Controllers\ImportantRESTLInks.txt" />
     <Content Include="Global.asax" />

@@ -37,6 +37,7 @@ namespace TestWebAPI
         //[Route("api/user/userID:int")]
         [HttpGet]
         [Route("api/user/{UserID:int}")]
+        [Authorize(Roles = Constants.RoleNames.Manager)]
         override public User Get(int UserID)
         {
             return base.Get(UserID);
@@ -73,6 +74,7 @@ namespace TestWebAPI
         [HttpPost]
         [Route("api/user/")]
         //[Route("api/user/{value:User}")]
+        [Authorize(Roles = Constants.RoleNames.Manager)]
         override public User Post([FromBody]User value)
         {
             if (value.username == "avisemah@gmail.com" && value.password == "12345")

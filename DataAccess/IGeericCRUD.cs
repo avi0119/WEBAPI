@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public interface IGenericCRUD<T, T0>
+    public interface IGenericCRUD<T, T0>:IDisposable
     {
 
         int Add(T p, string tableName, bool returnint=true);

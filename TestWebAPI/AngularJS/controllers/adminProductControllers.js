@@ -2,8 +2,9 @@
 .constant("productUrl", "http://localhost:39402/api/product/")
 .config(function ($httpProvider) {
     $httpProvider.defaults.withCredentials = true;
+    $httpProvider.defaults.headers.common.mynewheadertoday = 'C3PO R2D2';
 })
-.controller("productCtrl", function ($scope, $resource, productUrl, uniqueFilter, uniqueAllChildrenFilter) {
+.controller("productCtrl", function ($scope, $resource, productUrl, uniqueFilter, uniqueAllChildrenFilter,$location) {
     //var df = $resource;
     //$scope.screens = ["Products", "Orders"];
    
@@ -20,7 +21,11 @@
                $scope.categories = uniqueAllChildrenFilter($scope.products, 'Category', 'CategoryName');
                $scope.selectedcategory = "Produce";
                var k = 6;
-    }
+           }, function (reason) {
+               var t = reason;
+               //alert('Failed: ' + reason);
+               $location.path('/login');
+           }
 
 
             );
@@ -46,6 +51,7 @@
         product.Supplier = null;
         delete product.Category;
         delete product.Supplier;
+        product.ProductID = category.CategoryID;
         product.$save();
 
 

@@ -3,6 +3,7 @@
 .constant("orderUrl", "http://localhost:39402/api/order")
 .controller('northwindCtrl',
 function ($scope, $http, $location, dataUrl, orderUrl, cart) {
+    $scope.placeorderbuttonpressed = false;
     $scope.data = {};
 
     $http({
@@ -19,6 +20,7 @@ function ($scope, $http, $location, dataUrl, orderUrl, cart) {
         $scope.data.error = error;
     });
     $scope.sendOrder = function (shippingDetails) {
+        $scope.placeorderbuttonpressed = true;
         var order = angular.copy(shippingDetails);
         order.products = cart.getProducts();
         $http.post(orderUrl +'/x', order)

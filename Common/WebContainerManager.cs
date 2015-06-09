@@ -8,7 +8,7 @@ using System.Web.Http.Dependencies;
 
 namespace Common
 {
-    class WebContainerManager
+    public class WebContainerManager
     {
         public static IDependencyResolver GetDependencyResolver()
         {
