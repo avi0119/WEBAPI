@@ -200,7 +200,8 @@ namespace TestWebAPI
             classMetaData.Add(typeof(OrderDetail), new ClassTypeMetaData { tableName = "Order Details", primaryKeyLeft = "OrderID", primaryKeyRight = "OrderID", joinType = "left outer join" });
             classMetaData.Add(typeof(Shipper), new ClassTypeMetaData { tableName = "shippers", primaryKeyLeft = "ShipperID", primaryKeyRight = "ShipperID", joinType = "left outer join" });
             classMetaData.Add(typeof(User), new ClassTypeMetaData { tableName = "users", primaryKeyLeft = "UserID", primaryKeyRight = "UserID", joinType = "left outer join" });
-
+            classMetaData.Add(typeof(DBClaim), new ClassTypeMetaData { tableName = "viewUserClaimsAndDescription", primaryKeyLeft = "UserID", primaryKeyRight = "UserID", joinType = "left outer join" });
+            
         }
         public void returnTableNmaesAndIDsBasedOnGeneric(int numberOfGenericTypesParticipating, Dictionary<string,object> aQueryRelatedArgs)
         {

@@ -13,5 +13,7 @@ namespace DataAccess
         public string username { get; set; }
         public string password { get; set; }
         public int UserID { get; set; }
+
+        public IEnumerable<DBClaim> DBClaims { get; set; }
     }
 }

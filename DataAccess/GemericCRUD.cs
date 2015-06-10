@@ -360,7 +360,7 @@ namespace DataAccess
             var filteredItems = idFieldName.Where((p, i) => i > 0);
             var splitOn = String.Join(",", (filteredItems.ToArray<string>()));
             SqlConnection conn = _trans.Connection;
-           string sql = string.Format("SELECT p.*,c.*  FROM [{0}] p inner join [Order Details] c on p.{3}=c.{3}   where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[0]);
+           string sql = string.Format("SELECT p.*,c.*  FROM [{0}] p inner join [{2}] c on p.{3}=c.{3}   where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[0]);
            string PrimaryKey = idFieldName[0];
             string propertyname2=typeof(T2).Name+ "s";
             Func<T, int> parentKeySelector = new Func<T, int>(a => { return (int)typeof(T).GetProperty(PrimaryKey).GetValue(a,null); });
@@ -380,7 +380,35 @@ namespace DataAccess
 
         }
 
+        public T ReturnRecordAndItsChildren_givenSQL<T2>(string sql, string splitOn, string PrimaryKey, string propertyname2, object param)
+        {
+            //string[] tableName = (string[])dictArgs["tableName"];
+            //string[] idFieldName = (string[])dictArgs["idFieldName"];
+            //string[] idFieldName_right = (string[])dictArgs["idFieldName_right"];
+            //Dictionary<int, T> dict = (Dictionary<int, T>)dictArgs["DictionaryOfKesAndResults"];
+            //var filteredItems = idFieldName.Where((p, i) => i > 0);
+             //splitOn = String.Join(",", (filteredItems.ToArray<string>()));
+            SqlConnection conn = _trans.Connection;
+             //sql = string.Format("SELECT p.*,c.*  FROM [{0}] p inner join [{2}] c on p.{3}=c.{3}   where p.[{1}]=@{1}", tableName[0], idFieldName[0], tableName[1], idFieldName[0]);
+             //PrimaryKey = idFieldName[0];
+            //propertyname2 = typeof(T2).Name + "s";
+            Func<T, int> parentKeySelector = new Func<T, int>(manRecord => { return (int)typeof(T).GetProperty(PrimaryKey).GetValue(manRecord, null); });
+            Func<T, IList<T2>> childSelector = new Func<T, IList<T2>>(parentRecord =>
+            {
+                IList<T2> il = (IList<T2>)typeof(T).GetProperty(propertyname2).GetValue(parentRecord, null);
+                if (il == null)
+                {
+                    il = new List<T2>();
+                    typeof(T).GetProperty(propertyname2).SetValue(parentRecord, il);
+                }
+                return il;
+            });
 
+            var res2 = conn.QueryParentChild<T, T2, int>(sql, parentKeySelector, childSelector:childSelector,param:param,  transaction: _trans.Transx, splitOn: splitOn);
+
+            return res2.SingleOrDefault();
+
+        }
 
 
 

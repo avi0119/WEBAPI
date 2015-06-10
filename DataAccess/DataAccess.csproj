@@ -59,6 +59,7 @@
     <Compile Include="DBProcessing\DapperKey.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\DBClaim.cs" />
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\EmployeeTerritory.cs" />
     <Compile Include="Entities\IenumerableOrderDetail.cs" />

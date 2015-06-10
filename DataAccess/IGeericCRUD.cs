@@ -18,6 +18,7 @@ namespace DataAccess
         T Get<T2>(int prodid, Dictionary<string, object> QueryRelatedArgs, dynamic param, Func<T, T2, T> dl2);
         T Get(int prodid, string tableName, string idFieldName, dynamic param);
         T ReturnAllOrders<T2>(int prodid, Dictionary<string, object> QueryRelatedArgs, object param);
+        T ReturnRecordAndItsChildren_givenSQL<T2>(string sql, string splitOn, string PrimaryKey, string propertyname2, object param);
 
 
 

@@ -32,10 +32,12 @@ namespace TestWebAPI
             container.Bind<IGenericCRUD<Supplier, int>>().To<GemericCRUD<Supplier, int>>().InTransientScope();
             container.Bind<IGenericCRUD<User, int>>().To<GemericCRUD<User, int>>().InTransientScope();
 
-           
+            container.Bind<IEnumerable<DBClaim>>().To<IEnumerable<DBClaim>>().InTransientScope();
             container.Bind<IEnumerable<Customer>>().To<IEnumerable<Customer>>().InTransientScope();
 
             container.Bind<IGenericCRUD<Shipper, int>>().To<GemericCRUD<Shipper, int>>().InTransientScope();
+
+            container.Bind<IGenericCRUD<DBClaim, int>>().To<GemericCRUD<DBClaim, int>>().InTransientScope();
 
             container.Bind<IGenericCRUD<Customer, int>>().To<GemericCRUD<Customer, int>>().InTransientScope();
             container.Bind<IGenericCRUD<OrderDetail, int>>().To<GemericCRUD<OrderDetail, int>>().InTransientScope();

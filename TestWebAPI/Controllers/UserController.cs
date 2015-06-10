@@ -9,14 +9,18 @@ using DataAccess;
 namespace TestWebAPI
 {
 
-    public class UserController : GenericContr<int, User, Category, Supplier, Customer>
+    public class UserController : GenericContr<int, User, DBClaim, Supplier, Customer>
     {
 
         public UserController(IGenericCRUD<User, int> iaddprod)
             : base(iaddprod)
         {
 
-            numberOfGenerics = 1;
+            numberOfGenerics = 2;
+
+  
+ 
+            //this.adjuster = new Action<string[], string[], string[], string[]>((tables, left, right, jointype) => { left[1] = "CustomerID2"; right[1] = "CustomerID_"; jointype[1] = "left outer join"; });
         }
         #region  Rest
 
@@ -40,8 +44,23 @@ namespace TestWebAPI
         [Authorize(Roles = Constants.RoleNames.Manager)]
         override public User Get(int UserID)
         {
-            return base.Get(UserID);
+
+            //return base.Get(UserID);
+            return AltGet(UserID);
         }
+
+        private User AltGet(int UserID)
+        {
+            dynamic dl;
+
+
+            getDelegateTableNamesAndFieldNames_final(out dl, QueryRelatedArgs, numberOfGenerics);
+            dynamic param = returnCriteriaParam(((string[])QueryRelatedArgs["idFieldName"])[0], UserID);
+
+            User O = _iaddprod.ReturnAllOrders<DBClaim>(UserID, QueryRelatedArgs, param);
+            return O;
+        }
+
         ////http://localhost:39402/api/user/80
         // GET api/<controller>/5
         [HttpDelete]

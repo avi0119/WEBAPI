@@ -47,26 +47,52 @@ namespace DataAccess
             identity.AddClaim(new Claim(ClaimTypes.GivenName, user.firstname));
             identity.AddClaim(new Claim(ClaimTypes.Surname, user.lastname));
             var username = user.username.ToLowerInvariant();
-            switch (username)
-            {
-                case "avisemah@gmail.com":
-                    identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.Manager));
-                    identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.SeniorWorker));
-                    identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.JuniorWorker));
-                    break;
-                case "jbob":
-                    identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.SeniorWorker));
-                    identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.JuniorWorker));
-                    break;
-                case "jdoe":
-                    identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.JuniorWorker));
-                    break;
-                default:
-                    return null;
+            if (!(user.DBClaims == null)) {
+                foreach (DBClaim c in user.DBClaims)
+                {
+                    string currClaim = c.Description;
+                    identity.AddClaim(new Claim(ClaimTypes.Role, currClaim));
+                }
             }
+
+            //switch (username)
+            //{
+            //    case "avisemah@gmail.com":
+            //        identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.Manager));
+            //        identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.SeniorWorker));
+            //        identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.JuniorWorker));
+            //        break;
+            //    case "jbob":
+            //        identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.SeniorWorker));
+            //        identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.JuniorWorker));
+            //        break;
+            //    case "jdoe":
+            //        identity.AddClaim(new Claim(ClaimTypes.Role, Constants.RoleNames.JuniorWorker));
+            //        break;
+            //    default:
+            //        return null;
+            //}
             return new ClaimsPrincipal(identity);
         }
-        public virtual User GetUser(string username,string pw)
+        public User GetUser(string username, string pw)
+        {
+            username = username.ToLowerInvariant();
+            string sql = string.Format("SELECT p.*,c.*  FROM [users] p inner join [viewUserClaimsAndDescription] c on p.UserID=c.UserID   where p.username=@username and p.password=@password");
+            
+            //dynamic param = new { username = username };
+            //var user = _useraccessor.Get(0, "Users", "username", param);
+            string splitOn = "UserID";
+            string PrimaryKey="UserID";
+            string propertyname2="DBClaims";
+            dynamic param = new { username = username, password = pw };
+            var user = _useraccessor.ReturnRecordAndItsChildren_givenSQL<DBClaim>(sql, splitOn, PrimaryKey, propertyname2, param);
+            //_useraccessor.Dispose();
+            //return  Session.QueryOver<User>().Where(x => x.Username == username).SingleOrDefault();
+            return user;
+        
+        
+        }
+        public virtual User GetUser_old(string username,string pw)
         {
             username = username.ToLowerInvariant();
             dynamic param = new { username = username };

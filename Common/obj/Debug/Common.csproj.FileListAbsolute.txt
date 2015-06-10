@@ -12,3 +12,4 @@ E:\C#Projects\2014Projects\TestWebAPI\Common\bin\Debug\System.Web.Http.xml
 E:\C#Projects\2014Projects\TestWebAPI\Common\bin\Debug\System.Web.Http.WebHost.xml
 E:\C#Projects\2014Projects\TestWebAPI\Common\obj\Debug\Common.dll
 E:\C#Projects\2014Projects\TestWebAPI\Common\obj\Debug\Common.pdb
+E:\C#Projects\2014Projects\TestWebAPI\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
