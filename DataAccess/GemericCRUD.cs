@@ -406,7 +406,9 @@ namespace DataAccess
 
             var res2 = conn.QueryParentChild<T, T2, int>(sql, parentKeySelector, childSelector:childSelector,param:param,  transaction: _trans.Transx, splitOn: splitOn);
 
-            return res2.SingleOrDefault();
+            var ret= res2.SingleOrDefault();
+            EncryptionOfDatabaseStoreValues.Decrypt(ret);
+            return ret;
 
         }
 

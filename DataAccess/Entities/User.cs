@@ -10,7 +10,9 @@ namespace DataAccess
     {
         public string firstname { get; set; }
         public string lastname { get; set; }
+        [Encrypted]
         public string username { get; set; }
+        [Encrypted]
         public string password { get; set; }
         public int UserID { get; set; }
 

@@ -84,7 +84,10 @@ namespace DataAccess
             string splitOn = "UserID";
             string PrimaryKey="UserID";
             string propertyname2="DBClaims";
-            dynamic param = new { username = username, password = pw };
+            string encryptedusername = EncryptionOfDatabaseStoreValues.EncryptThisString (username);
+            ;
+            string encryptedpw = EncryptionOfDatabaseStoreValues.EncryptThisString(pw);
+            dynamic param = new { username = encryptedusername, password = encryptedpw };
             var user = _useraccessor.ReturnRecordAndItsChildren_givenSQL<DBClaim>(sql, splitOn, PrimaryKey, propertyname2, param);
             //_useraccessor.Dispose();
             //return  Session.QueryOver<User>().Where(x => x.Username == username).SingleOrDefault();
