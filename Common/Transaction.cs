@@ -21,7 +21,7 @@ namespace DataAccess
         public void BeginTransaction()
 	    {
 
-            conn = new SqlConnection("server=OWNER\\SQLEXPRESS;Trusted_Connection=yes;Integrated Security=SSPI;database=Northwind;connection timeout=30");
+            conn = new SqlConnection("server=OWNER\\SQLEXPRESS;Trusted_Connection=yes;Integrated Security=SSPI;database=Northwind;connection timeout=30;MultipleActiveResultSets=true");
             conn.Open();
             var a = conn.BeginTransaction("SampleTransaction");
             DbTrans = a;

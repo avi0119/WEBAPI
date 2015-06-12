@@ -4,7 +4,7 @@
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.defaults.headers.common.mynewheadertoday = 'C3PO R2D2';
 })
-.controller("productCtrl", function ($scope, $resource, productUrl, uniqueFilter, uniqueAllChildrenFilter, $location) {
+.controller("productCtrl", function ($scope, $resource, productUrl, uniqueFilter, uniqueAllChildrenFilter, $location, $http) {
     //var df = $resource;
     //$scope.screens = ["Products", "Orders"];
 
@@ -13,7 +13,7 @@
     //$scope.productsResource = $resource("http://localhost:2403/products/" + ":id", { id: "@id" });
     $scope.listProducts = function () {
         //$scope.products = $scope.productsResource.query();
-
+        $http.defaults.withCredentials = true;
         $scope.productsResource.query().$promise.then(
 
            function (data) {

@@ -5,20 +5,7 @@
 .config(function ($httpProvider) {
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.defaults.headers.common.mynewheadertoday = 'C3PO R2D2';
-}).controller("usersCtrl_old", function ($scope, $http, usersUrl) {
-    $http.get(usersUrl, { withCredentials: true })
-    .success(function (data) {
-        $scope.orders = data;
-    })
-    .error(function (error) {
-        $scope.error = error;
-    });
-    $scope.selectedOrder;
-    $scope.selectOrder = function (order) {
-        $scope.selectedOrder = order;
-    };
-
-}).controller("usersCtrl", function ($scope, $resource, productUrl, usersUrl, uniqueFilter, claimtypesUrl, uniqueAllChildrenFilter, MinimumPerPropertyFilter, $location) {
+}).controller("usersCtrl", function ($scope, $resource, productUrl, usersUrl, uniqueFilter, claimtypesUrl, uniqueAllChildrenFilter, MinimumPerPropertyFilter, $location, $http) {
     //var df = $resource;
     //$scope.screens = ["Products", "Orders"];
 
@@ -28,9 +15,9 @@
 
     $scope.listProducts = function () {
         //$scope.products = $scope.productsResource.query();
-
+        /*
+        $http.defaults.withCredentials = true;
         $scope.productsResource.query().$promise.then(
-
            function (data) {
                //$scope.products = data;
                $scope.orders = data;
@@ -48,12 +35,29 @@
 
 
     }
+    */
+
+        $http.get(usersUrl, { withCredentials: true })
+            .success(function (data) {
+                //$scope.products = data;
+                $scope.orders = data;
+                //$scope.categories = uniqueAllChildrenFilter($scope.products, 'Category', 'CategoryName');
+                $scope.selectedcategory = "Produce";
+                var k = 6;
+            })
+            .error(function (error) {
+                $location.path('/login');
+            });
+    }
+
+
 
    
 
     $scope.listClaimTypes = function () {
         //$scope.products = $scope.productsResource.query();
-
+        /*
+        $http.defaults.withCredentials = true;
         $scope.calimtypessResource.query().$promise.then(
 
            function (data) {
@@ -75,6 +79,20 @@
 
 
             );
+            */
+        $http.get(claimtypesUrl, { withCredentials: true })
+            .success(function (data) {
+                //$scope.products = data;
+                var thedata = data;
+                $scope.ClaimTypes = data;
+                var claimtypes = uniqueAllChildrenFilter(thedata, 'Description');
+                $scope.categories = claimtypes;
+            }).error(function (error) {
+                var t = reason;
+                //alert('Failed: ' + reason);
+                //$location.path('/login');
+            });
+
 
 
     }
@@ -186,6 +204,19 @@
 
    
     $scope.listProducts();
+
+}).controller("usersCtrl_old", function ($scope, $http, usersUrl) {
+    $http.get(usersUrl, { withCredentials: true })
+    .success(function (data) {
+        $scope.orders = data;
+    })
+    .error(function (error) {
+        $scope.error = error;
+    });
+    $scope.selectedOrder;
+    $scope.selectOrder = function (order) {
+        $scope.selectedOrder = order;
+    };
 
 });
 

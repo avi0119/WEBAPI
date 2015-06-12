@@ -26,6 +26,7 @@ namespace TestWebAPI
         ////http://localhost:39402/api/ClaimType
         [HttpGet]
         [Route("api/ClaimType")]
+        [Authorize(Roles = Constants.RoleNames.Manager)]
         override public IEnumerable<DBClaimType> Get()
         {
             return base.Get();

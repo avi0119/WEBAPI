@@ -31,6 +31,7 @@ namespace TestWebAPI
         ////http://localhost:39402/api/user
         [HttpGet]
         [Route("api/user")]
+        [Authorize(Roles = Constants.RoleNames.Manager)]
         override public IEnumerable<User> Get()
         {
             return base.Get();

@@ -29,6 +29,8 @@ namespace DataAccess
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken cancellationToken)
         {
+            var z = request.RequestUri;
+            var g = z;
             if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 //_log.Debug("Already authenticated; passing on to next handler...");
