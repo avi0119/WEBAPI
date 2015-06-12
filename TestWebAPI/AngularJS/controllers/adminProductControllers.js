@@ -4,10 +4,10 @@
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.defaults.headers.common.mynewheadertoday = 'C3PO R2D2';
 })
-.controller("productCtrl", function ($scope, $resource, productUrl, uniqueFilter, uniqueAllChildrenFilter,$location) {
+.controller("productCtrl", function ($scope, $resource, productUrl, uniqueFilter, uniqueAllChildrenFilter, $location) {
     //var df = $resource;
     //$scope.screens = ["Products", "Orders"];
-   
+
     $scope.items = [{ name: 'one', age: 30 }, { name: 'two', age: 27 }, { name: 'three', age: 50 }];
     $scope.productsResource = $resource("http://localhost:39402/api/product/" + ":ProductID", { ProductID: "@ProductID" });
     //$scope.productsResource = $resource("http://localhost:2403/products/" + ":id", { id: "@id" });
@@ -16,7 +16,7 @@
 
         $scope.productsResource.query().$promise.then(
 
-           function(data) {
+           function (data) {
                $scope.products = data;
                $scope.categories = uniqueAllChildrenFilter($scope.products, 'Category', 'CategoryName');
                $scope.selectedcategory = "Produce";
@@ -29,8 +29,8 @@
 
 
             );
-       
-       
+
+
     }
     $scope.deleteProduct = function (product) {
         product.$delete().then(function () {
@@ -55,8 +55,8 @@
         product.$save();
 
 
-        product.Category=category ;
-        product.Supplier=supplier ;
+        product.Category = category;
+        product.Supplier = supplier;
         $scope.editedProduct = null;
     }
     $scope.startEdit = function (product) {
@@ -71,12 +71,12 @@
         $scope.selectedcat = null;
     }
     $scope.findcategorydescription = function (categoryid) {
-        var result="";
+        var result = "";
         var categories_ = $scope.categories;
         for (var i = 0; i < categories_.length; i++) {
             var cat = categories_[i];
             if (cat.CategoryID = categoryid) {
-                result= cat.Description;
+                result = cat.Description;
                 break;
             }
         }

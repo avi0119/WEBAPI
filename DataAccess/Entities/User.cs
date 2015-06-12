@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DataAccess
 {
@@ -15,7 +16,10 @@ namespace DataAccess
         [Encrypted]
         public string password { get; set; }
         public int UserID { get; set; }
-
+        public bool IsInRole(string roleName)
+        {
+            return HttpContext.Current.User.IsInRole(roleName);
+        }
         public IEnumerable<DBClaim> DBClaims { get; set; }
     }
 }

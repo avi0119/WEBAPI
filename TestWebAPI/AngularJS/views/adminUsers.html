@@ -1,0 +1,43 @@
+﻿<div ng-controller="usersCtrl">
+    <table class="table table-striped table-bordered">
+        <tr><th>First Name</th><th>Last Name</th></tr>
+        <tr ng-repeat="order in orders">
+            <td>{{order.firstname}}</td>
+            <td>{{order.lastname}}</td>
+
+            <td>
+                <button ng-click="selectOrder(order)" class="btn btn-xs btn-primary">
+                    Details
+                </button>
+            </td>
+        </tr>
+    </table>
+    <div ng-show="ClaimsOfMinimumValue">
+        <h3>User Details for {{selectedOrder.firstname }} {{ selectedOrder.lastname}}</h3>
+        <table class="table table-striped table-bordered">
+            <tr>
+
+                <!--<th>Claim ID</th>-->
+                <th>Ebtitlement Level</th>
+                <!--<th>Rank</th>-->
+                <th>Entitlment Type</th>
+
+            </tr>
+            <tr ng-repeat="item in ClaimsOfMinimumValue">
+                <!--<td>{{item.ClaimID}}</td>-->
+                <td>
+                    <select ng-model="selectedclaim[item.ClaimType]" ng-options="claim as claim.Description for claim in ClaimTypes | filter:IncludeOnlyClaimTypesOfGivenDescription(item.ClaimType)"></select>
+
+             <!--{{item.Description}}-->
+
+
+
+                
+                </td>
+                <!--<td>{{item.Rank}}</td>-->
+                <td>{{item.ClaimType}}</td>
+
+            </tr>
+        </table>
+    </div>
+</div>

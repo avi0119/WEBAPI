@@ -91,6 +91,7 @@
     <Content Include="admin.html" />
     <Content Include="AngularJS\components\EncodingDecoding.js" />
     <Content Include="AngularJS\components\EncodingService.js" />
+    <Content Include="AngularJS\controllers\adminUserControllers.js" />
     <Content Include="AngularJS\controllers\adminProductControllers.js" />
     <Content Include="AngularJS\views\adminLogin.html" />
     <Content Include="AngularJS\views\adminMain.html" />
@@ -106,6 +107,7 @@
     <Content Include="AngularJS\ngmodules\angular.js" />
     <Content Include="AngularJS\ngmodules\bootstrap-theme.css" />
     <Content Include="AngularJS\ngmodules\bootstrap.css" />
+    <Content Include="AngularJS\views\adminUsers.html" />
     <Content Include="AngularJS\views\adminOrders.html" />
     <Content Include="AngularJS\views\adminProducts.html" />
     <Content Include="AngularJS\views\checkoutSummary.html" />
@@ -126,6 +128,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ClaimController.cs" />
+    <Compile Include="Controllers\ClaimTypeController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\GenericContr.cs" />

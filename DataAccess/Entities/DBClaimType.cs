@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class DBClaim
+    public class DBClaimType
     {
         public int ClaimID { get; set; }
         public string Description { get; set; }
-        public string UserID { get; set; }
-
-        public DateTime StartDate { get; set; }
         public int Rank { get; set; }
 
         public string ClaimType { get; set; }
