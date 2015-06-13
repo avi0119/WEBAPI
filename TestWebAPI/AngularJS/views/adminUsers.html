@@ -43,7 +43,7 @@
 
 
         <div ng-show="editmode">
-            <h3>User Details: </h3>
+            <h3>User Details: addbuttonpressed= {{addbuttonpressed}}</h3>
             <table class="table table-striped table-bordered">
                 <tr>
                     <th>First Name</th>
@@ -88,7 +88,7 @@
 
                     <td >
                         <select ng-if="($last && !addbuttonpressed) || !$last" ng-model="selectedclaim[item.ClaimType]" ng-options="claim as claim.Description for claim in ClaimTypes | filter:IncludeOnlyClaimTypesOfGivenDescription(item.ClaimType)"></select>
-                        <!--<input ng-if="$last && addbuttonpressed" ng-model="entitlementlevel" required />-->
+
                         <select ng-if="$last && addbuttonpressed" ng-model="ClaimsOfMinimumValue[$index]" ng-options="claim as claim.Description for claim in ClaimTypes | filter:IncludeOnlyClaimTypesOfGivenDescription(ClaimsOfMinimumValue[$index].ClaimType)"></select>
                         
                        
@@ -96,7 +96,7 @@
 
                     <td>
                     <span ng-if="($last && !addbuttonpressed) || !$last">{{item.ClaimType}} </span>
-                        <!--<input ng-if="$last && addbuttonpressed" ng-model="entitlementtype" required  />-->
+
                         <select ng-if="$last && addbuttonpressed" ng-model="ClaimsOfMinimumValue[$index].ClaimType" ng-options="typeofclaim as typeofclaim for typeofclaim in claimtypesstrinarray "></select>
                     </td>
 

@@ -170,11 +170,12 @@
     }
      */
     $scope.removeclaimtype = function (index) {
-        $scope.ClaimsOfMinimumValue.splice(index,1);
+        $scope.ClaimsOfMinimumValue.splice(index, 1);
+        $scope.addbuttonpressed = false;// $scope.ClaimsOfMinimumValue.length -1 > $scope.originalcountofuserclaimtypes;
     }
     $scope.addClaimType = function () {
         $scope.addbuttonpressed = $scope.ClaimsOfMinimumValue.length+1 > $scope.originalcountofuserclaimtypes;
-        
+        $scope.addbuttonpressed=true;
         var newClaimType = {};
         $scope.ClaimsOfMinimumValue.push(newClaimType);
         
