@@ -5,7 +5,39 @@
 .config(function ($httpProvider) {
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.defaults.headers.common.mynewheadertoday = 'C3PO R2D2';
-}).controller("usersCtrl", function ($scope, $resource, productUrl, usersUrl, uniqueFilter, claimtypesUrl, uniqueAllChildrenFilter, MinimumPerPropertyFilter, $location, $http) {
+}).controller("usersCtrl_old", function ($scope, $http, usersUrl) {
+    $http.get(usersUrl, { withCredentials: true })
+    .success(function (data) {
+        $scope.orders = data;
+    })
+    .error(function (error) {
+        $scope.error = error;
+    });
+    $scope.selectedOrder;
+    $scope.selectOrder = function (order) {
+        $scope.selectedOrder = order;
+       
+    };
+
+})
+    .controller("usersCtrl", function ($scope, $resource, productUrl, usersUrl, uniqueFilter, claimtypesUrl, uniqueAllChildrenFilter, MinimumPerPropertyFilter,AllItemsOfOneTypeFilter, $location) {
+    $scope.createmode;
+    $scope.editmode;
+    $scope.entitlementtype = {};
+    $scope.entitlementlevel;
+
+    $scope.ActivateCreateMode = function (val) {
+        $scope.createmode = val;
+        $scope.editmode = !val;
+    }
+    $scope.NeutralizeCreateAndEdit = function () {
+        $scope.createmode = false;
+        $scope.editmode = false;
+    }
+    $scope.createorder = function () {
+        
+        $scope.ActivateCreateMode(true);
+    }
     //var df = $resource;
     //$scope.screens = ["Products", "Orders"];
 
@@ -15,9 +47,9 @@
 
     $scope.listProducts = function () {
         //$scope.products = $scope.productsResource.query();
-        /*
-        $http.defaults.withCredentials = true;
+
         $scope.productsResource.query().$promise.then(
+
            function (data) {
                //$scope.products = data;
                $scope.orders = data;
@@ -35,29 +67,12 @@
 
 
     }
-    */
-
-        $http.get(usersUrl, { withCredentials: true })
-            .success(function (data) {
-                //$scope.products = data;
-                $scope.orders = data;
-                //$scope.categories = uniqueAllChildrenFilter($scope.products, 'Category', 'CategoryName');
-                $scope.selectedcategory = "Produce";
-                var k = 6;
-            })
-            .error(function (error) {
-                $location.path('/login');
-            });
-    }
 
 
-
-   
 
     $scope.listClaimTypes = function () {
         //$scope.products = $scope.productsResource.query();
-        /*
-        $http.defaults.withCredentials = true;
+
         $scope.calimtypessResource.query().$promise.then(
 
            function (data) {
@@ -66,7 +81,7 @@
                $scope.ClaimTypes = data;
                var claimtypes = uniqueAllChildrenFilter(thedata, 'Description');
                $scope.categories = claimtypes;
-
+               $scope.claimtypesstrinarray = uniqueAllChildrenFilter(thedata, 'ClaimType');;
                //
 
                //$scope.selectedcategory = "Produce";
@@ -79,20 +94,6 @@
 
 
             );
-            */
-        $http.get(claimtypesUrl, { withCredentials: true })
-            .success(function (data) {
-                //$scope.products = data;
-                var thedata = data;
-                $scope.ClaimTypes = data;
-                var claimtypes = uniqueAllChildrenFilter(thedata, 'Description');
-                $scope.categories = claimtypes;
-            }).error(function (error) {
-                var t = reason;
-                //alert('Failed: ' + reason);
-                //$location.path('/login');
-            });
-
 
 
     }
@@ -168,19 +169,41 @@
 
     }
      */
+    $scope.removeclaimtype = function (index) {
+        $scope.ClaimsOfMinimumValue.splice(index,1);
+    }
+    $scope.addClaimType = function () {
+        $scope.addbuttonpressed = $scope.ClaimsOfMinimumValue.length+1 > $scope.originalcountofuserclaimtypes;
+        
+        var newClaimType = {};
+        $scope.ClaimsOfMinimumValue.push(newClaimType);
+        
+    }
+    $scope.canceledit = function () {
+        $scope.editeduser = {};
+
+        $scope.ActivateCreateMode(true);
+
+    };
     $scope.IncludeOnlyClaimTypesOfGivenDescription = function (desiredDescription) {
         return function (ClaimTypeItem) {
-            return ClaimTypeItem.ClaimType == desiredDescription;
+            var res = ClaimTypeItem.ClaimType == desiredDescription;
+            return res
         }
     }
     $scope.selectedOrder;
     $scope.selectOrder = function (order) {
+        $scope.addbuttonpressed = false;
+        $scope.ActivateCreateMode(false);
         $scope.selectedOrder = order;
+
+        $scope.editeduser = order;
         $scope.ClaimsOfMinimumValue = MinimumPerPropertyFilter(order.DBClaims, "Rank", "ClaimType");
         $scope.populate_selectedclaim_arrayProperly($scope.ClaimsOfMinimumValue, $scope.ClaimTypes);
+        $scope.originalcountofuserclaimtypes = $scope.ClaimsOfMinimumValue.length;
 
     };
-    $scope.populate_selectedclaim_arrayProperly = function (ClaimsOfMinimumValuePerCurrentUSer,ReservoirOfClaimTypes) {
+    $scope.populate_selectedclaim_arrayProperly = function (ClaimsOfMinimumValuePerCurrentUSer, ReservoirOfClaimTypes) {
 
         for (var i = 0; i < ClaimsOfMinimumValuePerCurrentUSer.length; i++) {
             var claimID = ClaimsOfMinimumValuePerCurrentUSer[i].ClaimID;
@@ -192,31 +215,18 @@
     };
     $scope.findClaimTypeFromReservoirOfClaimTypesGivenClaimID = function (claimID, ReservoirOfClaimTypes) {
         for (var i = 0; i < ReservoirOfClaimTypes.length; i++) {
-            if (ReservoirOfClaimTypes[i].ClaimID == claimID)
-            {
+            if (ReservoirOfClaimTypes[i].ClaimID == claimID) {
                 return ReservoirOfClaimTypes[i];
             }
         }
 
 
     };
+    $scope.ActivateCreateMode(true);
     $scope.listClaimTypes();
 
-   
+
     $scope.listProducts();
 
-}).controller("usersCtrl_old", function ($scope, $http, usersUrl) {
-    $http.get(usersUrl, { withCredentials: true })
-    .success(function (data) {
-        $scope.orders = data;
-    })
-    .error(function (error) {
-        $scope.error = error;
-    });
-    $scope.selectedOrder;
-    $scope.selectOrder = function (order) {
-        $scope.selectedOrder = order;
-    };
 
 });
-

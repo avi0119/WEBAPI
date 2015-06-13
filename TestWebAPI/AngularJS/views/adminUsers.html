@@ -1,43 +1,119 @@
 ﻿<div ng-controller="usersCtrl">
-    <table class="table table-striped table-bordered">
-        <tr><th>First Name</th><th>Last Name</th></tr>
-        <tr ng-repeat="order in orders">
-            <td>{{order.firstname}}</td>
-            <td>{{order.lastname}}</td>
-
-            <td>
-                <button ng-click="selectOrder(order)" class="btn btn-xs btn-primary">
-                    Details
-                </button>
-            </td>
-        </tr>
-    </table>
-    <div ng-show="ClaimsOfMinimumValue">
-        <h3>User Details for {{selectedOrder.firstname }} {{ selectedOrder.lastname}}</h3>
+    <form name="authForm" novalidate>
         <table class="table table-striped table-bordered">
             <tr>
-
-                <!--<th>Claim ID</th>-->
-                <th>Ebtitlement Level</th>
-                <!--<th>Rank</th>-->
-                <th>Entitlment Type</th>
-
+                <th>First Name</th>
+                <th>Last Name</th>
             </tr>
-            <tr ng-repeat="item in ClaimsOfMinimumValue">
-                <!--<td>{{item.ClaimID}}</td>-->
+            <tr ng-repeat="order in orders">
+                <td>{{order.firstname}}</td>
+                <td>{{order.lastname}}</td>
+
                 <td>
-                    <select ng-model="selectedclaim[item.ClaimType]" ng-options="claim as claim.Description for claim in ClaimTypes | filter:IncludeOnlyClaimTypesOfGivenDescription(item.ClaimType)"></select>
-
-             <!--{{item.Description}}-->
-
-
-
-                
+                    <div>
+                        <button ng-click="selectOrder(order)" class="btn btn-xs btn-primary">
+                            Edit
+                        </button>
+                        <button ng-click="deleteorder(order)" class="btn btn-xs btn-primary">
+                            Delete
+                        </button>
+                    </div>
                 </td>
-                <!--<td>{{item.Rank}}</td>-->
-                <td>{{item.ClaimType}}</td>
 
             </tr>
+            <tr ng-show="createmode">
+
+
+                <td> <input ng-model="editeduser.firstname" required /></td>
+                <td><input ng-model="editeduser.lastname" required /></td>
+                <td>
+                    <div>
+                        <button ng-click="createorder()" class="btn btn-xs btn-primary">
+                            Create
+                        </button>
+
+
+                    </div>
+                </td>
+
+            </tr>
+
         </table>
-    </div>
+
+
+
+        <div ng-show="editmode">
+            <h3>User Details: </h3>
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                </tr>
+                <tr>
+
+
+                    <td> <input ng-model="editeduser.firstname" required ng-disabled="true" /></td>
+                    <td><input ng-model="editeduser.lastname" required ng-disabled="true" /></td>
+                    <td>
+                        <div>
+                            <button ng-click="saveuserentitlements()" class="btn btn-xs btn-primary">
+                                Save
+                            </button>
+                            <button ng-click="canceledit()" class="btn btn-xs btn-primary">
+                                Cancel
+                            </button>
+
+                        </div>
+                    </td>
+
+                </tr>
+            </table>
+            <table class="table table-striped table-bordered">
+                <tr>
+
+                    <!--<th>Claim ID</th>-->
+                    <th>Entitlement Level</th>
+                    <!--<th>Rank</th>-->
+                    <th>
+                        Entitlement Type
+                         <span> 
+                             <button ng-click="addClaimType()" class="btn btn-xs btn-primary" ng-if="ClaimsOfMinimumValue.length==0">
+                                 Add Entitlement
+                             </button>
+                         </span>
+                    </th>
+
+                </tr>
+                <tr ng-repeat="item in ClaimsOfMinimumValue">
+
+                    <td >
+                        <select ng-if="($last && !addbuttonpressed) || !$last" ng-model="selectedclaim[item.ClaimType]" ng-options="claim as claim.Description for claim in ClaimTypes | filter:IncludeOnlyClaimTypesOfGivenDescription(item.ClaimType)"></select>
+                        <!--<input ng-if="$last && addbuttonpressed" ng-model="entitlementlevel" required />-->
+                        <select ng-if="$last && addbuttonpressed" ng-model="ClaimsOfMinimumValue[$index]" ng-options="claim as claim.Description for claim in ClaimTypes | filter:IncludeOnlyClaimTypesOfGivenDescription(ClaimsOfMinimumValue[$index].ClaimType)"></select>
+                        
+                       
+                    </td>
+
+                    <td>
+                    <span ng-if="($last && !addbuttonpressed) || !$last">{{item.ClaimType}} </span>
+                        <!--<input ng-if="$last && addbuttonpressed" ng-model="entitlementtype" required  />-->
+                        <select ng-if="$last && addbuttonpressed" ng-model="ClaimsOfMinimumValue[$index].ClaimType" ng-options="typeofclaim as typeofclaim for typeofclaim in claimtypesstrinarray "></select>
+                    </td>
+
+                    <td>
+                        <div>
+                            <button ng-click="removeclaimtype($index)" class="btn btn-xs btn-primary">
+                                Remove
+                            </button>
+                            <button ng-click="addClaimType()" class="btn btn-xs btn-primary" ng-if="$last && item.ClaimType && item.Description">
+                                Add+
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+
+            </table>
+        </div>
+        </form>
 </div>
