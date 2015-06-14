@@ -169,17 +169,50 @@
 
     }
      */
+    $scope.updateselectedclaimPerLastItem = function () {
+        if ($scope.addbuttonpressed == true) {
+            var lastindex = $scope.ClaimsOfMinimumValue.length - 1;
+            var lastMinValueItem = $scope.ClaimsOfMinimumValue[lastindex];
+            $scope.selectedclaim[lastMinValueItem.ClaimType] = lastMinValueItem;
+            varz = 1;
+        }
+    }
     $scope.removeclaimtype = function (index) {
+        $scope.updateselectedclaimPerLastItem();
         $scope.ClaimsOfMinimumValue.splice(index, 1);
         $scope.addbuttonpressed = false;// $scope.ClaimsOfMinimumValue.length -1 > $scope.originalcountofuserclaimtypes;
     }
     $scope.addClaimType = function () {
+        $scope.updateselectedclaimPerLastItem();
         $scope.addbuttonpressed = $scope.ClaimsOfMinimumValue.length+1 > $scope.originalcountofuserclaimtypes;
         $scope.addbuttonpressed=true;
         var newClaimType = {};
         $scope.ClaimsOfMinimumValue.push(newClaimType);
         
     }
+    $scope.validatetype = function (index) {
+        if ($scope.ClaimsOfMinimumValue[index].ClaimType) {
+            if ($scope.isClaimTypeInClaimsOfMinimumValue($scope.ClaimsOfMinimumValue[index].ClaimType, index)) {
+                alert($scope.ClaimsOfMinimumValue[index].ClaimType + " has already been selected")
+                $scope.ClaimsOfMinimumValue[index].ClaimType = "";
+                var t = index;
+            }
+        }
+    }
+    $scope.isClaimTypeInClaimsOfMinimumValue = function (claimtype,indextoexclude) {
+        for (var i = 0; i < $scope.ClaimsOfMinimumValue.length; i++) {
+            if (indextoexclude == i)
+            {
+                continue;
+            }
+            if ($scope.ClaimsOfMinimumValue[i].ClaimType == claimtype) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
     $scope.canceledit = function () {
         $scope.editeduser = {};
 
