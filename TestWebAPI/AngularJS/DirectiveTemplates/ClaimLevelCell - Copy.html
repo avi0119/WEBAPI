@@ -1,0 +1,9 @@
+﻿<td>
+    <select ng-if="(islast && !isaddbuttonpressed) || !islast" ng-model="selectedclaim[item.ClaimType]" ng-options="claim as claim.Description for claim in ClaimTypesArray | filter:IncludeOnlyClaimTypesOfGivenDescription(item.ClaimType)"></select>
+
+    <select ng-if="islast && isaddbuttonpressed" ng-model="ClaimsOfMinimumValueArray[indexinArrayOfMinValues]" ng-options="claim as claim.Description for claim in ClaimTypesArray | filter:IncludeOnlyClaimTypesOfGivenDescription(ClaimsOfMinimumValue[indexinArrayOfMinValues].ClaimType)"></select>
+    <button ng-click="somefunc()">hello button</button>
+
+</td>
+
+

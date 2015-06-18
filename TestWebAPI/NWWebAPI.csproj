@@ -93,6 +93,12 @@
     <Content Include="AngularJS\components\EncodingService.js" />
     <Content Include="AngularJS\controllers\adminUserControllers.js" />
     <Content Include="AngularJS\controllers\adminProductControllers.js" />
+    <Content Include="AngularJS\DirectiveTemplates\ClaimLevelCell - Copy.html" />
+    <Content Include="AngularJS\DirectiveTemplates\ClaimLevelCell.html" />
+    <Content Include="AngularJS\DirectiveTemplates\onerow.html" />
+    <Content Include="AngularJS\DirectiveTemplates\ClaimTypeCell - Copy.html" />
+    <Content Include="AngularJS\DirectiveTemplates\ClaimTypeCell.html" />
+    <Content Include="AngularJS\DirectiveTemplates\TwoTableCells.html" />
     <Content Include="AngularJS\views\adminLogin.html" />
     <Content Include="AngularJS\views\adminMain.html" />
     <Content Include="AngularJS\components\cart\cart.js" />
@@ -107,6 +113,8 @@
     <Content Include="AngularJS\ngmodules\angular.js" />
     <Content Include="AngularJS\ngmodules\bootstrap-theme.css" />
     <Content Include="AngularJS\ngmodules\bootstrap.css" />
+    <Content Include="AngularJS\views\adminUsers - Copy - Copy.html" />
+    <Content Include="AngularJS\views\adminUsers - Copy.html" />
     <Content Include="AngularJS\views\adminUsers.html" />
     <Content Include="AngularJS\views\adminOrders.html" />
     <Content Include="AngularJS\views\adminProducts.html" />
@@ -116,6 +124,8 @@
     <Content Include="AngularJS\views\thankYou.html" />
     <Content Include="deleteme.html" />
     <Content Include="deleteme2.html" />
+    <Content Include="directiveexample2.html" />
+    <Content Include="directiveexample.html" />
     <Content Include="index.html" />
     <Content Include="Controllers\ImportantRESTLInks.txt" />
     <Content Include="Global.asax" />

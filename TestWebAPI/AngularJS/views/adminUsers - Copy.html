@@ -1,0 +1,53 @@
+﻿<div ng-controller="usersCtrl">
+    <button ng-click="triggerRelink()">Trigger Relink</button>
+    <div > alerterflag.alerterflag value <input ng-model="alerterflag.alerterflag" /></div>
+    <div class="panel-body" scope-demo nameprop="ClaimTypes"></div>
+    <!--<div relink-event="myEventName">
+        <div class="panel-body" mydir islast="ClaimTypes" isaddbuttonpressed="data.name"></div>
+     </div>-->
+        <form name="authForm" novalidate>
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                </tr>
+                <tr ng-repeat="order in orders">
+                    <td>{{order.firstname}}</td>
+                    <td>{{order.lastname}}</td>
+
+                    <td>
+                        <div>
+                            <button ng-click="selectOrder(order)" class="btn btn-xs btn-primary">
+                                Edit
+                            </button>
+                            <button ng-click="deleteorder(order)" class="btn btn-xs btn-primary">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr ng-show="createmode">
+
+
+                    <td> <input ng-model="editeduser.firstname" required /></td>
+                    <td><input ng-model="editeduser.lastname" required /></td>
+                    <td>
+                        <div>
+                            <button ng-click="createorder()" class="btn btn-xs btn-primary">
+                                Create
+                            </button>
+
+
+                        </div>
+                    </td>
+
+                </tr>
+
+            </table>
+
+
+
+
+        </form>
+    </div>

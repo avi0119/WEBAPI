@@ -1,0 +1,11 @@
+﻿
+<div id="divright{{indexinarrayofminvalues}}">
+    <!--<span ng-click="validatetype(indexinArrayOfMinValues)" ng-if="(islast && !(false)) || !(islast)">{{currentclaimsofminimumvalueitemObject.ClaimType}} </span>-->
+    <!--<input id= "rightcellspan{{indexinarrayofminvalues}}" ng-click= " validatetype(indexinarrayofminvalues)" ng-show="((islastfun() && !isaddbuttonpressedfunc()) || !islastfun())">{{currentclaimsofminimumvalueitemObject.ClaimType}}-->
+    <span id="rightcellspan{{indexinarrayofminvalues}}" ng-click=" validatetype(indexinarrayofminvalues)" ng-show="((islastfun() && !isaddbuttonpressedfunc()) || !islastfun())"> </span>
+
+    <!--<span ng-click="validatetype(indexinArrayOfMinValues)" ng-if="((islast && !isaddbuttonpressed) || !islast)">{{currentclaimso    <!--<span ng-click="validatetype(indexinArrayOfMinValues)" ng-if="((islast && !isaddbuttonpressed) || !islast)">{{currentclaimsofminimumvalueitem.ClaimType}} </span>-->
+
+    <select id="rightcellspan{{indexinarrayofminvalues}}" ng-click="validatetype(indexinarrayofminvalues)" ng-show="(islastfunc() && isaddbuttonpressedfunc())" ng-model="claimsofminimumvaluearray[indexinarrayofminvalues].ClaimType" ng-options="typeofclaim as typeofclaim for typeofclaim in claimtypesstringsonnlyarrayObject "></select>
+    <button id="buttonright{{indexinarrayofminvalues}}" ng-click="somefunc()">hello button</button>
+</div>

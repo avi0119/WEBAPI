@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <title>Directive Scopes</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <!--<link href="AngularJS/bootstrap.css" rel="stylesheet" />
+    <link href="AngularJS/bootstrap-theme.css" rel="stylesheet" />-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+    <script type="text/ng-template" id="scopeTemplate">
+        <div class="panel-body">
+            <p>Data Value: <input ng-model="local" /></p>
+        </div>
+    </script>
+    <script type="text/javascript">
+        angular.module("exampleApp", [])
+        .directive("scopeDemo", function () {
+            return {
+                template: function () {
+                    return angular.element(
+                    document.querySelector("#scopeTemplate")).html();
+                },
+                scope: {
+                    local: "=nameprop"
+                }
+            }
+        })
+        .directive('relinkEvent', function ($rootScope) {
+            return {
+                transclude: 'element',
+                restrict: 'A',
+                link: function (scope, element, attr, ctrl, transclude) {
+                    var previousContent = null;
+
+                    var triggerRelink = function () {
+                        if (previousContent) {
+                            previousContent.remove();
+                            previousContent = null;
+                        }
+
+                        transclude(function (clone) {
+                            console.log('relinking');
+                            element.parent().append(clone);
+                            previousContent = clone;
+                        });
+
+                    };
+
+                    triggerRelink();
+                    $rootScope.$on(attr.relinkEvent, triggerRelink);
+
+                }
+            };
+
+        }).controller("scopeCtrl", function ($scope) {
+            $scope.data = { name: "Adam" };
+        }).controller("myCtrl", function ($scope, $rootScope) {
+            $rootScope.triggerRelink = function () {
+                $rootScope.$broadcast('myEventName');
+            };
+        });
+    </script>
+</head>
+<body ng-controller="scopeCtrl">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Direct Binding: <input ng-model="data.name" />
+        </div>
+        <div class="panel-body" scope-demo nameprop="data.name"></div>
+    </div>
+    <div ng-controller="myCtrl">
+        <button ng-click="triggerRelink()">Trigger Relink</button>
+        <div relink-event="myEventName">
+            <input type="text">
+        </div>
+
+    </div>
+</body>
+</html>

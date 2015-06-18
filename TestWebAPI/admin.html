@@ -12,13 +12,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.js"></script>
     <script src="AngularJS/ngmodules/angular-route.js"></script>
     <script src="AngularJS/ngmodules/angular-resource.js"></script>
     <script src="AngularJS/components/EncodingService.js"></script>
     
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>-->
-   
+
+    <script type="text/ng-template" id="scopeTemplate">
+        <div class="panel-body">
+            <p>Data Value: using the property name {{local[0].ClaimType}}</p>
+        </div>
+    </script>
     <script>
         angular.module("NorthWindAdmin", ["ngRoute", "ngResource", "customFilters", "EncodingDecodingModule"])
         .config(function ($routeProvider) {

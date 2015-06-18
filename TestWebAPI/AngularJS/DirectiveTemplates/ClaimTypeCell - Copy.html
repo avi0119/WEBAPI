@@ -1,0 +1,7 @@
+﻿
+<td>
+    <span ng-click="validatetype(indexinArrayOfMinValues)" ng-if="(islast && !isaddbuttonpressed) || !islast">{{CurrentClaimsOfMinimumValueitem.ClaimType}} </span>
+
+    <select ng-click="validatetype(indexinArrayOfMinValues)" ng-if="islast && isaddbuttonpressed" ng-model="ClaimsOfMinimumValueArray[indexinArrayOfMinValues].ClaimType" ng-options="typeofclaim as typeofclaim for typeofclaim in claimtypesstringsonnlyarray "></select>
+    <button ng-click="somefunc()">hello button</button>
+</td>

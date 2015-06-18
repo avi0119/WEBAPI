@@ -1,0 +1,29 @@
+﻿<tr>
+    <td>
+       
+        <span ng-click="validatetype(indexinArrayOfMinValues)" ng-if="((islastfun() && !isaddbuttonpressedfunc()) || !islastfun())">{{currentclaimsofminimumvalueitem.ClaimType}} </span>
+       
+
+        <select ng-click="validatetype(indexinArrayOfMinValues)" ng-if="(islastfunc() && isaddbuttonpressedfunc())" ng-model="claimtypesstringsonnlyarray[indexinArrayOfMinValues].ClaimType" ng-options="typeofclaim as typeofclaim for typeofclaim in claimtypesstringsonnlyarray "></select>
+        <button ng-click="somefunc()">hello button</button>
+    </td>
+    <td>
+    <select ng-if="(islast && !isaddbuttonpressed) || !islast" ng-model="selectedclaim[item.ClaimType]" ng-options="claim as claim.Description for claim in ClaimTypesArray | filter:IncludeOnlyClaimTypesOfGivenDescription(item.ClaimType)"></select>
+
+    <select ng-if="islast && isaddbuttonpressed" ng-model="ClaimsOfMinimumValueArray[indexinArrayOfMinValues]" ng-options="claim as claim.Description for claim in ClaimTypesArray | filter:IncludeOnlyClaimTypesOfGivenDescription(ClaimsOfMinimumValue[indexinArrayOfMinValues].ClaimType)"></select>
+
+
+    </td>
+
+    <td>
+        <div>
+            <button ng-click="removeclaimtype($index)" class="btn btn-xs btn-primary">
+                Remove
+            </button>
+            <button ng-click="addClaimType()" class="btn btn-xs btn-primary" ng-if="islast && currentclaimsofminimumvalueitem.ClaimType && currentclaimsofminimumvalueitem.Description">
+                Add+
+            </button>
+        </div>
+    </td>
+
+</tr>

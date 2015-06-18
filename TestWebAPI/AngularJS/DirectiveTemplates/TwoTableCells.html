@@ -1,0 +1,14 @@
+﻿<td>
+    <select ng-if="(islast && !isaddbuttonpressed) || !islast" ng-model="selectedclaim[item.ClaimType]" ng-options="claim as claim.Description for claim in ClaimTypesArray | filter:IncludeOnlyClaimTypesOfGivenDescription(item.ClaimType)"></select>
+
+    <select ng-if="islast && isaddbuttonpressed" ng-model="ClaimsOfMinimumValueArray[indexinArrayOfMinValues]" ng-options="claim as claim.Description for claim in ClaimTypesArray | filter:IncludeOnlyClaimTypesOfGivenDescription(ClaimsOfMinimumValue[indexinArrayOfMinValues].ClaimType)"></select>
+
+
+</td>
+
+<td>
+    <span ng-click="validatetype(indexinArrayOfMinValues)" ng-if="(islast && !isaddbuttonpressed) || !islast">{{CurrentClaimsOfMinimumValueitem.ClaimType}} </span>
+
+    <select ng-click="validatetype(indexinArrayOfMinValues)" ng-if="islast && isaddbuttonpressed" ng-model="ClaimsOfMinimumValueArray[indexinArrayOfMinValues].ClaimType" ng-options="typeofclaim as typeofclaim for typeofclaim in claimtypesstringsonnlyarray "></select>
+    <button ng-click="somefunc()">hello button</button>
+</td>
