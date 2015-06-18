@@ -59,7 +59,24 @@
 
     }
 
+    $scope.hasselectedclaimv2beeninitialized = function (index) {
+        // var currentitem = selectedclaimv2[index];
+        var isititemthathasbeenregisteredinmivaluearray
+        if (angular.isUndefined($scope.ClaimsOfMinimumValue[index].ClaimType) || angular.isUndefined($scope.ClaimsOfMinimumValue[index].Description)) {
+            isititemthathasbeenregisteredinmivaluearray = false;
+        } else {
+             isititemthathasbeenregisteredinmivaluearray = !($scope.ClaimsOfMinimumValue[index].ClaimType == "") && !($scope.ClaimsOfMinimumValue[index].Description == "");
+           
+        }
+        var isitundefined = (!(angular.isUndefined($scope.selectedclaimv2))) && angular.isUndefined($scope.selectedclaimv2[index]);
+        if (!isitundefined) {
+            var theitem = $scope.selectedclaimv2[index];
+            isitundefined=!( $scope.ClaimsOfMinimumValue[index].ClaimType == theitem.ClaimType);
+        }
+        var res = !isitundefined || isititemthathasbeenregisteredinmivaluearray;
+        return res;
 
+    }
 
     $scope.listClaimTypes = function () {
         //$scope.products = $scope.productsResource.query();
@@ -162,7 +179,8 @@
 
     }
      */
-    $scope.updateselectedclaimPerLastItem = function () {
+
+    $scope.updateselectedclaimPerLastItem_old = function () {
         if ($scope.addbuttonpressed == true) {
             var lastindex = $scope.ClaimsOfMinimumValue.length - 1;
             var lastMinValueItem = $scope.ClaimsOfMinimumValue[lastindex];
@@ -171,19 +189,40 @@
         }
     }
     $scope.removeclaimtype = function (index) {
+        var cond1=($scope.addbuttonpressed == true);
+        var cond2 = (index == ($scope.ClaimsOfMinimumValue.length - 1));
+
+        if ( cond1 && cond2) {
+            $scope.addbuttonpressed=false;
+        }
         $scope.updateselectedclaimPerLastItem();
         $scope.ClaimsOfMinimumValue.splice(index, 1);
-        $scope.addbuttonpressed = false;// $scope.ClaimsOfMinimumValue.length -1 > $scope.originalcountofuserclaimtypes;
+        $scope.selectedclaimv2.splice(index, 1);
+
+        
+        //$scope.addbuttonpressed = false;// $scope.ClaimsOfMinimumValue.length -1 > $scope.originalcountofuserclaimtypes;
     }
     $scope.addClaimType = function () {
+ 
         $scope.updateselectedclaimPerLastItem();
-        $scope.addbuttonpressed = $scope.ClaimsOfMinimumValue.length+1 > $scope.originalcountofuserclaimtypes;
+        //$scope.addbuttonpressed = $scope.ClaimsOfMinimumValue.length+1 > $scope.originalcountofuserclaimtypes;
         $scope.addbuttonpressed=true;
         var newClaimType = {};
         $scope.ClaimsOfMinimumValue.push(newClaimType);
         
     }
-
+    $scope.updateselectedclaimPerLastItem = function (PotentiallynewClaimTypeFromBefore) {
+        if ($scope.addbuttonpressed) {
+            
+            var lastindex = $scope.selectedclaimv2.length - 1;
+            var PotentiallynewClaimTypeFromBefore = $scope.ClaimsOfMinimumValue[lastindex];
+            if (!(angular.isUndefined($scope.selectedclaimv2[lastindex]))) {
+                PotentiallynewClaimTypeFromBefore.Description = $scope.selectedclaimv2[lastindex].Description;
+                PotentiallynewClaimTypeFromBefore.ClaimID = $scope.selectedclaimv2[lastindex].ClaimID;
+                PotentiallynewClaimTypeFromBefore.Rank = $scope.selectedclaimv2[lastindex].Rank;
+            }
+        }
+    }
     $scope.validatetype = function (index) {
         if ($scope.ClaimsOfMinimumValue[index].ClaimType) {
             if ($scope.isClaimTypeInClaimsOfMinimumValue($scope.ClaimsOfMinimumValue[index].ClaimType, index)) {

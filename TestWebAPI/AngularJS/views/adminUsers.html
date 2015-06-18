@@ -105,7 +105,7 @@
                                  <button ng-click="removeclaimtype($index)" class="btn btn-xs btn-primary">
                                      Remove
                                  </button>
-                                 <button ng-click="addClaimType()" class="btn btn-xs btn-primary" ng-if="$last && item.ClaimType && item.Description">
+                                 <button ng-click="addClaimType()" class="btn btn-xs btn-primary" ng-if="$last && item.ClaimType && hasselectedclaimv2beeninitialized($index)">
                                      Add+
                                  </button>
                              </div>
