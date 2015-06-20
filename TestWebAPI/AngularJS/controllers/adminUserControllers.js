@@ -7,7 +7,14 @@
     $httpProvider.defaults.headers.common.mynewheadertoday = 'C3PO R2D2';
 }).controller("usersCtrl", function ($scope,$rootScope, $resource, productUrl, usersUrl, uniqueFilter, claimtypesUrl, uniqueAllChildrenFilter, MinimumPerPropertyFilter,AllItemsOfOneTypeFilter, $location) {
     $scope.alerterflag = {};
-
+    $scope.colors = [
+     { name: 'black', shade: 'dark' },
+     { name: 'white', shade: 'light', notAnOption: true },
+     { name: 'red', shade: 'dark' },
+     { name: 'blue', shade: 'dark', notAnOption: true },
+     { name: 'yellow', shade: 'light', notAnOption: false }
+    ];
+    $scope.myarray = [1,4,5,7.9];
     $scope.alerterflag.alerterflag = true;
     $scope.data = {};
     $scope.data.name = "avi semah and erit gridnev";
@@ -469,12 +476,110 @@
             //scope.currentclaimsofminimumvalueitem = JSON.parse(scope.currentclaimsofminimumvalueitem);
             //scope.tagid = attrs["id"];
             scope.thelement = element;
+            scope.itemtowatch = scope.claimsofminimumvaluearray[scope.indexinarrayofminvalues];
+            scope.errorwithlastitemclaimtype = false;
+            scope.getredborderscreen = function () {
+                return "redborder";
+            }
+            scope.$watchCollection("itemtowatch", function () {
+                if (scope.islastfunc() && scope.isaddbuttonpressedfunc()) {
+                    var claimtypetocheck = scope.itemtowatch.ClaimType;
+                    var ret = scope.validatetypebyindex(claimtypetocheck, scope.indexinarrayofminvalues);
+                    scope.errorwithlastitemclaimtype = ret;
+                }
+                //ctrl.updateTotal();
+            })
+            scope.validatetypebyindex = function (claimtypetocheck,index) {
+                if (angular.isUndefined(claimtypetocheck)) {
+                    return true;
+                }
+
+                if (scope.isClaimTypeInClaimsOfMinimumValue(claimtypetocheck, index)) {
+                    //alert(claimtypetocheck + " has already been selected")
+                        //$scope.ClaimsOfMinimumValue[index].ClaimType = "";
+                        //$scope.ClaimsOfMinimumValue[index].Description = "";
+                        //var tempClaimType = $scope.ClaimsOfMinimumValue[index];
+                        //$scope.ClaimsOfMinimumValue[index] = {};
+                        //$scope.removeclaimtype(index);
+                        //$scope.addClaimType();
+
+                        //$scope.ClaimsOfMinimumValue.splice(index, 1);
+                        //$scope.addbuttonpressed = false;// $scope.ClaimsOfMinimumValue.length -1 > $scope.originalcountofuserclaimtypes;
+
+                        //$scope.addbuttonpressed = $scope.ClaimsOfMinimumValue.length + 1 > $scope.originalcountofuserclaimtypes;
+                        //$scope.addbuttonpressed = true;
+                        //var newClaimType = {};
+                        //$scope.ClaimsOfMinimumValue.push(newClaimType);
+
+                        var t = index;
+                        return false;
+                } else {
+                    return true;
+                }
+                
+            }
+            scope.isClaimTypeInClaimsOfMinimumValue = function (claimtype, indextoexclude) {
+                for (var i = 0; i < scope.claimsofminimumvaluearray.length; i++) {
+                    if (indextoexclude == i) {
+                        continue;
+                    }
+                    if (scope.claimsofminimumvaluearray[i].ClaimType == claimtype) {
+
+                        return true;
+                    }
+                }
+                return false;
+            }
             scope.somefunc = function () {
                 var t = scope.alerterflag;
                 var topicButton = document.getElementById('rightcellspan0');
                 this.alerterflag = true;
+                //var value = "PayrollAdministration";
+                //$('#rightcellspan2' + scope.indexinarrayofminvalues + ' option').filter(function () {
+                //    //may want to use $.trim in here
+                //    return $(this).text() == value;
+                //}).prop('selected', true);
+                var value = "PayrollAdministration";
+                scope.claimsofminimumvaluearray[scope.indexinarrayofminvalues].ClaimType = value;
             }
-            
+            scope.validatetypeofclaimtype = function (index, ClaimsOfMinimumValue) {
+                if (ClaimsOfMinimumValue[index].ClaimType) {
+                    if (scope.isClaimTypeInClaimsOfMinimumValue(ClaimsOfMinimumValue[index].ClaimType, index)) {
+                        alert(ClaimsOfMinimumValue[index].ClaimType + " has already been selected")
+                        //$scope.ClaimsOfMinimumValue[index].ClaimType = "";
+                        //$scope.ClaimsOfMinimumValue[index].Description = "";
+                        var tempClaimType = ClaimsOfMinimumValue[index];
+                        ClaimsOfMinimumValue[index] = {};
+                        //$scope.removeclaimtype(index);
+                        //$scope.addClaimType();
+
+                        //$scope.ClaimsOfMinimumValue.splice(index, 1);
+                        //$scope.addbuttonpressed = false;// $scope.ClaimsOfMinimumValue.length -1 > $scope.originalcountofuserclaimtypes;
+
+                        //$scope.addbuttonpressed = $scope.ClaimsOfMinimumValue.length + 1 > $scope.originalcountofuserclaimtypes;
+                        //$scope.addbuttonpressed = true;
+                        //var newClaimType = {};
+                        //$scope.ClaimsOfMinimumValue.push(newClaimType);
+
+                        var t = index;
+                        //$scope.$apply();
+                    }
+                }
+            }
+            if (true == false) {
+                ctrl.$parsers.unshift(function (value) {
+                    //var valid = blacklist.indexOf(value) === -1;
+                    valid = true;
+                    ctrl.$setValidity('blacklist', valid);
+                    return valid ? value : undefined;
+                });
+                ctrl.$formatters.unshift(function (value) {
+                    //var valid = blacklist.indexOf(value) === -1;
+                    valid = true;
+                    ctrl.$setValidity('blacklist', valid);
+                    return valid ? value : undefined;
+                });
+            }
             scope.$watch("claimtypesstringsonnlyarray", function () {
                 scope.claimtypesstringsonnlyarrayObject = JSON.parse(scope.claimtypesstringsonnlyarray);
                 //ctrl.updateTotal();
@@ -490,7 +595,7 @@
                 alert(val);
             });
             scope.$watch("alerterflag", function () {
-                setSelected(ctrl.$viewValue);
+                //setSelected(ctrl.$viewValue);
                 var topicButton2 = document.getElementById('rightcellspan0');
                 var topicButton = document.getElementById('rightcellspan' + scope.indexinarrayofminvalues);
                 var b=$('#rightcellspan' + scope.indexinarrayofminvalues).change(function () {
@@ -505,10 +610,23 @@
                 if (!(span==null) ){
                     $("#rightcellspan" + scope.indexinarrayofminvalues).html(value);
                 }
+                var span2 = document.getElementById('rightcellspan2' + scope.indexinarrayofminvalues)
+                if (!(span2 == null)) {
+                    //$("#rightcellspan2" + scope.indexinarrayofminvalues).html(value);
+
+                    $('#rightcellspan2' + scope.indexinarrayofminvalues + ' option').filter(function () {
+                        //may want to use $.trim in here
+                        return $(this).text() == value;
+                    }).prop('selected', true);
+                }
             }
-            ctrl.$render = function () {
-                setSelected(ctrl.$viewValue );
+
+            scope.findclaimtypeobkectGivenClaimTypestrin = function (claimtypestring) {
+                return scope.claimtypesstringsonnlyarrayObject[1];
             }
+            //ctrl.$render = function () {
+            //    setSelected(ctrl.$viewValue );
+            //}
             var topicButton = document.getElementById('ddd0');
             //$('#rightcellspan' + scope.indexinarrayofminvalues).change(function () {
                 
@@ -543,7 +661,7 @@
             }
         },
         restrict: "EA",
-        require: "ngModel",
+        //require: "ngModel",
         //replace: true,
         scope: {
             alerterflag: "="
@@ -566,6 +684,7 @@
                 scope.currentclaimsofminimumvalueitemObject = JSON.parse(scope.currentclaimsofminimumvalueitem);
                 //ctrl.updateTotal();
             });
+
             //scope.currentclaimsofminimumvalueitem = JSON.parse(scope.currentclaimsofminimumvalueitem);
             
             scope.somefunc = function () {

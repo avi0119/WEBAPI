@@ -1,7 +1,9 @@
 ﻿<div ng-controller="usersCtrl">
     <button ng-click="triggerRelink()">Trigger Relink</button>
     <div > 
-        alerterflag.alerterflag value <input id="aaa" ng-model="alerterflag.alerterflag" />
+        alerterflag.alerterflag value <input ng-class="" id="aaa" ng-model="alerterflag.alerterflag" />
+        <select ng-model="abc" ng-options="valuex for valuex in [1,2,3]"></select>
+        <select ng-model="myColor" ng-options="color.name for color in colors"></select>
     </div>
 
 
@@ -98,7 +100,8 @@
                      <tr ng-repeat="item in ClaimsOfMinimumValue" id="ddd{{$index}}">
 
                          <td><claimtypeamddescriptionlevel selectedclaimv2="selectedclaimv2" alerterflag="alerterflag.alerterflag" currentclaimsofminimumvalueitem={{item}} islast={{(!!$last)}} isaddbuttonpressed={{addbuttonpressed}} indexinarrayofminvalues={{$index}} claimtypesarray={{ClaimTypes}} claimtypesstringsonnlyarray={{claimtypesstrinarray}} claimsofminimumvaluearray="ClaimsOfMinimumValue" /></td>
-                         <td> <claimtypeamddescriptiontype ng-model="item.ClaimType" alerterflag="alerterflag.alerterflag" currentclaimsofminimumvalueitem={{item}} islast={{(!!$last)}} isaddbuttonpressed={{addbuttonpressed}} indexinarrayofminvalues={{$index}} claimtypesarray={{ClaimTypes}} claimtypesstringsonnlyarray={{claimtypesstrinarray}} claimsofminimumvaluearray="ClaimsOfMinimumValue" /></td>
+                         <td> <claimtypeamddescriptiontype  alerterflag="alerterflag.alerterflag" currentclaimsofminimumvalueitem={{item}} islast={{(!!$last)}} isaddbuttonpressed={{addbuttonpressed}} indexinarrayofminvalues={{$index}} claimtypesarray={{ClaimTypes}} claimtypesstringsonnlyarray={{claimtypesstrinarray}} claimsofminimumvaluearray="ClaimsOfMinimumValue" /></td>
+                         <!--<td> <claimtypeamddescriptiontype ng-model="item.ClaimType" alerterflag="alerterflag.alerterflag" currentclaimsofminimumvalueitem={{item}} islast={{(!!$last)}} isaddbuttonpressed={{addbuttonpressed}} indexinarrayofminvalues={{$index}} claimtypesarray={{ClaimTypes}} claimtypesstringsonnlyarray={{claimtypesstrinarray}} claimsofminimumvaluearray="ClaimsOfMinimumValue" /></td>-->
 
                          <td>
                              <div>

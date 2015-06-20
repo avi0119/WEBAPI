@@ -4,10 +4,12 @@
 
     <select ng-show="islastfun() && isaddbuttonpressedfunc()" ng-model="selectedclaimv2[indexinArrayOfMinValues]" ng-options="claim as claim.Description for claim in ClaimTypesArray | filter:IncludeOnlyClaimTypesOfGivenDescription(claimsofminimumvaluearray[indexinArrayOfMinValues].ClaimType)"></select>
 
+
+
     <!--<select id="leftcellspan{{indexinarrayofminvalues}}" ng-show="(islastfun() && !isaddbuttonpressedfunc()) || !islastfun()" ng-model="selectedclaim[item.ClaimType]" ng-options="claim as claim.Description for claim in ClaimTypesArray | filter:IncludeOnlyClaimTypesOfGivenDescription(item.ClaimType)"></select>
 
     <select ng-show="islastfun() && isaddbuttonpressedfunc()" ng-model="ClaimsOfMinimumValueArray[indexinArrayOfMinValues]" ng-options="claim as claim.Description for claim in ClaimTypesArray | filter:IncludeOnlyClaimTypesOfGivenDescription(ClaimsOfMinimumValue[indexinArrayOfMinValues].ClaimType)"></select>-->
-    <button ng-click="somefunc()">hello button</button>
+    <!--<button ng-click="somefunc()">hello button</button>-->
 
 </div>
 

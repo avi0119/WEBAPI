@@ -2,10 +2,15 @@
 <div id="divright{{indexinarrayofminvalues}}">
     <!--<span ng-click="validatetype(indexinArrayOfMinValues)" ng-if="(islast && !(false)) || !(islast)">{{currentclaimsofminimumvalueitemObject.ClaimType}} </span>-->
     <!--<input id= "rightcellspan{{indexinarrayofminvalues}}" ng-click= " validatetype(indexinarrayofminvalues)" ng-show="((islastfunc() && !isaddbuttonpressedfunc()) || !islastfunc())">{{currentclaimsofminimumvalueitemObject.ClaimType}}-->
-    <span id="rightcellspan{{indexinarrayofminvalues}}" ng-click=" validatetype(indexinarrayofminvalues)" ng-show="((islastfunc() && !isaddbuttonpressedfunc()) || !islastfunc())"> </span>
+    <span id="rightcellspan{{indexinarrayofminvalues}}" ng-click=" validatetype(indexinarrayofminvalues)" ng-show="((islastfunc() && !isaddbuttonpressedfunc()) || !islastfunc())">{{claimsofminimumvaluearray[indexinarrayofminvalues].ClaimType}} </span>
 
     <!--<span ng-click="validatetype(indexinArrayOfMinValues)" ng-if="((islast && !isaddbuttonpressed) || !islast)">{{currentclaimso    <!--<span ng-click="validatetype(indexinArrayOfMinValues)" ng-if="((islast && !isaddbuttonpressed) || !islast)">{{currentclaimsofminimumvalueitem.ClaimType}} </span>-->
+    <select ng-class="{'redborder':errorwithlastitemclaimtype == false}" id="rightcellspan2{{indexinarrayofminvalues}}" ng-show="(islastfunc() && isaddbuttonpressedfunc())" ng-model="claimsofminimumvaluearray[indexinarrayofminvalues].ClaimType" ng-options="typeofclaim for typeofclaim in claimtypesstringsonnlyarrayObject "></select>
 
-    <select id="rightcellspan{{indexinarrayofminvalues}}" ng-click="validatetype(indexinarrayofminvalues)" ng-show="(islastfunc() && isaddbuttonpressedfunc())" ng-model="claimsofminimumvaluearray[indexinarrayofminvalues].ClaimType" ng-options="typeofclaim as typeofclaim for typeofclaim in claimtypesstringsonnlyarrayObject "></select>
+    <!--<select   ng-options="typeofclaim for typeofclaim in claimtypesstringsonnlyarrayObject "></select>-->
+
+
+    <!--<select ng-model="abc" ng-options=" typeofclaim for typeofclaim in claimtypesstringsonnlyarrayObject"></select>-->
+    <!--<select id="rightcellspan{{indexinarrayofminvalues}}" ng-click="validatetype(indexinarrayofminvalues)" ng-show="(islastfunc() && isaddbuttonpressedfunc())" ng-model="claimsofminimumvaluearray[indexinarrayofminvalues].ClaimType" ng-options="typeofclaim as typeofclaim for typeofclaim in claimtypesstringsonnlyarrayObject "></select>-->
     <button id="buttonright{{indexinarrayofminvalues}}" ng-click="somefunc()">hello button</button>
 </div>
